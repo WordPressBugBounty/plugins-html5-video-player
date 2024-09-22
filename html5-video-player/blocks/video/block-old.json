@@ -1,0 +1,347 @@
+{
+  "apiVersion": "1",
+  "name": "html5-player/video",
+  "title": "HTML5 Video Player",
+  "description": "Video Player",
+  "category": "media",
+  "icon": "video-alt2",
+  "keywords": ["HTML5 Video Player", "Media Player", "Video"],
+  "textdomain": "h5vp",
+  "attributes": {
+    "provider": {
+      "type": "string",
+      "default": "library"
+    },
+    "clientId": {
+      "type": "string"
+    },
+    "uniqueId": {
+      "type": "string"
+    },
+    "CSS": {
+      "type": "string",
+      "default": ""
+    },
+    "source": {
+      "type": "string"
+    },
+    "poster": {
+      "type": "string"
+    },
+    "ratio": {
+      "type": "string",
+      "default": null
+    },
+    "isCDURL": {
+      "type": "boolean",
+      "default": false
+    },
+    "CDURL": {
+      "type": "string"
+    },
+    "posterTime": {
+      "type": "number",
+      "default": 20
+    },
+    "chapters": {
+      "type": "array",
+      "default": []
+    },
+    "controls": {
+      "type": "object",
+      "default": {
+        "play-large": true,
+        "restart": false,
+        "rewind": true,
+        "play": true,
+        "fast-forward": true,
+        "progress": true,
+        "current-time": true,
+        "duration": false,
+        "mute": true,
+        "volume": true,
+        "pip": false,
+        "airplay": false,
+        "settings": true,
+        "downlaod": false,
+        "fullscreen": true
+      }
+    },
+    "brandColor": {
+      "type": "string",
+      "default": "#00B3FF"
+    },
+    "width": {
+      "type": "object",
+      "default": {
+        "deprecated": true,
+        "number": 100,
+        "unit": "%"
+      }
+    },
+    "radius": {
+      "type": "object",
+      "default": {
+        "number": 0,
+        "unit": "px"
+      }
+    },
+    "repeat": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayWhenVisible": {
+      "type": "boolean",
+      "default": false
+    },
+    "muted": {
+      "type": "boolean",
+      "default": false
+    },
+    "sticky": {
+      "type": "boolean",
+      "default": false
+    },
+    "stickyPosition": {
+      "type": "string",
+      "default": "top-right"
+    },
+    "popup": {
+      "type": "boolean",
+      "default": false
+    },
+    "popupType": {
+      "type": "string",
+      "default": "poster"
+    },
+    "playsinline": {
+      "type": "boolean",
+      "default": false
+    },
+    "popupBtnStyle": {
+      "type": "object",
+      "default": {
+        "color": "#fff",
+        "backgroundColor": "#006BA1",
+        "fontSize": "16px",
+        "padding": {
+          "top": "10px",
+          "right": "20px",
+          "bottom": "10px",
+          "left": "20px"
+        },
+        "align": "center"
+      }
+    },
+    "popupBtnText": {
+      "type": "string",
+      "default": "Watch Video"
+    },
+
+    "popupBtnExists": {
+      "type": "boolean"
+    },
+    "popupBtnClass": {
+      "type": "string"
+    },
+    "disablePause": {
+      "type": "boolean",
+      "default": false
+    },
+    "thumbInPause": {
+      "type": "boolean",
+      "default": false
+    },
+    "thumbStyle": {
+      "type": "string",
+      "default": "default"
+    },
+    "resetOnEnd": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoHideControl": {
+      "type": "boolean",
+      "default": true
+    },
+    "protected": {
+      "type": "boolean",
+      "default": false
+    },
+    "password": {
+      "type": "string"
+    },
+    "protectedText": {
+      "type": "string",
+      "default": "Please enter password to wath the video"
+    },
+    "seekTime": {
+      "type": "number",
+      "default": 10
+    },
+    "startTime": {
+      "type": "number",
+      "default": 0
+    },
+    "preload": {
+      "type": "string",
+      "default": "metadata"
+    },
+    "overlay": {
+      "type": "boolean",
+      "default": false
+    },
+    "overlayType": {
+      "type": "boolean"
+    },
+    "overlayText": {
+      "type": "string"
+    },
+    "overlayPosition": {
+      "type": "string",
+      "default": "top_right"
+    },
+    "overlayBackground": {
+      "type": "string",
+      "default": "#333"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 0.8
+    },
+    "overlayLogo": {
+      "type": "string"
+    },
+    "overlayLink": {
+      "type": "string"
+    },
+    "overlayTextColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "overlayFontSize": {
+      "type": "object",
+      "default": {
+        "number": 20,
+        "unit": "px"
+      }
+    },
+    "overlayTextHoverColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    
+    "endScreen": {
+      "type": "object",
+      "default": {
+        "btnText": "Watch Again",
+        "btnStyle": {}
+      }
+    },
+    "endscreen": {
+      "type": "boolean",
+      "default": false
+    },
+    "endscreenText": {
+      "type": "string",
+      "default": "Endscreen text"
+    },
+    "endscreenTextLink": {
+      "type": "string",
+      "default": "#"
+    },
+    "streaming": {
+      "type": "boolean",
+      "default": false
+    },
+    "streamingType": {
+      "type": "string",
+      "default": "hls"
+    },
+    "quality": {
+      "type": "array",
+      "default": [
+        {
+          "size": "size",
+          "video_file": ""
+        }
+      ]
+    },
+    "subtitle": {
+      "type": "array",
+      "default": [
+        {
+          "label": "label",
+          "caption_file": ""
+        }
+      ]
+    },
+    "speed": {
+      "type": "object",
+      "default": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "0.5": true,
+        "0.75": true,
+        "1.25": true,
+        "1.5": true,
+        "1.75": true,
+        "2.5": true
+      }
+    },
+    "watermark": {
+      "type": "object",
+      "default": {
+        "enabled": false,
+        "type": "email",
+        "text": ""
+      }
+    },
+    "hideYoutubeUI": {
+      "type": "boolean",
+      "default": false
+    },
+    "captionEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "additionalCSS": {
+      "type": "string"
+    },
+    "additionalID": {
+      "type": "string"
+    },
+    "vastTag": {
+      "type": "string"
+    },
+    "saveState": {
+      "type": "boolean",
+      "default": true
+    },
+    "styles": {
+      "type": "object",
+      "default": {
+        "plyr_wrapper": {
+          "width": "100%"
+        }
+      }
+    }
+  },
+  "supports": {
+    "html": false,
+    "lock": false,
+    "reusable": false
+  },
+  "example": {
+    "attributes": {
+      "preview": true
+    }
+  },
+  "viewScript": "file:./../../dist/frontend.js",
+  "style": "file:./../../dist/frontend.css"
+}

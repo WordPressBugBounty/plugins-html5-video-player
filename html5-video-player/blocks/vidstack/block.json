@@ -1,0 +1,103 @@
+{
+  "apiVersion": "1",
+  "name": "html5-player/vidstack",
+  "title": "VidStack Video Player",
+  "description": "Video Player",
+  "category": "media",
+  "icon": "video-alt2",
+  "keywords": ["HTML5 Video Player", "Media Player", "Video"],
+  "textdomain": "h5vp",
+  "attributes": {
+    "provider": {
+      "type": "string",
+      "default": "self-hosted"
+    },
+    "clientId": {
+      "type": "string"
+    },
+    "uniqueId": {
+      "type": "string"
+    },
+    "CSS": {
+      "type": "string",
+      "default": ""
+    },
+    "source": {
+      "type": "string"
+    },
+   
+    "width": {
+      "type": "object",
+      "default": {
+        "number": 100,
+        "unit": "%"
+      }
+    },
+    "options": {
+      "type": "object",
+      "default": {
+        "autoplay": false,
+        "muted": false,
+        "load": "idle",
+        "playsinline": false,
+        "preload": "metadata",
+        "playbackRate": "1",
+        "thumbnails": null,
+        "volume": 1,
+        "streamType": "unknown",
+        "currentTime": 0
+      }
+    },
+    "repeat": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayWhenVisible": {
+      "type": "boolean",
+      "default": false
+    },
+    "muted": {
+      "type": "boolean",
+      "default": false
+    },
+    "sticky": {
+      "type": "boolean",
+      "default": false
+    },
+    "stickyPosition": {
+      "type": "string",
+      "default": "top-right"
+    },
+    "popup": {
+      "type": "boolean",
+      "default": false
+    },
+    "popupType": {
+      "type": "string",
+      "default": "poster"
+    },
+    "playsinline": {
+      "type": "boolean",
+      "default": false
+    },
+   
+    "preload": {
+      "type": "string",
+      "default": "metadata"
+    } 
+  },
+  "supports": {
+    "html": false,
+    "lock": false,
+    "reusable": false
+  },
+  "example": {
+    "attributes": {
+      "preview": true
+    }
+  }
+}
