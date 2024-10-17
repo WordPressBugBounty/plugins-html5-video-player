@@ -2,7 +2,7 @@
 Contributors: bplugins,shehabulislam, freemius, abuhayat
 Tags: HTML5 video player, plyr, video, video player, mp4 Player 
 Donate link: https://www.buymeacoffee.com/abuhayat
-Requires at least: 5.8
+Requires at least: 5.8+
 Tested up to: 6.6.2
 Stable tag: 2.5.35
 Requires PHP: 7.1
