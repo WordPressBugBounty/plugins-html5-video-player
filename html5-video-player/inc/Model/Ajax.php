@@ -1,6 +1,5 @@
 <?php
 namespace H5VP\Model;
-use H5VP\Helper\Functions as Utils;
 
 class Ajax{
  
@@ -21,7 +20,7 @@ class Ajax{
 
         // from ajaxCall.php
         add_action('wp_ajax_h5vp_export_data', [$this, 'h5vp_export_data']);
-        add_action('wp_ajax_save_password', [$this, 'save_password']);
+        // add_action('wp_ajax_save_password', [$this, 'save_password']);
     }
 
     public static function instance(){
@@ -76,34 +75,6 @@ class Ajax{
         wp_send_json_error('request destination failed!');
     }
 
-    function save_password(){
-        $nonce = sanitize_text_field( $_POST['nonce'] );
-        if(!wp_verify_nonce($nonce, 'wp_ajax')){
-            wp_send_json_error('invalid request');
-        }
-
-        if(!current_user_can('manage_options')){
-            return false;
-        }
-
-        $key = sanitize_text_field($_POST['key']);
-
-        if(!strpos( $key, 'h5vp_')){
-            wp_send_json_error('403 Forbidden');
-        }
-
-        $data = [
-            'key' => $key,
-            'pass' => md5(sanitize_text_field($_POST['password'])),
-            'quality' => Utils::sanitize_array($_POST['quality']),
-            'source' => esc_url($_POST['source'])
-        ];
-        
-
-        update_option($key, $data);
-
-        wp_send_json_error([$key => $data]);
-    }
 
     function user_has_role($user_id, $role_name)
     {

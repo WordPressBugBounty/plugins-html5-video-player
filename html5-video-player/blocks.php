@@ -161,6 +161,13 @@ if(!class_exists('H5VP_Block')){
  
 
             ob_start();
+            if($finalData['features']['passwordProtected']){
+                if($finalData['features']['passwordProtected']['enabled'] ?? '' == '1'){
+                    $finalData['source'] = null;
+                    $finalData['features']['passwordProtected']['password'] = null;
+                }
+            }
+           
 
             echo VideoTemplate::html($finalData);
 

@@ -31,6 +31,7 @@ class PlaylistTemplate{
             <?php echo esc_html(self::renderStyle($data['template'])); ?>
         </style>
         <?php
+        // echo $data['template']['skin'];sdfs
 		if(count($videos) > 0){
             if($data['template']['skin'] == 'rightside'){
                 self::templateRightSide($data);

@@ -9,7 +9,7 @@ use H5VP\Helper\Functions as Utils;
 use H5VP\Helper\DefaultArgs;
 
 
-class Shortcodes{
+class ShortcodesPro{
 
   public function register(){
     $option = get_option('h5vp_option');
@@ -43,12 +43,9 @@ class Shortcodes{
       echo AnalogSystem::html($id);
     }
    } catch (\Throwable $th) {
-    throw $th->getMessage();
+    echo $th->getMessage();
    }
 
-
-  
-    
     return ob_get_clean(); 
   }
 
@@ -90,6 +87,8 @@ class Shortcodes{
     $data = AnalogSystem::parsePlaylistData($atts['id']);
     wp_enqueue_script('html5-player-playlist');
     wp_enqueue_style('html5-player-playlist');
+    wp_enqueue_script('bplugins-owl-carousel');
+    wp_enqueue_style('bplugins-owl-carousel');
 		
     ob_start(); ?>
 

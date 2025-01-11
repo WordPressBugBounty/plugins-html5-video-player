@@ -55,19 +55,32 @@ class AnalogSystem{
             'seekTime' => (int)self::GPM($id, 'h5vp_seek_time_playerio', '10'),
             'hideControls' => (boolean)self::GPM($id, 'h5vp_auto_hide_control_playerio', '1', true),
             'resetOnEnd' => true,
-            'autoplayNextVideo' => $options_meta['h5vp_play_nextvideo'] === 'yes' ?? false,
+            'autoplayNextVideo' => $options_meta['h5vp_play_nextvideo'] === 'yes' ?? false
         ];
 
         return [
             'uniqueId' => 'h5vp_playlist_'.uniqid(),
             'options' => $options,
             'videos' => $videos,
+            'playlistType' => $options_meta['h5vp_playlist_view_type'],
             'styles' => [
+                // color should use by define css variable
                 'h5vp_playlist_container' => [
                     // 'background' =>self::GPML($id, 'listbg', '#fff'),
                     'width' => $options_meta['h5vp_player_width_playerio'] ? $options_meta['h5vp_player_width_playerio'].'px' : '100%',
-                    'max-width' => '100%'
+                    'max-width' => '100%',
+                    // 'color' => self::GPML($id, 'text_color', '#333')
                 ],
+                // 'h5vp_playlist_container .video-item:hover, .h5vp_playlist_container .video-item.item-active' => [
+                //     'background' =>self::GPML($id, 'listhoverbg', '#333'),
+                //     'color' => self::GPML($id, 'text_hover_color', '#fff'),
+                // ],
+                // ".h5vp_playlist_container video-item .video-block__title, .h5vp_playlist .simplelist li a " => [
+                //     'color' => self::GPML($id, 'text_color', '#333')
+                // ],
+                // ".h5vp_playlist_container .item-active .video-block__title, .h5vp_playlist_container .video-item:hover .video-block__title, .h5vp_playlist .simplelist .item-active li a, .h5vp_playlist .simplelist .video-item:hover li a" => [
+                //     'color' => self::GPML($id, 'text_hover_color', '#333')
+                // ]
                 // 'video-block__title' => [
                 //     'color' =>self::GPML($id, 'text_color', '#333')
                 // ],
@@ -453,7 +466,7 @@ class AnalogSystem{
     // get playlist meta latest
     public static function GPML($id, $key, $default = false, $true = false){
         $meta = metadata_exists( 'post', $id, 'h5vp_playlist' ) ? get_post_meta($id, 'h5vp_playlist', true) : '';
-        if(isset($meta[$key]) && $meta != ''){
+        if(isset($meta[$key]) && $meta[$key] != ''){
             if($true == true){
                 if($meta[$key] == '1'){
                     return true;

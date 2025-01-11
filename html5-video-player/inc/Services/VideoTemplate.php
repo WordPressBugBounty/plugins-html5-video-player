@@ -25,9 +25,9 @@ class VideoTemplate{
         $aws = self::parseS3Url($data['source']);
 
         if($aws && class_exists('\Aws\S3\S3Client')){
-            $secrets = self::get_secrets();;
+            $secrets = self::get_secrets();
             if(!$secrets){
-                echo "security";
+                echo "Secured";
                 return false;
             }
 
@@ -40,16 +40,15 @@ class VideoTemplate{
                 ]
             ]);
 
-            
             try {
+
                 $cmd = $s3Client->getCommand('GetObject', [
                     'Bucket' => $secrets['bucket'],
                     'Key' => $aws['file_location'],
                 ]);
                 $data['source'] = $s3Client->createPresignedRequest($cmd, '+60 minutes')->getUri()->__toString();
-               
             } catch (\Throwable $th) {
-
+                echo $th->getMessage();
             } 
         }
 
@@ -64,10 +63,6 @@ class VideoTemplate{
         
         ob_start();
 
-        // echo '<pre>';
-        // print_r( $data['styles'] );
-        // echo '</pre>';
-        // echo "working fine";
         ?>
 
         <div class='html5_video_players' style="width:<?php echo esc_attr($data['styles']['plyr_wrapper']['width'] ?? '100%') ?>;" data-nonce="<?php echo esc_attr(wp_create_nonce('wp_ajax')) ?>" data-attributes="<?php echo esc_attr(wp_json_encode($data)) ?>">
@@ -114,8 +109,8 @@ class VideoTemplate{
      * echo and ecape value if it isset
      */
     public static function e_i($array = [], $index = ''){
-        if(isset($data[$index])){
-            echo esc_html($data[$index]);
+        if(isset($array[$index])){
+            echo esc_html($array[$index]);
         }
         return false;
     }

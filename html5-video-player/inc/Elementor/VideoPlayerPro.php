@@ -1142,7 +1142,7 @@ class VideoPlayerPro extends Widget_Base {
 		return false;
 	}
 
-	function scramble($do = 'encode', $data){
+	function scramble($do = 'encode', $data = ''){
 		$originalKey = 'abcdefghijklmnopqrstuvwxyz1234567890';
 		$key = "z1ntg4ihmwj5cr09byx8spl7ak6vo2q3eduf";
 		$resultData = '';
