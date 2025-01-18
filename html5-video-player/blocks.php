@@ -3,9 +3,7 @@ namespace H5VP\Block;
 if(!defined('ABSPATH')) {
     return;
 }
-// require_once(__DIR__.'/inc/Helper/DefaultArgs.php');
-// require_once(__DIR__.'/inc/Services/AdvanceSystem.php');
-// require_once(__DIR__.'/inc/Services/VideoTemplate.php');
+
 use H5VP\Helper\DefaultArgs;
 use H5VP\Helper\Functions as Utils;
 use H5VP\Services\AdvanceSystem;
@@ -161,7 +159,7 @@ if(!class_exists('H5VP_Block')){
  
 
             ob_start();
-            if($finalData['features']['passwordProtected']){
+            if(isset($finalData['features']['passwordProtected']) && $finalData['features']['passwordProtected']){
                 if($finalData['features']['passwordProtected']['enabled'] ?? '' == '1'){
                     $finalData['source'] = null;
                     $finalData['features']['passwordProtected']['password'] = null;
