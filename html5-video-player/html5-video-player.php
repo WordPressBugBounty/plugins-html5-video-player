@@ -4,10 +4,11 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.5.37
+ * Version:     2.5.38
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * License:     GPLv3    
+ * Text Domain: h5vp
  * 
  */
 use H5VP\Helper\Functions as Utils;
@@ -24,7 +25,7 @@ if ( function_exists( 'h5vp_fs' ) ) {
     define( 'H5VP_PRO_PLUGIN_DIR', plugin_dir_url( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.5.37' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.5.38' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
@@ -99,21 +100,22 @@ if ( function_exists( 'h5vp_fs' ) ) {
         new H5VP_Main();
     }
     require_once __DIR__ . '/upgrade.php';
-}
-add_filter(
-    'save_post',
-    'filter_post_data',
-    '99',
-    2
-);
-function filter_post_data(  $post_id, $postarr  ) {
-    $post_type = get_post_type( $post_id );
-    if ( $post_type === 'videoplayer' ) {
-        $password = get_post_meta( $post_id, 'h5vp_protected_password', true );
-        update_option( "propagans_{$post_id}", [
-            'pass'    => md5( $password ),
-            'quality' => Utils::sanitize_array( get_post_meta( $post_id, 'h5vp_quality_playerio', true ) ),
-            'source'  => esc_url( get_post_meta( $post_id, 'h5vp_video_link', true ) ),
-        ] );
+    add_filter(
+        'save_post',
+        'filter_post_data',
+        '99',
+        2
+    );
+    function filter_post_data(  $post_id, $postarr  ) {
+        $post_type = get_post_type( $post_id );
+        if ( $post_type === 'videoplayer' ) {
+            $password = get_post_meta( $post_id, 'h5vp_protected_password', true );
+            update_option( "propagans_{$post_id}", [
+                'pass'    => md5( $password ),
+                'quality' => Utils::sanitize_array( get_post_meta( $post_id, 'h5vp_quality_playerio', true ) ),
+                'source'  => esc_url( get_post_meta( $post_id, 'h5vp_video_link', true ) ),
+            ] );
+        }
     }
+
 }

@@ -61,7 +61,7 @@ class GlobalChanges{
     }
 
     public function changeUpdateMessage($messages){
-        $messages['videoplayer'][1] = __('Updated ');
+        $messages['videoplayer'][1] = __('Updated ', 'h5vp');
         return $messages;
     }
 
@@ -73,7 +73,7 @@ class GlobalChanges{
             }
         if ('videoplayer' == get_post_type() || 'h5vpplaylist' == get_post_type() || $page == 'videoplayer_page_html5vp_quick_player') {
             $url = 'https://wordpress.org/support/plugin/html5-video-player/reviews/?filter=5#new-post';
-            $text = sprintf(__( ' If you like <strong>Html5 Video Player</strong> please leave us a <a href="%s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. Your Review is very important to us as it helps us to grow more. ', 'h5vp-domain'), $url);
+            $text = sprintf(__( ' If you like <strong>Html5 Video Player</strong> please leave us a <a href="%s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. Your Review is very important to us as it helps us to grow more. ', 'h5vp'), $url);
         }
         return $text;
     }

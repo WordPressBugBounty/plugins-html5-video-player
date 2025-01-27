@@ -686,10 +686,10 @@ class VideoPlayerPro extends Widget_Base {
 			[
 				'label' 		=> esc_html__( 'Text Color', 'h5vp' ),
 				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => \Elementor\Core\Schemes\Color::get_type(),
-					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
-				],
+				// 'scheme' => [
+				// 	'type' => \Elementor\Core\Schemes\Color::get_type(),
+				// 	'value' => \Elementor\Core\Schemes\Color::COLOR_1,
+				// ],
 				'label_block'	=> false,
 				'default' => '#fff',
 				'condition' => [
@@ -704,10 +704,10 @@ class VideoPlayerPro extends Widget_Base {
 			[
 				'label' 		=> esc_html__( 'Background Color', 'h5vp' ),
 				'type' => Controls_Manager::COLOR,
-				'scheme' => [
-					'type' => \Elementor\Core\Schemes\Color::get_type(),
-					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
-				],
+				// 'scheme' => [
+				// 	'type' => \Elementor\Core\Schemes\Color::get_type(),
+				// 	'value' => \Elementor\Core\Schemes\Color::COLOR_1,
+				// ],
 				'label_block'	=> false,
 				'default' => '#1aafff',
 				'condition' => [
