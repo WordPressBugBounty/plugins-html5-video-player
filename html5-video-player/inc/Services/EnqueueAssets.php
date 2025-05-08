@@ -1,29 +1,34 @@
 <?php
+
 namespace H5VP\Services;
 
 use H5VP\Helper\Functions;
 use H5VP\Helper\LocalizeScript;
 
-class EnqueueAssets {
+class EnqueueAssets
+{
     protected static $_instance = null;
 
-    public function __construct(){
+    public function __construct()
+    {
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
         add_action('wp_head', [$this, 'quickPlayerStyle']);
         add_action('admin_head', [$this, 'adminHead']);
     }
 
-    public static function instance(){
-        if(self::$_instance === null){
+    public static function instance()
+    {
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public function enqueueAssets(){
-         //plyrio
-        wp_register_script('bplugins-plyrio', plugin_dir_url( __FILE__ ). 'public/js/plyr-v3.7.8.js' , array(), H5VP_PRO_VER, false );
+    public function enqueueAssets()
+    {
+        //plyrio
+        wp_register_script('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/js/plyr-v3.7.8.js', array(), H5VP_PRO_VER, false);
         wp_register_script('html5-player-video-view-script', H5VP_PRO_PLUGIN_DIR . 'dist/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, false);
 
         wp_register_script('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'dist/frontend-playlist.js', array('react', 'react-dom', 'wp-util', 'bplugins-plyrio'), H5VP_PRO_VER, false);
@@ -39,20 +44,21 @@ class EnqueueAssets {
         wp_localize_script('html5-player-video-view-script', 'hpublic', array(
             'siteUrl' => site_url(),
             'userId' => get_current_user_id(),
-            'pauseOther' => (boolean) Functions::getOptionDeep("h5vp_option", "h5vp_pause_other_player", false),
+            'pauseOther' => (bool) Functions::getOptionDeep("h5vp_option", "h5vp_pause_other_player", false),
             'speed' => Functions::getOptionDeep("h5vp_option", "h5vp_speed", false),
-            'dir' => H5VP_PRO_PLUGIN_DIR ,
+            'dir' => H5VP_PRO_PLUGIN_DIR,
         ));
 
-        
+
         //localize quick player settings
-        wp_localize_script( 'html5-player-video-view-script', 'h5vpData', LocalizeScript::quickPlayer());
+        wp_localize_script('html5-player-video-view-script', 'h5vpData', LocalizeScript::quickPlayer());
 
         //Localize H5VP_Video Translated Word
         wp_localize_script('html5-player-video-view-script', 'h5vpI18n', LocalizeScript::translatedText());
     }
 
-    public function enqueueAdminAssets($screen){
+    public function enqueueAdminAssets($screen)
+    {
         global $post;
 
         if ((!empty($post) && 'videoplayer' == $post->post_type || $screen == 'edit.php') || (!empty($post) && 'h5vpplaylist' == $post->post_type) || $screen == 'videoplayer_page_h5vp-support' || $screen == 'videoplayer_page_html5vp_settings' || $screen == 'videoplayer_page_html5vp_quick_player' || $screen == 'videoplayer_page_free-plugins-from-bplugins' || $screen == 'videoplayer_page_premium-plugins' || $screen == 'plugins.php' || $screen = 'videoplayer_page_analytics') {
@@ -70,41 +76,41 @@ class EnqueueAssets {
             ));
         }
 
-        if($screen == 'videoplayer_page_free-plugins-from-bplugins'){
+        if ($screen == 'videoplayer_page_free-plugins-from-bplugins') {
             wp_enqueue_script('plugin-install');
             wp_enqueue_script('updates');
         }
     }
 
-    public function quickPlayerStyle(){
+    public function quickPlayerStyle()
+    {
         $width = Functions::getOptionDeep('h5vp_quick', 'h5vp_player_width_quick', 0);
         $shadow = Functions::getOptionDeep('h5vp_quick', 'h5vp_hide_control_shadow_quick', 'show');
-        $width = $width == 0 ? '100%' : $width."px";
+        $width = $width == 0 ? '100%' : $width . "px";
         ob_start();
-        ?>
+?>
         <style>
             #h5vpQuickPlayer {
                 width: <?php echo esc_html($width); ?>;
                 max-width: 100%;
                 margin: 0 auto;
             }
-            <?php if($shadow === 'hide'){
+
+            <?php if ($shadow === 'hide') {
                 echo '#h5vpQuickPlayer .plyr__controls {background: none;}';
-            } ?>
-            <?php if($shadow === 'mobile'){ ?>
-                @media screen and (max-width: 640px){
-                    #h5vpQuickPlayer .plyr__controls {background: none;}
+            } ?><?php if ($shadow === 'mobile') { ?>@media screen and (max-width: 640px) {
+                #h5vpQuickPlayer .plyr__controls {
+                    background: none;
                 }
-                <?php 
-            } ?>
-            <?php echo Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '') ?>
+            }
+
+            <?php
+                } ?><?php echo Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '') ?>
         </style>
-        <?php
+<?php
 
         echo Functions::trim(ob_get_clean());
     }
 
-    public function adminHead(){
-
-    }
+    public function adminHead() {}
 }

@@ -5,7 +5,11 @@
   "description": "Vimeo Player",
   "category": "media",
   "icon": "video-alt2",
-  "keywords": ["Vimeo Player", "Media Player", "Vimeo"],
+  "keywords": [
+    "Vimeo Player",
+    "Media Player",
+    "Vimeo"
+  ],
   "textdomain": "h5vp",
   "attributes": {
     "provider": {
@@ -31,8 +35,25 @@
     "options": {
       "type": "object",
       "default": {
-        "controls": ["play-large", "play", "progress", "current-time", "mute", "volume", "captions", "settings", "pip", "airplay", "fullscreen"],
-        "settings": ["captions", "quality", "speed", "loop"],
+        "controls": [
+          "play-large",
+          "play",
+          "progress",
+          "current-time",
+          "mute",
+          "volume",
+          "captions",
+          "settings",
+          "pip",
+          "airplay",
+          "fullscreen"
+        ],
+        "settings": [
+          "captions",
+          "quality",
+          "speed",
+          "loop"
+        ],
         "loadSprite": true,
         "autoplay": false,
         "playsinline": true,
@@ -52,24 +73,33 @@
           "key": "plyr"
         },
         "speed": {
-          "options": [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 4]
+          "options": [
+            0.5,
+            0.75,
+            1,
+            1.25,
+            1.5,
+            1.75,
+            2,
+            4
+          ]
         },
         "loop": {
-        "active": false
-      },
-      "ads": {
-        "enabled": false,
-        "tagUrl": null
-      },
-      "urls": {
-        "enabled": false,
-        "download": null
-      },
-      "markers": {
-        "enabled": false,
-        "points": []
-      },
-      "preload": "metadata"
+          "active": false
+        },
+        "ads": {
+          "enabled": false,
+          "tagUrl": null
+        },
+        "urls": {
+          "enabled": false,
+          "download": null
+        },
+        "markers": {
+          "enabled": false,
+          "points": []
+        },
+        "preload": "metadata"
       }
     },
     "features": {
@@ -95,27 +125,27 @@
           }
         },
         "overlay": {
-            "enabled": false,
-            "items": [
-              {
-                "color": "#fff",
-                "backgroundColor": "#333",
-                "fontSize": "16px",
-                "link": "",
-                "logo": "",
-                "text": "Simple Text",
-                "position": "top_right",
-                "type": "text",
-                "opacity": 1
-              }
-            ]
+          "enabled": false,
+          "items": [
+            {
+              "color": "#fff",
+              "backgroundColor": "#333",
+              "fontSize": "16px",
+              "link": "",
+              "logo": "",
+              "text": "Simple Text",
+              "position": "top_right",
+              "type": "text",
+              "opacity": 1
+            }
+          ]
         },
         "endScreen": {
-            "enabled": false,
-            "text": "Simple Text",
-            "btnText": "Watch Again",
-            "btnLink": "",
-            "btnStyle": {}
+          "enabled": false,
+          "text": "Simple Text",
+          "btnText": "Visit",
+          "btnLink": "",
+          "btnStyle": {}
         },
         "thumbInPause": {
           "enabled": false,
@@ -166,7 +196,6 @@
         }
       ]
     },
-    
     "thumbInPause": {
       "type": "boolean",
       "default": false
@@ -265,7 +294,6 @@
       "type": "boolean",
       "default": false
     },
-    
     "muted": {
       "type": "boolean",
       "default": false
@@ -309,7 +337,6 @@
       "type": "string",
       "default": "Watch Video"
     },
-
     "popupBtnExists": {
       "type": "boolean"
     },
@@ -320,7 +347,6 @@
       "type": "boolean",
       "default": false
     },
-    
     "thumbStyle": {
       "type": "string",
       "default": "default"
@@ -360,7 +386,6 @@
       "type": "boolean",
       "default": false
     },
-    
     "overlayType": {
       "type": "boolean"
     },
@@ -400,7 +425,6 @@
       "type": "string",
       "default": "#ffffff"
     },
-    
     "endScreen": {
       "type": "object",
       "default": {
@@ -431,7 +455,6 @@
       "type": "string",
       "default": "hls"
     },
-   
     "speed": {
       "type": "object",
       "default": {
@@ -446,13 +469,10 @@
         "2.5": true
       }
     },
-    
-    
     "captionEnabled": {
       "type": "boolean",
       "default": false
     },
-    
     "vastTag": {
       "type": "string"
     },

@@ -4,7 +4,7 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.5.38
+ * Version:     2.5.39
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * License:     GPLv3    
@@ -31,7 +31,6 @@ if ( function_exists( 'h5vp_fs' ) ) {
         global $h5vp_fs;
         if ( !isset( $h5vp_fs ) ) {
             // Include Freemius SDK.
-            require_once dirname( __FILE__ ) . '/freemius/start.php';
             $h5vp_fs = fs_dynamic_init( array(
                 'id'              => '14259',
                 'slug'            => 'html5-video-player',
@@ -59,11 +58,13 @@ if ( function_exists( 'h5vp_fs' ) ) {
 
     h5vp_fs();
     do_action( 'h5vp_fs_loaded' );
-    add_action( 'plugins_loaded', function () {
-        if ( class_exists( 'H5VP\\Init' ) ) {
-            H5VP\Init::register_services();
+    if ( !function_exists( 'h5vp__' ) ) {
+        function h5vp__(  $text, $domain = 'h5vp'  ) {
+            // return __($text, $domain);
+            return $text;
         }
-    } );
+
+    }
     function h5vp_get_meta_preset(  $key, $default  ) {
         $options = get_option( 'h5vp_option', null );
         if ( isset( $options[$key] ) && $options[$key] != '' ) {
@@ -73,6 +74,16 @@ if ( function_exists( 'h5vp_fs' ) ) {
         }
     }
 
+    add_action( 'plugins_loaded', function () {
+        if ( class_exists( 'H5VP\\Init' ) ) {
+            H5VP\Init::register_post_type();
+        }
+    } );
+    if ( class_exists( 'H5VP\\Init' ) ) {
+        H5VP\Init::register_services();
+    }
+    // add_action('init', function () {
+    // });
     /*-------------------------------------------------------------------------------*/
     /* TinyMce
        /*-------------------------------------------------------------------------------*/

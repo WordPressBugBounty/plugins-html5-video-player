@@ -1,15 +1,22 @@
 <?php
+
 namespace H5VP\Field;
 
-class QuickPlayer{
+class QuickPlayer
+{
     private $prefix = 'h5vp_quick';
-    public function register(){
+    public function register()
+    {
+        add_action('init', [$this, 'register_fields'], 0);
+    }
 
+    public function register_fields()
+    {
         if (class_exists('\CSF')) {
             // wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'dist/admin.css', array(), H5VP_PRO_VER);
 
-             // Create options
-             \CSF::createOptions($this->prefix, array(
+            // Create options
+            \CSF::createOptions($this->prefix, array(
                 'menu_title' => 'Quick Player',
                 'menu_slug' => 'html5vp_quick_player',
                 'menu_parent' => 'edit.php?post_type=videoplayer',
@@ -28,7 +35,8 @@ class QuickPlayer{
         }
     }
 
-    public function quickPlayer(){
+    public function quickPlayer()
+    {
         \CSF::createSection($this->prefix, array(
             'title' => 'Quick Player',
             'fields' => array(
@@ -46,7 +54,7 @@ class QuickPlayer{
                     'class' => 'bplugins-meta-readonly',
                     'text_on' => 'Yes'
                 ),
-                
+
                 array(
                     'id' => 'h5vp_reset_on_end_quick',
                     'title' => 'Reset On End',
@@ -96,33 +104,33 @@ class QuickPlayer{
                     'title' => 'Control buttons and Components',
                     'multiple' => true,
                     'options' => array(
-                      'play-large' => 'Play Large',
-                      'restart' => 'Restart',
-                      'rewind' => 'Rewind',
-                      'play' => 'Play',
-                      'fast-forward' => 'Fast Forwards',
-                      'progress' => 'Progressbar',
-                      'duration' => 'Duration',
-                      'current-time' => 'Current Time',
-                      'mute' => 'Mute Button',
-                      'volume' => 'Volume Control',
-                      'settings' => 'Setting Button',
-                      'pip' => 'PIP',
-                      'airplay' => 'Airplay',
-                      'download' => 'Download Button',
-                      'fullscreen' => 'Fullscreen',
-                    ) ,
+                        'play-large' => 'Play Large',
+                        'restart' => 'Restart',
+                        'rewind' => 'Rewind',
+                        'play' => 'Play',
+                        'fast-forward' => 'Fast Forwards',
+                        'progress' => 'Progressbar',
+                        'duration' => 'Duration',
+                        'current-time' => 'Current Time',
+                        'mute' => 'Mute Button',
+                        'volume' => 'Volume Control',
+                        'settings' => 'Setting Button',
+                        'pip' => 'PIP',
+                        'airplay' => 'Airplay',
+                        'download' => 'Download Button',
+                        'fullscreen' => 'Fullscreen',
+                    ),
                     'default' => array(
-                      'play-large',
-                      'play',
-                      'progress',
-                      'duration',
-                      'current-time',
-                      'mute',
-                      'volume',
-                      'settings',
-                      'fullscreen'
-                    ) ,
+                        'play-large',
+                        'play',
+                        'progress',
+                        'duration',
+                        'current-time',
+                        'mute',
+                        'volume',
+                        'settings',
+                        'fullscreen'
+                    ),
                     'help' => 'Click on the item to turn ON/OFF',
                 ),
                 array(

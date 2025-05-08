@@ -1,9 +1,16 @@
-<?php 
+<?php
+
 namespace H5VP\Field;
 
-class VideoPlayer{
+class VideoPlayer
+{
 
-    public function register(){
+    public function register()
+    {
+        add_action('init', [$this, 'register_fields'], 0);
+    }
+    public function register_fields()
+    {
         if (class_exists('\CSF')) {
             $prefix = '_h5vp_';
             \CSF::createMetabox($prefix, array(
@@ -16,7 +23,8 @@ class VideoPlayer{
         }
     }
 
-    public function configure($prefix){
+    public function configure($prefix)
+    {
         $id = isset($_GET['post']) ? $_GET['post'] : '';
         // Create a section
         \CSF::createSection($prefix, array(
@@ -26,9 +34,9 @@ class VideoPlayer{
                 array(
                     'type' => 'content',
                     'title' => ' ',
-                    'content' => h5vp_get_meta_preset('h5vp_import_export_enable', false) ? '<button class="button button-primary h5vp_export_button" data-id=' . $id . '>Export</button> <button class="button button-primary h5vp_import_button" data-reload="true" data-id="'. $id .'">Import</button>' : '',
+                    'content' => h5vp_get_meta_preset('h5vp_import_export_enable', false) ? '<button class="button button-primary h5vp_export_button" data-id=' . $id . '>Export</button> <button class="button button-primary h5vp_import_button" data-reload="true" data-id="' . $id . '">Import</button>' : '',
                 ),
-                
+
                 array(
                     'id' => 'h5vp_video_source',
                     'title' => 'Video Source',
@@ -49,7 +57,7 @@ class VideoPlayer{
                     'title' => ' ',
                     'type' => 'button_set',
                     'options' => array(
-                        'picker' => '<img src="'.H5VP_PRO_PLUGIN_DIR.'./img/aws.png"/> Choose From AWS S3 Storage',
+                        'picker' => '<img src="' . H5VP_PRO_PLUGIN_DIR . './img/aws.png"/> Choose From AWS S3 Storage',
                     ),
                     'default' => 'picker',
                     'class' => 'bplugins-meta-readonly',
@@ -66,7 +74,7 @@ class VideoPlayer{
                     'button_title' => 'Add Video',
                     'attributes' => array('class' => 'h5vp_video_link', 'id' => 'h5vp_google_document_url'),
                     'desc' => 'select an mp4 or ogg video file. or paste a external video file link. if you use multiple quality. this source/video should be 720',
-                    'dependency' =>array(array('h5vp_video_source', 'any', 'library,amazons3,google'), array('h5vp_video_streaming', '!=', '1')),
+                    'dependency' => array(array('h5vp_video_source', 'any', 'library,amazons3,google'), array('h5vp_video_streaming', '!=', '1')),
                 ),
                 array(
                     'id' => 'h5vp_video_thumbnails',
@@ -82,26 +90,26 @@ class VideoPlayer{
                 array(
                     'id' => 'h5vp_controls',
                     'type' => 'button_set',
-                    'title' => esc_html__('Controls', 'h5vp'),
+                    'title' => __('Controls', 'h5vp'),
                     'multiple' => true,
                     'options' => array(
-                      'play-large' => esc_html__('Play Large', 'h5vp'),
-                      'restart' => esc_html__('Restart', 'h5vp'),
-                      'rewind' => esc_html__('Rewind', 'h5vp'),
-                      'play' => esc_html__('Play', 'h5vp'),
-                      'fast-forward' => esc_html__('Fast Forwards', 'h5vp'),
-                      'progress' => esc_html__('Progressbar', 'h5vp'),
-                      'duration' => esc_html__('Duration', 'h5vp'),
-                      'current-time' => esc_html__('Current Time', 'h5vp'),
-                      'mute' => esc_html__('Mute Button', 'h5vp'),
-                      'volume' => esc_html__('Volume Control', 'h5vp'),
-                      'settings' => esc_html__('Setting Button', 'h5vp'),
-                      'pip' => esc_html__('PIP', 'h5vp'),
-                      'airplay' => esc_html__('Airplay', 'h5vp'),
-                      'download' => esc_html__('Download Button', 'h5vp'),
-                      'fullscreen' => esc_html__('Full Screen', 'h5vp')
+                        'play-large' => __('Play Large', 'h5vp'),
+                        'restart' => __('Restart', 'h5vp'),
+                        'rewind' => __('Rewind', 'h5vp'),
+                        'play' => __('Play', 'h5vp'),
+                        'fast-forward' => __('Fast Forwards', 'h5vp'),
+                        'progress' => __('Progressbar', 'h5vp'),
+                        'duration' => __('Duration', 'h5vp'),
+                        'current-time' => __('Current Time', 'h5vp'),
+                        'mute' => __('Mute Button', 'h5vp'),
+                        'volume' => __('Volume Control', 'h5vp'),
+                        'settings' => __('Setting Button', 'h5vp'),
+                        'pip' => __('PIP', 'h5vp'),
+                        'airplay' => __('Airplay', 'h5vp'),
+                        'download' => __('Download Button', 'h5vp'),
+                        'fullscreen' => __('Full Screen', 'h5vp')
                     ),
-                    'default' => array( 'play-large', 'play','progress','current-time','mute','volume','settings', 'pip', 'download', 'fullscreen' ),
+                    'default' => array('play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'download', 'fullscreen'),
                 ),
                 // array(
                 //     'id' => 'h5vp_hide_loading_placeholder',
@@ -207,7 +215,7 @@ class VideoPlayer{
                     'title' => ' ',
                     'type' => 'button_set',
                     'options' => array(
-                        'picker' => '<img src="'.H5VP_PRO_PLUGIN_DIR.'./img/aws.png"/> Choose From AWS S3 Storage',
+                        'picker' => '<img src="' . H5VP_PRO_PLUGIN_DIR . './img/aws.png"/> Choose From AWS S3 Storage',
                     ),
                     'default' => 'picker',
                     'dependency' => array(array('h5vp_video_source', '==', 'amazons3'), array('h5vp_video_streaming', '!=', '1')),
@@ -223,7 +231,7 @@ class VideoPlayer{
                 ),
                 array(
                     'id' => 'CDURL',
-                    'type' => 'text', 
+                    'type' => 'text',
                     'placeholder' => 'URL',
                     'title' => 'URL',
                     'dependency' => array('isCDURL', '==', '1'),
@@ -241,7 +249,7 @@ class VideoPlayer{
                 //     ),
                 //     'dependency' => array('h5vp_video_source', '==', 'google'),
                 // ),
-              
+
                 // only for one persion
                 // array(
                 //     'id' => 'force_custom_thumbnail',
@@ -292,7 +300,7 @@ class VideoPlayer{
                 ),
 
                 // playerio metabox
-                
+
                 array(
                     'id' => 'h5vp_seek_time_playerio',
                     'type' => 'number',
@@ -301,7 +309,7 @@ class VideoPlayer{
                     'desc' => 'The time, in seconds, to seek when a user hits fast forward or rewind. Default value is 10 Sec.',
                     'default' => h5vp_get_meta_preset('h5vp_op_seek_time_playerio', '10'),
                 ),
-                
+
                 array(
                     'id' => 'h5vp_reset_on_end_playerio',
                     'type' => 'switcher',
@@ -448,9 +456,7 @@ class VideoPlayer{
                 )
             ),
         ));
-    
     }
-
 }
 
 // require_once "option-page.php";

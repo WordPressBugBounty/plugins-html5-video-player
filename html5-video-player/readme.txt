@@ -3,8 +3,8 @@ Contributors: bplugins,shehabulislam, freemius, abuhayat
 Tags: HTML5 video player, plyr, video, video player, mp4 Player 
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
-Tested up to: 6.7
-Stable tag: 2.5.38
+Tested up to: 6.8
+Stable tag: 2.5.39
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -38,7 +38,7 @@ Overall, HTML5 Video Player is a versatile and feature-rich plugin that can help
 
 Here is a quick tutorial.
 
-https://www.youtube.com/watch?v=dLU67e708fg
+https://www.youtube.com/watch?v=U5X-G8YGafE
 
 
 ### How to use step-by-step guide 
@@ -185,6 +185,10 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 3. UI
 
 == Changelog ==
+
+= 2.5.39 - 8 May, 2025 =
+* Fixed: progressbar does not update
+* Fixed: Function _load_textdomain_just_in_time was called incorrectly.
 
 = 2.5.38 - 27 Jan, 2025 =
 * Update: Freemius SDK Update
