@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "html5-player/parent",
+  "title": "HTML5 Video Player Form",
+  "icon": "format-video",
+  "category": "media",
+  "keywords": [
+    "HTML5 Video Player",
+    "Media Player"
+  ],
+  "supports": {
+    "inserter": false,
+    "reusable": false,
+    "html": false
+  },
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js"
+}

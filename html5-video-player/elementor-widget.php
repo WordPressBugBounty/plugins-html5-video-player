@@ -1,7 +1,10 @@
 <?php
+
 use H5VP\Elementor\VideoPlayer;
 use H5VP\Elementor\SelectFile;
-final class Elementor_Addons {
+
+final class Elementor_Addons
+{
 
 	/**
 	 * Plugin Version
@@ -54,9 +57,10 @@ final class Elementor_Addons {
 	 *
 	 * @return Elementor_Test_Extension An instance of the class.
 	 */
-	public static function instance() {
+	public static function instance()
+	{
 
-		if ( is_null( self::$_instance ) ) {
+		if (is_null(self::$_instance)) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
@@ -69,16 +73,16 @@ final class Elementor_Addons {
 	 *
 	 * @access public
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 
 		//Register Frontend Script
-		add_action( "elementor/frontend/after_register_scripts", [ $this, 'frontend_assets_scripts' ] );
+		add_action("elementor/frontend/after_register_scripts", [$this, 'frontend_assets_scripts']);
 
 		// Add Plugin actions
-		add_action( 'elementor/widgets/register', [ $this, 'init_widgets' ] );
+		add_action('elementor/widgets/register', [$this, 'init_widgets']);
 
-		add_action( 'elementor/controls/controls_registered', [ $this, 'init_controls' ] );
-
+		add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
 	}
 
 	/**
@@ -90,33 +94,35 @@ final class Elementor_Addons {
 	 *
 	 * @access public
 	 */
-	public function init_controls($controls_manager) {
+	public function init_controls($controls_manager)
+	{
 
 		// Include Widget files
-		require_once( __DIR__ . '/inc/elementor-custom-control/b-select-file.php' );
+		require_once(__DIR__ . '/inc/elementor-custom-control/b-select-file.php');
 
 		// Register controls
-		$controls_manager->register( new SelectFile() );
+		$controls_manager->register(new SelectFile());
 	}
 
 
 	/**
 	 * Frontend script
 	 */
-	public function frontend_assets_scripts(){
-		wp_register_script( 'bplugins-plyrio', plugin_dir_url( __FILE__ ). 'public/js/plyr-v3.7.8.js' , array('jquery'), '3.7.8', false );
-		wp_register_script( 'html5-player-video-view-script', plugin_dir_url( __FILE__ ). 'dist/frontend.js' , array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), time(), true );
-		
-		wp_register_style( 'bplugins-plyrio', plugin_dir_url( __FILE__ ) . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all' );
-		wp_register_style( 'html5-player-video-style', plugin_dir_url( __FILE__ ). 'dist/frontend.css' , array('bplugins-plyrio'), H5VP_PRO_VER );
+	public function frontend_assets_scripts()
+	{
+		wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.7.8.js', array('jquery'), '3.7.8', false);
+		wp_register_script('html5-player-video-view-script', plugin_dir_url(__FILE__) . 'build/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), time(), true);
 
-		wp_localize_script( 'html5-player-video-view-script', 'ajax', array(
-			'ajax_url' => admin_url( 'admin-ajax.php'),
+		wp_register_style('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all');
+		wp_register_style('html5-player-video-style', plugin_dir_url(__FILE__) . 'build/frontend.css', array('bplugins-plyrio'), H5VP_PRO_VER);
+
+		wp_localize_script('html5-player-video-view-script', 'ajax', array(
+			'ajax_url' => admin_url('admin-ajax.php'),
 		));
 
 		// wp_enqueue_script('html5-player-video-view-script');
-        // wp_enqueue_style('html5-player-video-style');
-		
+		// wp_enqueue_style('html5-player-video-style');
+
 	}
 
 	/**
@@ -128,21 +134,22 @@ final class Elementor_Addons {
 	 *
 	 * @access public
 	 */
-	public function init_widgets() {
+	public function init_widgets()
+	{
 		// Include Widget files
 		$widget = 'VideoPlayer';
 
-		if(h5vp_fs()->can_use_premium_code()){ 
-			$widget = $widget.'Pro';
+		if (h5vp_fs()->can_use_premium_code()) {
+			$widget = $widget . 'Pro';
 		}
-		if(file_exists( __DIR__ . "/inc/Elementor/$widget.php" )){
-			require_once( __DIR__ . "/inc/Elementor/$widget.php" );
+		if (file_exists(__DIR__ . "/inc/Elementor/$widget.php")) {
+			require_once(__DIR__ . "/inc/Elementor/$widget.php");
 		}
 
-		$class = "\H5VP\Elementor\\".$widget;
-		
+		$class = "\H5VP\Elementor\\" . $widget;
+
 		// Register widget
-		\Elementor\Plugin::instance()->widgets_manager->register( new $class() );
+		\Elementor\Plugin::instance()->widgets_manager->register(new $class());
 	}
 }
 

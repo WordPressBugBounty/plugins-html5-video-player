@@ -4,7 +4,7 @@ Tags: HTML5 video player, plyr, video, video player, mp4 Player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 2.5.39
+Stable tag: 2.6.0
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -177,6 +177,10 @@ This plugin is compatible with most plugins. But, unfortunately, we cannot check
 
 If you find a conflict between our plugin and a third-party plugin, please let us know and we will definitely release an update of our plugin to fix the problem.
 
+= What PHP version is required? =
+- The free version requires PHP **7.1** or higher.
+- The Pro version (with advanced features and Freemius integration) requires PHP **8.1** or higher.
+
 
 == Screenshots ==
 
@@ -185,6 +189,12 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 3. UI
 
 == Changelog ==
+
+= 2.6.0 - 23 May, 2025 =
+* Feature: Index video on google 
+* Feature: Autoplay when visible on Screen (Elementor) - (Premium)
+* Security: Improved Security
+* Update: WordPress SDK
 
 = 2.5.39 - 8 May, 2025 =
 * Fixed: progressbar does not update

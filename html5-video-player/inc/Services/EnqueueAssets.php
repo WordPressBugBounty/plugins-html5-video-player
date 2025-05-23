@@ -29,13 +29,13 @@ class EnqueueAssets
     {
         //plyrio
         wp_register_script('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/js/plyr-v3.7.8.js', array(), H5VP_PRO_VER, false);
-        wp_register_script('html5-player-video-view-script', H5VP_PRO_PLUGIN_DIR . 'dist/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, false);
+        wp_register_script('html5-player-video-view-script', H5VP_PRO_PLUGIN_DIR . 'build/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, false);
 
-        wp_register_script('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'dist/frontend-playlist.js', array('react', 'react-dom', 'wp-util', 'bplugins-plyrio'), H5VP_PRO_VER, false);
+        wp_register_script('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'build/frontend-playlist.js', array('react', 'react-dom', 'wp-util', 'bplugins-plyrio'), H5VP_PRO_VER, false);
 
         wp_register_style('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all');
-        wp_register_style('html5-player-video-style', H5VP_PRO_PLUGIN_DIR . 'dist/frontend.css', array('bplugins-plyrio'), H5VP_PRO_VER, 'all');
-        wp_register_style('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'dist/frontend-playlist.css', array('bplugins-plyrio'), H5VP_PRO_VER, 'all');
+        wp_register_style('html5-player-video-style', H5VP_PRO_PLUGIN_DIR . 'build/frontend.css', array('bplugins-plyrio'), H5VP_PRO_VER, 'all');
+        wp_register_style('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'build/frontend-playlist.css', array('bplugins-plyrio'), H5VP_PRO_VER, 'all');
 
         //owl-carousel
         wp_register_script('bplugins-owl-carousel', H5VP_PRO_PLUGIN_DIR . 'public/js/owl.carousel.min.js', null, H5VP_PRO_VER, false);
@@ -64,8 +64,18 @@ class EnqueueAssets
         if ((!empty($post) && 'videoplayer' == $post->post_type || $screen == 'edit.php') || (!empty($post) && 'h5vpplaylist' == $post->post_type) || $screen == 'videoplayer_page_h5vp-support' || $screen == 'videoplayer_page_html5vp_settings' || $screen == 'videoplayer_page_html5vp_quick_player' || $screen == 'videoplayer_page_free-plugins-from-bplugins' || $screen == 'videoplayer_page_premium-plugins' || $screen == 'plugins.php' || $screen = 'videoplayer_page_analytics') {
 
             wp_enqueue_script('h5vp-chart', 'https://cdn.jsdelivr.net/npm/chart.js', array('jquery'), H5VP_PRO_VER, false);
-            wp_enqueue_script('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'dist/admin.js', array('jquery', 'react', 'react-dom'), H5VP_PRO_VER, true);
-            wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'dist/admin.css', array(), H5VP_PRO_VER);
+            wp_enqueue_script('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.js', array('jquery', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
+            wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
+
+
+            // aws s3 picker 
+            if (!empty($post) && 'videoplayer' == $post->post_type && $screen == 'post-new.php' || $screen == 'post.php') {
+                wp_enqueue_style('h5vp-aws-picker', H5VP_PRO_PLUGIN_DIR . 'build/admin/aws-s3-picker.css');
+                wp_enqueue_script('h5vp-aws-picker', H5VP_PRO_PLUGIN_DIR . 'build/admin/aws-s3-picker.js', array('jquery'), H5VP_PRO_VER, true);
+                wp_localize_script('h5vp-aws-picker', 'ajax', [
+                    'ajax_url' => admin_url('admin-ajax.php')
+                ]);
+            }
 
             wp_localize_script('h5vp-admin', 'h5vpAdmin', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),

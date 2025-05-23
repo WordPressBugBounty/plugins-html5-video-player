@@ -13,7 +13,7 @@ class QuickPlayer
     public function register_fields()
     {
         if (class_exists('\CSF')) {
-            // wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'dist/admin.css', array(), H5VP_PRO_VER);
+            // wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
 
             // Create options
             \CSF::createOptions($this->prefix, array(

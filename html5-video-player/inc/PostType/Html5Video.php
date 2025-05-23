@@ -7,7 +7,7 @@ class Html5Video
     protected $post_type = 'html5_video';
     protected $taxonomy = 'html5_video_tag';
     private static $_instance = null;
-    
+
     public function __construct()
     {
         add_action('init', [$this, 'init']);
@@ -23,17 +23,17 @@ class Html5Video
 
         // limit media hub posts
         add_filter('pre_get_posts', [$this, 'limitMediaHubPosts']);
-
     }
 
 
-    public static function instance() {
+    public static function instance()
+    {
 
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
-		return self::$_instance;
-	}
+        if (is_null(self::$_instance)) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
 
     /**
      * Limit media hub posts by author if cannot edit others posts
@@ -82,9 +82,9 @@ class Html5Video
             'php_function' => __('PHP Function', 'h5vp'),
         ));
 
-        $v = $columns['taxonomy-'.$this->taxomony];
-        unset($columns['taxonomy-'.$this->taxomony]);
-        $columns['taxonomy-'.$this->taxomony] = $v;
+        $v = $columns['taxonomy-' . $this->taxonomy];
+        unset($columns['taxonomy-' . $this->taxonomy]);
+        $columns['taxonomy-' . $this->taxonomy] = $v;
 
         $v = $columns['date'];
         unset($columns['date']);
@@ -104,7 +104,7 @@ class Html5Video
             $tags = get_the_terms($post_ID, $this->taxonomy);
             if (is_array($tags)) {
                 foreach ($tags as $key => $tag) {
-                    $tags[$key] = '<a href="?post_type='.$this->post_type.'&'.$this->taxonomy.'=' . $tag->term_id . '">' . $tag->name . '</a>';
+                    $tags[$key] = '<a href="?post_type=' . $this->post_type . '&' . $this->taxonomy . '=' . $tag->term_id . '">' . $tag->name . '</a>';
                 }
                 echo wp_kses_post(implode(', ', $tags));
             }
@@ -198,5 +198,4 @@ class Html5Video
             )
         );
     }
-
 }

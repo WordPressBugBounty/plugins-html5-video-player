@@ -26,6 +26,7 @@ class VideoPlayer
     public function configure($prefix)
     {
         $id = isset($_GET['post']) ? $_GET['post'] : '';
+        $preset = h5vp_get_option('h5vp_option');
         // Create a section
         \CSF::createSection($prefix, array(
             'title' => '',
@@ -34,7 +35,7 @@ class VideoPlayer
                 array(
                     'type' => 'content',
                     'title' => ' ',
-                    'content' => h5vp_get_meta_preset('h5vp_import_export_enable', false) ? '<button class="button button-primary h5vp_export_button" data-id=' . $id . '>Export</button> <button class="button button-primary h5vp_import_button" data-reload="true" data-id="' . $id . '">Import</button>' : '',
+                    'content' => $preset('h5vp_import_export_enable', false) ? '<button class="button button-primary h5vp_export_button" data-id=' . $id . '>Export</button> <button class="button button-primary h5vp_import_button" data-reload="true" data-id="' . $id . '">Import</button>' : '',
                 ),
 
                 array(
@@ -125,21 +126,21 @@ class VideoPlayer
                         'once' => 'Once',
                         'loop' => 'Loop',
                     ),
-                    'default' => h5vp_get_meta_preset('h5vp_op_repeat_playerio', 'once'),
+                    'default' => $preset('h5vp_op_repeat_playerio', 'once'),
                 ),
                 array(
                     'id' => 'h5vp_muted_playerio',
                     'type' => 'switcher',
                     'title' => 'Muted',
                     'desc' => 'On if you want the video output should be muted',
-                    'default' => h5vp_get_meta_preset('h5vp_op_muted_playerio', '0'),
+                    'default' => $preset('h5vp_op_muted_playerio', '0'),
                 ),
                 array(
                     'id' => 'h5vp_auto_play_playerio',
                     'type' => 'switcher',
                     'title' => 'Auto Play',
                     'desc' => 'Turn On if you  want video will start playing as soon as it is ready. <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes">autoplay policy</a>',
-                    'default' => h5vp_get_meta_preset('h5vp_op_auto_play_playerio', ''),
+                    'default' => $preset('h5vp_op_auto_play_playerio', ''),
                 ),
                 array(
                     'id' => 'h5vp_player_width_playerio',
@@ -150,14 +151,14 @@ class VideoPlayer
                     'min' => '200',
                     'step' => '50',
                     'desc' => 'set the player width. Height will be calculate base on the value. Left blank for Responsive player',
-                    'default' => h5vp_get_meta_preset('h5vp_op_player_width_playerio', ''),
+                    'default' => $preset('h5vp_op_player_width_playerio', ''),
                 ),
                 array(
                     'id' => 'h5vp_auto_hide_control_playerio',
                     'type' => 'switcher',
                     'title' => 'Auto Hide Control',
                     'desc' => 'On if you want the controls (such as a play/pause button etc) hide automaticaly.',
-                    'default' => h5vp_get_meta_preset('h5vp_op_auto_hide_control_playerio', '1'),
+                    'default' => $preset('h5vp_op_auto_hide_control_playerio', '1'),
                 ),
                 array(
                     'id' => 'h5vp_ratio',
@@ -307,7 +308,7 @@ class VideoPlayer
                     'title' => 'Seek Time',
                     'class' => 'bplugins-meta-readonly',
                     'desc' => 'The time, in seconds, to seek when a user hits fast forward or rewind. Default value is 10 Sec.',
-                    'default' => h5vp_get_meta_preset('h5vp_op_seek_time_playerio', '10'),
+                    'default' => $preset('h5vp_op_seek_time_playerio', '10'),
                 ),
 
                 array(
@@ -318,7 +319,7 @@ class VideoPlayer
                     'text_off' => 'No',
                     'class' => 'bplugins-meta-readonly',
                     'desc' => 'video will reset to first and show thumbnail',
-                    'default' => h5vp_get_meta_preset('h5vp_op_reset_on_end_playerio', '1'),
+                    'default' => $preset('h5vp_op_reset_on_end_playerio', '1'),
                 ),
                 array(
                     'id' => 'h5vp_preload_playerio',
@@ -331,7 +332,7 @@ class VideoPlayer
                         'none' => 'None - Browser should NOT load the file when the page loads.',
                     ),
                     'desc' => 'Specify how the video file should be loaded when the page loads.',
-                    'default' => h5vp_get_meta_preset('h5vp_op_preload_playerio', 'metadata'),
+                    'default' => $preset('h5vp_op_preload_playerio', 'metadata'),
                 ),
                 array(
                     'id' => 'h5vp_password_protected',
@@ -410,6 +411,7 @@ class VideoPlayer
                             'title' => 'Subtitle File',
                             'desc' => '.vtt file only. select a .vtt file or paste .vtt file link.',
                             'placeholder' => 'Subtitle File link',
+                            'library' => 'text'
                         ),
                     ),
                     'button_title' => 'Add Subtitle',

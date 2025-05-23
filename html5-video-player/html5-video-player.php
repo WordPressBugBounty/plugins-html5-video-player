@@ -4,28 +4,25 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.5.39
+ * Version:     2.6.0
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * License:     GPLv3    
  * Text Domain: h5vp
  * 
  */
-use H5VP\Helper\Functions as Utils;
 if ( function_exists( 'h5vp_fs' ) ) {
     h5vp_fs()->set_basename( false, __FILE__ );
 } else {
     if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
         require_once dirname( __FILE__ ) . '/vendor/autoload.php';
     }
-    if ( file_exists( dirname( __FILE__ ) . '/admin/awsmanager/vendor/autoload.php' ) ) {
-        require_once dirname( __FILE__ ) . '/admin/awsmanager/vendor/autoload.php';
-    }
     /*Some Set-up*/
     define( 'H5VP_PRO_PLUGIN_DIR', plugin_dir_url( __FILE__ ) );
+    define( 'H5VP_PRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.5.38' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.6.0' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
@@ -58,22 +55,10 @@ if ( function_exists( 'h5vp_fs' ) ) {
 
     h5vp_fs();
     do_action( 'h5vp_fs_loaded' );
-    if ( !function_exists( 'h5vp__' ) ) {
-        function h5vp__(  $text, $domain = 'h5vp'  ) {
-            // return __($text, $domain);
-            return $text;
-        }
-
-    }
-    function h5vp_get_meta_preset(  $key, $default  ) {
-        $options = get_option( 'h5vp_option', null );
-        if ( isset( $options[$key] ) && $options[$key] != '' ) {
-            return $options[$key];
-        } else {
-            return $default;
-        }
-    }
-
+    // if (file_exists(dirname(__FILE__) . '/admin/awsmanager/vendor/autoload.php') && version_compare(PHP_VERSION, '8.1', '>=')) {
+    //     require_once(dirname(__FILE__) . '/admin/awsmanager/vendor/autoload.php');
+    // }
+    require_once __DIR__ . '/includes.php';
     add_action( 'plugins_loaded', function () {
         if ( class_exists( 'H5VP\\Init' ) ) {
             H5VP\Init::register_post_type();
@@ -110,23 +95,4 @@ if ( function_exists( 'h5vp_fs' ) ) {
 
         new H5VP_Main();
     }
-    require_once __DIR__ . '/upgrade.php';
-    add_filter(
-        'save_post',
-        'filter_post_data',
-        '99',
-        2
-    );
-    function filter_post_data(  $post_id, $postarr  ) {
-        $post_type = get_post_type( $post_id );
-        if ( $post_type === 'videoplayer' ) {
-            $password = get_post_meta( $post_id, 'h5vp_protected_password', true );
-            update_option( "propagans_{$post_id}", [
-                'pass'    => md5( $password ),
-                'quality' => Utils::sanitize_array( get_post_meta( $post_id, 'h5vp_quality_playerio', true ) ),
-                'source'  => esc_url( get_post_meta( $post_id, 'h5vp_video_link', true ) ),
-            ] );
-        }
-    }
-
 }

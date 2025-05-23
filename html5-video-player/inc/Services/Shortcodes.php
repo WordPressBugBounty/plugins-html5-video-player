@@ -2,111 +2,97 @@
 
 namespace H5VP\Services;
 
-use H5VP\Services\QuickPlayerTemplate;
-use H5VP\Services\AnalogSystem;
-use H5VP\Services\AdvanceSystem;
-use H5VP\Helper\Functions as Utils;
+use H5VP\Helper\Block;
 
 
 class Shortcodes
 {
 
-  public function register()
+  public function __construct()
   {
-    $option = get_option('h5vp_option');
-    if (!Utils::isset($option, 'h5vp_disable_video_shortcode', false)) {
-      add_shortcode('video', [$this, 'shortcodeVideo'], 10, 2);
+    $option = h5vp_get_option('h5vp_option', []);
+    if (!$option('h5vp_disable_video_shortcode', false, true)) {
+      add_shortcode('video', [$this, 'html5_video'], 10, 2);
     }
-    add_shortcode('video_player', [$this, 'shortcodeVideoPlayer'], 10, 2);
-    add_shortcode('html5_video', [$this, 'shortcodeVideo'], 10, 2);
-    // add_shortcode('video_playlist', [$this, 'videoPlaylist']);
+    add_shortcode('video_player', [$this, 'video_player'], 10, 2);
+    add_shortcode('html5_video', [$this, 'html5_video'], 10, 2);
   }
 
-  public function shortcodeVideo($atts, $content)
+  public function register() {}
+
+  public function html5_video($atts)
   {
     extract(shortcode_atts(array(
       'id' => null,
     ), $atts));
 
     $post_type = get_post_type($id);
-    // $content = get_post($id);
+    $post = get_post($id);
     $isGutenberg = get_post_meta($id, 'isGutenberg', true);
-
-    ob_start();
 
     if ($post_type !== 'videoplayer') {
       return false;
     }
-    if ($isGutenberg) {
-      echo (AdvanceSystem::html($id));
-    } else {
-      echo AnalogSystem::html($id);
+    if (post_password_required($post)) {
+      return get_the_password_form($post);
     }
-
-    return ob_get_clean();
+    switch ($post->post_status) {
+      case 'publish':
+        return $this->video_player_shortcode_content($post, $isGutenberg);
+      case 'private':
+        if (current_user_can('read_private_posts')) {
+          return $this->video_player_shortcode_content($post, $isGutenberg);
+        }
+        return '';
+      case 'draft':
+      case 'pending':
+      case 'future':
+        if (current_user_can('edit_post', $post_id)) {
+          return $this->video_player_shortcode_content($post, $isGutenberg);
+        }
+        return '';
+      default:
+        return '';
+    }
   }
 
-  public function shortcodeVideoPlayer($atts)
+  public function video_player_shortcode_content($post, $isGutenberg)
   {
-    $attrs = shortcode_atts(array(
+    if ($isGutenberg) {
+      $blocks = parse_blocks($post->post_content);
+      if (isset($blocks[0]['innerBlocks'][0])) {
+        return render_block($blocks[0]['innerBlocks'][0]);
+      }
+      return null;
+    }
+    $block = Block::getInstance()->classic_to_gutenberg_block($post->ID);
+    return render_block($block);
+  }
+
+  public function video_player($atts)
+  {
+    $attrs = shortcode_atts($this->video_player_attrs(), $atts);
+
+    if ($attrs['file'] == null && $attrs['src'] == null && $attrs['mp4'] == null) {
+      return "No Video Added";
+    } else {
+      return render_block(Block::getInstance()->video_player_to_gutenberg_block($attrs));
+    }
+  }
+
+
+  public function video_player_attrs()
+  {
+    return array(
       'file' => null,
       'source' => 'library',
       'poster' => '',
       'mp4' => null,
       'src' => null,
       'autoplay' => false,
-      'reset_on_end' => false,
-      'repeat' => false,
-      'muted' => false,
-      'width' => '',
-      'preload' => null,
-      'ios_native' => 'true',
-      'controls' => null,
-      'hideControls' => null
-    ), $atts);
-
-
-    ob_start();
-
-    if ($attrs['file'] == null && $attrs['src'] == null && $attrs['mp4'] == null) {
-      echo "No Video Added";
-    } else {
-      echo QuickPlayerTemplate::html($attrs);
-    }
-
-    return ob_get_clean();
+      'reset_on_end' => false
+    );
   }
-
-  public function videoPlaylist($atts)
-  {
-    if (!isset($atts['id'])) {
-      return false;
-    }
-
-    ob_start();
-
-    echo  AnalogSystem::playlistHtml($atts['id']);
-
-    $output = ob_get_contents();
-    ob_end_clean();
-    return $output;
-  }
-
-  public function html5Player($atts)
-  {
-    if (!isset($atts['id'])) {
-      return false;
-    }
-    $post_type = get_post_type($atts['id']);
-    ob_start();
-    if ($post_type === 'html5_video') {
-      echo AdvanceSystem::html($atts['id']);
-    }
-    $output = ob_get_contents();
-    ob_get_clean();
-    return $output;
-  }
-
 
   /**
    * Maybe switch provider if the url is overridden

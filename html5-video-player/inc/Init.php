@@ -11,19 +11,16 @@ class Init
         return [
             Database\Init::class,
             Base\ExtendMime::class,
-            Base\AdminNotice::class,
+            // Base\AdminNotice::class, // no notice available at this moment
             Base\GlobalChanges::class,
-            Base\Loader::class,
-            // PostType\VideoPlayer::class,
-            // PostType\H5VPPlaylistPro::class,
             Services\EnqueueAssets::class,
             Services\Shortcodes::class,
-            // Services\Playlist::class, // commented
             Field\VideoPlayer::class,
             Field\Settings::class,
             Field\QuickPlayer::class,
             Field\PlaylistFieldPro::class,
-            Model\Ajax::class
+            Model\Ajax::class,
+            Base\Notice::class
         ];
     }
 
@@ -40,7 +37,7 @@ class Init
     public static function register_post_type()
     {
         self::instantiate(PostType\VideoPlayer::class)->register();
-        if (h5vp_fs()->can_use_premium_code()) {
+        if (h5vp_fs()->can_use_premium_code() && class_exists(PostType\H5VPPlaylistPro::class)) {
             self::instantiate(PostType\H5VPPlaylistPro::class)->register();
         }
     }
@@ -54,7 +51,6 @@ class Init
         if (class_exists($class . "Pro") && h5vp_fs()->can_use_premium_code()) {
             $class = $class . "Pro";
         }
-
 
         if (class_exists($class)) {
             return new $class();
