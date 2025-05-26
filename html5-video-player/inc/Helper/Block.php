@@ -45,7 +45,7 @@ class Block
                 "source" => $source,
                 "poster" => $this->get_post_meta($id, 'h5vp_video_thumbnails'),
                 "options" => [
-                    "controls" => $this->get_post_meta($id, 'h5vp_controls', ['play', 'progress']),
+                    "controls" => $this->get_post_meta($id, 'h5vp_controls', ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']),
                     "settings" => ["captions", "quality", "speed", "loop"],
                     "loadSprite" => true,
                     "autoplay" => $this->get_post_meta($id, 'h5vp_auto_play_playerio', false, true),

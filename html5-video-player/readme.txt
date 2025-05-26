@@ -4,7 +4,7 @@ Tags: HTML5 video player, plyr, video, video player, mp4 Player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -76,8 +76,6 @@ width="500px"
 
 reset_on_end="true"
 `
-
-
 
 ### For installation help click on Installation Tab
 
@@ -189,6 +187,9 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 3. UI
 
 == Changelog ==
+
+= 2.6.1 - 26 May, 2025 =
+* Fixed: Error on update Ratio
 
 = 2.6.0 - 23 May, 2025 =
 * Feature: Index video on google 

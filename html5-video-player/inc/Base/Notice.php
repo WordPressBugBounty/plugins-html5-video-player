@@ -29,7 +29,7 @@ class Notice
                     $is_dismissed = get_user_meta(get_current_user_id(), 'h5vp_aws_notice_dismissed', true);
                     if ($is_dismissed !== 'dismissed' && !defined('BPLUGINS_S3_VERSION')) {
                         // required bPlugins aws s3 extension
-                        echo '<div class="h5vp_aws_notice notice notice-error is-dismissible" data-nonce="' . esc_attr(wp_create_nonce('wp_ajax')) . '"><p>' . __('bPlugins AWS S3 Extension is Required to work AWS S3 features', 'h5vp') . '</p></div>';
+                        echo '<div class="h5vp_aws_notice notice notice-error is-dismissible" data-nonce="' . esc_attr(wp_create_nonce('wp_ajax')) . '"><p>' . __('"bPlugins AWS S3 Extension" is Required to work AWS S3 features. Please contact support to get the extension. ', 'h5vp') . ' <a target="_blank" href="https://bplugins.com/support">Support</a></p></div>';
                     }
                 });
             }
