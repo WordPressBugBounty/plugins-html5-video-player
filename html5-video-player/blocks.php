@@ -11,9 +11,18 @@ if (!class_exists('H5VP_Block')) {
     {
         function __construct()
         {
-            add_action('init', [$this, 'enqueue_script']);
+            add_action('init', [$this, 'register_block']);
+            add_action('enqueue_block_assets', [$this, 'enqueue_script']);
             add_action('wp_ajax_watermark_data', [$this, 'watermark_data_ajax']);
             add_action('wp_ajax_nopriv_watermark_data', [$this, 'watermark_data_ajax']);
+        }
+
+        function register_block()
+        {
+            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/parent');
+            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/video');
+            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/youtube');
+            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/vimeo');
         }
 
         function enqueue_script()
@@ -43,11 +52,6 @@ if (!class_exists('H5VP_Block')) {
             wp_localize_script('bplugins-plyrio', 'h5vpBlock', $localize_data);
 
             wp_localize_script('html5-player-video-view-script', 'h5vpBlock', $localize_data);
-
-            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/parent');
-            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/video');
-            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/youtube');
-            register_block_type(H5VP_PRO_PLUGIN_PATH . 'build/blocks/vimeo');
         }
 
         public function watermark_data_ajax()

@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
   // END LOAD MEDIA
 
   jQuery("body").delegate("#h5vp_shortcode_button", "click", function () {
-    console.log("working fine");
+
     mg_H = 300;
     mg_W = 550;
     sliderList.find("option").remove();
@@ -74,7 +74,6 @@ jQuery(document).ready(function ($) {
       dataType: "JSON",
       type: "POST",
       success: function (response) {
-        console.log({ response, sliderList });
         sliderList.find("option").remove();
         jQuery("<option/>").val("select").text("- Select Player -").appendTo(sliderList);
         jQuery.each(response, function (i, option) {

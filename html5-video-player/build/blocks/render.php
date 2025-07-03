@@ -24,6 +24,15 @@ if (h5vp_fs()->is__premium_only() && isset($attributes['seo']['duration']) && !e
 <?php
     });
 }
+if (strpos($attributes['source'], '.m3u8') !== false) {
+    wp_enqueue_script('h5vp-hls');
+}
+if (strpos($attributes['source'], '.mpd') !== false) {
+    wp_enqueue_script('h5vp-dash');
+}
+if (strpos($attributes['source'], '.m3u8') !== false || strpos($attributes['source'], '.mpd') !== false) {
+    $attributes['source'] = xorEncode($attributes['source'], $attributes['uniqueId']);
+}
 
 ?>
 

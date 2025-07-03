@@ -47,7 +47,7 @@ class Shortcodes
       case 'draft':
       case 'pending':
       case 'future':
-        if (current_user_can('edit_post', $post_id)) {
+        if (current_user_can('edit_post', $post->ID)) {
           return $this->video_player_shortcode_content($post, $isGutenberg);
         }
         return '';
@@ -90,7 +90,14 @@ class Shortcodes
       'mp4' => null,
       'src' => null,
       'autoplay' => false,
-      'reset_on_end' => false
+      'reset_on_end' => false,
+      'repeat' => false,
+      'muted' => false,
+      'width' => '',
+      'preload' => null,
+      'ios_native' => 'true',
+      'controls' => null,
+      'hideControls' => null
     );
   }
 

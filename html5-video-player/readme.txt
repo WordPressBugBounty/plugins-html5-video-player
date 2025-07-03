@@ -1,141 +1,196 @@
 === HTML5 Video Player - mp4 Video Player Plugin and Block  ===
-Contributors: bplugins,shehabulislam, freemius, abuhayat
-Tags: HTML5 video player, plyr, video, video player, mp4 Player 
+Contributors: bplugins, shehabulislam, freemius, abuhayat
+Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-HTML5 Video Player plugin plays any video in WordPress. It's simple, accessible, & customizable for all devices. Add video players anywhere!
+HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s easy to use, fast, and supports MP4, WebM, OGG, and FLV formats.
 
 == Description ==
-HTML5 Video Player has tons of options that fit your video player needs. 
-
-HTML5 Video Player is a powerful and easy-to-use plugin that allows you to embed responsive HTML5 videos into your WordPress website. 
-
-With this plugin, you can easily create and manage your video playlists, customize your video player with various skins and color options, and optimize your videos for faster loading and better performance.
-
-The plugin supports a wide range of video formats, including MP4, WebM, OGG, and FLV, and provides a range of customization options to help you create the perfect video player for your site. 
-
-You can choose from various player sizes, enable/disable autoplay, loop, and mute options, and even add custom CSS to style your video player.
-
-HTML5 Video Player also includes a built-in shortcode generator that makes it easy to add videos to your posts and pages. Simply select the video you want to add, customize your settings, and the plugin will generate the shortcode for you.
-
-**[Live Demo](https://bplugins.com/products/html5-video-player "Demo")**
-**[Buy The Pro](https://bplugins.com/products/html5-video-player/#pricing "Buy Pro version")** 
-
-In addition to its powerful features, HTML5 Video Player is also optimized for SEO and mobile devices. The plugin automatically generates schema markup for your videos, making it easier for search engines to understand and index your video content. 
-
-And with its responsive design, your videos will look great on all devices, from desktops to smartphones.
-
-Overall, HTML5 Video Player is a versatile and feature-rich plugin that can help you add professional-quality videos to your WordPress website. Try it out today and take your video content to the next level!
+**The #1 No-Code Video Player Plugin – Trusted by 30,000+ Websites Worldwide**
 
 
-### How to use HTML5 Video Player?
+[**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) | [**Documentation**](https://bplugins.com/docs/html5-video-player/) | [**Pricing**](https://bplugins.com/products/html5-video-player/#pricing) | [**Support**](https://bplugins.com/support/) | [**Demo**](https://bplugins.com/products/html5-video-player/#demos)
 
-Here is a quick tutorial.
-
-https://www.youtube.com/watch?v=U5X-G8YGafE
-
-
-### How to use step-by-step guide 
-- After installation, you can see a sidebar menu in the WordPress dashboard called "HTML5 Video Player "
-- Add one or more players from there. 
-- You will get Shortcode for every player In the player list.
-- Copy the Shortcode for the player you wanna publish 
-- Past the shortcode in post, page, and widget areas To publish them. if you want to publish a player in a template file use <?php echo do_shortcode('PLAYER_SHORTCODE') ?>
-- Enjoy!
+[**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) is a flexible and fully responsive video player plugin for WordPress. It allows you to embed MP4 and other video formats with ease. You can customize the player to match your site design and support playback across all major browsers and devices.
+The plugin supports video embedding using shortcodes or Gutenberg blocks, making it easy to add video players to posts, pages, or widgets without writing any code. With built-in customization options, users can control video behavior such as autoplay, loop, mute, and more.
 
 
-### Gutenberg Block for HTML5 Video Player 
-- This plugin adds a Gutenberg Block called HTML5 Video Player Under Common Block 
-- To Add a Video player block Go to Post/Page Editor
-- Go to Common Block  and Select Html5 Video Player
-- Select a video Player 
-- Publish   
--And enjoy!
+### Key Features – Free Version
+- **Responsive HTML5 Video Player**: Seamlessly adapts to all devices and screen sizes.
+
+- **No-Code Embedding**: Use shortcodes to quickly add videos anywhere on your site.
+
+- **Cross-Browser Compatibility**: Works perfectly on Chrome, Firefox, Safari, IE7–IE9, and more.
+
+- **iOS & Mobile Friendly**: Plays video files on all major devices without extra plugins.
+
+- **Autoplay, Loop & Mute Options**: Customize how your videos behave.
+
+- **Skins & Color Customization**: Style the player to match your brand.
+
+- **Supports Multiple Formats**: Embed MP4, WebM, OGG, and FLV files.
+
+- **Preview for Paid Content**: Great for selling digital video files with previews.
+
+- **Lightweight & Compact**: Doesn’t take up unnecessary space on your page.
+
+- **Custom CSS Support**: Fine-tune your player with custom styles.
+
+- **SEO Optimized**: Schema markup helps search engines understand and index your videos.
 
 
-### Quick Player block
+### HTML5 Video Player Pro – Unlock Premium Features
+The [**Pro version**](https://bplugins.com/products/html5-video-player/#pricing) adds more flexibility and advanced controls for managing video playback and customization:
 
-`[video_player src="video src"]
-More attributes can be used
+**What’s New in the Pro Version?**
 
-controls="play-large, restart, rewind, play, fast-forward, progress, current-time, mute, volume, captions, settings, pip, airplay, download, fullscreen"
+- **Color Picker**: Change player colors to match your site perfectly.
 
-autoplay="true/false"
+- **External Hosting Support**: Embed videos from Amazon S3 and other sources.
 
-muted="true/false"
+- **Multiple Subtitles Support**: Make your videos accessible and multilingual.
 
-preload="auto/metadata/none"
+- **Quality Switcher**: Viewers can toggle video quality like on YouTube.
 
-width="500px"
+- **Page Load Optimizer**: Control preload settings for better speed.
 
-reset_on_end="true"
-`
+- **Restart, Rewind, Fast Forward**: Full control playback buttons.
 
-### For installation help click on Installation Tab
+- **Ad-Free Experience**: No ads, just pure video.
 
-### HTML5 Video Player Features
-* The video player is compact so it does not take a lot of real estate on your webpage
-* HTML5 compatible so the video files embedded with this plugin will play on iOS devices
-* Works on all major browsers - IE7, IE8, IE9, Safari, Firefox, Chrome
-* The video player is responsive.
-* Player can be used to embed the video files on your WordPress posts or pages
-* If you are selling video files from your site then you can use this plugin to offer a preview
-* Add the video player to any post/page using the shortcode
-* Use the autoplay option to play a video file as soon as the page loads
-* You can play unlimited video
-* User-friendly interface
-* Powered by html5
+- **Download Button Toggle**: Enable or hide video downloads.
+
+- **Customize Every Control**: Show/hide any button or control.
+
+- **Speed & Quality Control**: Let users adjust playback speed and resolution.
+
+- **Advanced Shortcode Generator**: Now inside your post/page text editor.
+
+- **Custom Download URL**: Set a specific URL users will access when downloading your video.
+
+- **Autoplay When Visible on Screen**: Smart autoplay triggers only when the video enters the viewport.
+
+- **Disable Pause**: Prevent viewers from pausing the video.
+
+- **Allow Inline Playback on iOS**: Enable inline video viewing on iPhones and iPads.
+
+- **Show Thumbnail on Pause**: Display a thumbnail image when the video is paused.
+
+- **Sticky on Scroll**: Keep the video visible as users scroll down the page.
+
+- **Seek Time**: Customize how far the video jumps when seeking forward/backward.
+
+- **Start Time**: Automatically start the video at a specified time.
+
+- **Preload Options**: Choose how much of the video is preloaded (metadata, auto, none).
+
+- **Google VAST Tag URL**: Integrate ad tags using Google VAST for monetization.
+
+- **Chapters**: Add chapter markers for easier navigation and user experience.
+
+- **Overlay**: Display a custom overlay before or after playback.
+
+- **Enable End Screen**: Show a custom end screen after the video finishes (disables repeat).
+
+- **Password Protected**: Restrict video access to users with a valid password.
+
+- **Accessibility Ready**: Supports captions and subtitles for a better inclusive experience.
+
+- **Enable Popup Player**: Let users view videos in a pop-up modal for distraction-free playback.
+
+- **Watermark Support**: Add branding or copyright with a watermark (disables autoplay).
+
+- **Additional ID/CSS Class**: Add unique IDs or CSS classes for advanced custom styling.
+
+[**Try the Pro Version**](https://bplugins.com/products/html5-video-player/#pricing) – Unlock all premium features today!
 
 
+### How to Use HTML5 Video Player – Quick Start Guide
+
+Getting started is easy!
+
+https://youtube.com/watch?v=dLU67e708fg
+
+#### Step-by-Step Setup
+
+- Install and activate the plugin
+
+- Go to the **HTML5 Video Player** menu in the WordPress dashboard
+
+- Create a new video player and configure your settings
+
+- Copy the shortcode displayed for your player
+
+- Paste the shortcode into any post, page, or widget
+
+Alternatively, use the Gutenberg block to add the player visually
+
+**Gutenberg Block Support**
+
+HTML5 Video Player includes full support for the block editor. Simply choose the HTML5 Video Player block from the editor, select your player, and publish your content.
+
+That’s it – your video is live!
+
+Whether you're embedding an MP4 player or building a video gallery, **HTML5 Video Player** is the go-to solution for a powerful, professional **video player plugin** on WordPress.
+
+[**Live Video**](https://bplugins.com/products/html5-video-player) | [**Buy The Pro**](https://bplugins.com/products/html5-video-player/#pricing)
+
+### Use Cases
+- Embed product demo videos
+
+- Display video tutorials and course content
+
+- Showcase client testimonials
+
+- Build a video portfolio
+
+Add previews for digital video content
+
+### Quick Player Block
+***`[video_player src="video src"]`***
+
+**More attributes can be used**
 
 
-### HTML5 Video Player Pro Version Features
-What's New in PRO?
-- Color changing Option.
-- Add Videos from external sources such as Amazon S3 / other hosts.
-- Support Multiple Subtitle that increases viewers from different sources
-- Video Quality Switcher to accommodate network issues
-- Increase Page load speed by changing the Preload option. 
-- Added Restart, Fast forward, Rewind button 
-- No ads
-- Show / Hide download button
-- Show / Hide Every button and controls 
-- Control Video speed And Quality Like YouTube
-- Added Shortcode Generator in the text editor of post / Page
-
-Get The PRO here:  [BUY The PRO Version ](https://bplugins.gumroad.com/l/h5vp "BUY NOW") 
+***`controls="play-large, restart, rewind, play, fast-forward, progress, current-time, mute, volume, captions, settings, pip, airplay, download, fullscreen"`***
+***`autoplay="true/false"`***
+***`muted="true/false"`***
+***`preload="auto/metadata/none"`***
+***`width="500px"`***
+***`reset_on_end="true"`***
 
 
 ### User Feedback
 
-❛❛**_We got multiple support from the developer. Outstanding and fabulous! 100 % satisfied and my personal recommendation for video player plugin!_**❜❜ 
+❛❛**_We got multiple support from the developer. Outstanding and fabulous! 100 % satisfied and my personal recommendation for video player plugin!_**❜❜
 
 **_-newbie2004_**
 
 
-
-❛❛**_This guy is the future of WordPress plugins. The interface is the very definition of simplicity and everything just works right out of the box._**❜❜ 
+❛❛**_This guy is the future of WordPress plugins. The interface is the very definition of simplicity and everything just works right out of the box._**❜❜
 
 **_-amallulla_**
 
-Like that plugin? Hate it? Want a new feature?  **[Send your feedback](https://bplugins.com/support)** 
+Like that plugin? Hate it? Want a new feature? **[Send your feedback](https://bplugins.com/support)**
 
 
-= ⭐ Checkout our other WordPress Plugins- = 
+### Check out our other WordPress Plugins-
 
-🔥 **[Html5 Audio Player](https://audioplayerwp.com/)** – Best audio player plugin for WordPress.
+[**Html5 Audio Player**](https://bplugins.com/products/html5-audio-player/) – Listen audios with awesome visuals.
 
-🔥 **[PDF Poster](http://pdfposter.com/)** – A fully-featured PDF Viewer Plugin for WordPresss.
+[**PDF Poster**](https://bplugins.com/products/pdf-poster/) – Display/Embed PDF files with different styles.
 
-🔥 **[StreamCast](https://wordpress.org/plugins/streamcast)** – A fully-featured Radio Player Plugin for WordPresss.
+[**StreamCast**](https://bplugins.com/products/streamcast-radio-player/) – Customizable radio player with different skins.
 
-🔥 **[3D Viewer](https://3d-viewer.bplugins.com/)** – Display interactive 3D models on the webs. 
+[**3D Viewer**](https://bplugins.com/products/3d-viewer/) – Embed 3D models and 3D products with interaction.
+
+[**Advanced Post Block**](https://bplugins.com/products/advanced-post-block/) – Show posts and custom posts in different layouts.
 
 
 == Installation ==
@@ -182,11 +237,25 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 
 == Screenshots ==
 
-1. Sidebar menu
-2. Player configuration
-3. UI
+1. Add New Video
+2. Preview
+3. Password Protected Video
+4. Popup Player
+5. Video From YouTube
+6. Video From Vimeo
+7. VAST Ads
+8. Gutenberg Block
+9. Settings
+10. Playlist Settings
+11. Analytics
+12. Quick Player Settings
+13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.6.2 - 3 July, 2025 =
+* Fixed: Not initialized properly when metadata is set to none
+* Feature: Hide/Encoded Stream Video URL
 
 = 2.6.1 - 26 May, 2025 =
 * Fixed: Error on update Ratio
@@ -205,7 +274,7 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 * Update: Freemius SDK Update
 
 = 2.5.37 - 18 Jan, 2025 =
-* Fixed: Undefined array key “passwordProtected”
+* Fixed: Undefined array key â€œpasswordProtectedâ€
 
 = 2.5.36 - 11 Jan, 2025 =
 * Fixed: Vulnerability

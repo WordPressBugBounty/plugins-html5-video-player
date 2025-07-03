@@ -108,3 +108,14 @@ if (!function_exists('h5vp__get_post_meta')) {
         };
     }
 }
+
+if (!function_exists('xorEncode')) {
+    function xorEncode($str, $key)
+    {
+        $out = '';
+        for ($i = 0; $i < strlen($str); $i++) {
+            $out .= chr(ord($str[$i]) ^ ord($key[$i % strlen($key)]));
+        }
+        return base64_encode($out);
+    }
+}

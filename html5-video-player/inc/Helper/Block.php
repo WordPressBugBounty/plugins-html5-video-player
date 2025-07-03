@@ -214,14 +214,15 @@ class Block
         $quick = h5vp_get_option('h5vp_quick');
         $option = h5vp_get_option('h5vp_option');
         extract($attrs);
-        $preload = isset($attrs['preload']) ? $preload : $quick('h5vp_preload_quick', 'metadata');
-        $hideYoutubeUI = $quick('h5vp_hide_youtube_ui', false);
-        $hideControls = isset($attrs['hideControls']) ? $hideControls : $quick('h5vp_auto_hide_control_quick', true);
+        $preload = isset($attrs['preload']) && !empty($attrs['preload']) ? $preload : $quick('h5vp_preload_quick', 'metadata');
+        $hideYoutubeUI = $quick('h5vp_hide_youtube_ui', '0') === '1';
+        $hideControls = isset($attrs['hideControls']) && $attrs['hideControls'] ? $hideControls === 'true' : $quick('h5vp_auto_hide_control_quick', '1') === '1';
+        $reset_on_end = isset($attrs['reset_on_end']) && $attrs['reset_on_end'] ? $reset_on_end === 'true' : $quick('h5vp_reset_on_end_quick', '1') === '1';
         $file = $file ? $file : ($src ? $src : $mp4);
         $block_name = $source == 'library' ? 'video' : $source;
         $muted = isset($attrs['muted']) ? $muted : $quick('h5vp_muted_quick', true);
-        $repeat = isset($attrs['repeat']) ? $repeat : $quick('h5vp_repeat_quick', 'none');
-        $width = isset($attrs['width']) ? $width : $quick('h5vp_player_width_quick', '100%');
+        $repeat = isset($attrs['repeat']) && !empty($attrs['repeat']) ? $repeat : $quick('h5vp_repeat_quick', 'none');
+        $width = isset($attrs['width']) && !empty($attrs['width']) ? $width : $quick('h5vp_player_width_quick') . 'px';
 
         $code_controls = isset($attrs['controls']) ? explode(',', $controls) : null;
         $final_controls = [];
@@ -233,8 +234,6 @@ class Block
         }
 
         $controls = $final_controls ? $final_controls : Functions::getOptionDeep('h5vp_quick', 'controls', ['play-large', 'play', 'progress', 'duration', 'current-time', 'mute', 'volume', 'settings', 'fullscreen']);
-
-
 
         return [
             'blockName' => "html5-player/$block_name",
@@ -249,11 +248,11 @@ class Block
                     "loadSprite" => true,
                     "autoplay" => $autoplay === 'true' ? true : false,
                     "playsinline" => true,
-                    "seekTime" => 10,
+                    "seekTime" => (int) $quick('h5vp_seek_time_quick', 10),
                     "volume" => 1,
                     "muted" => (bool) $autoplay ? true : ($muted === 'true' ? true : false),
-                    "hideControls" => $hideControls === 'true' ? true : false,
-                    "resetOnEnd" =>  $reset_on_end === 'true' ? true : false,
+                    "hideControls" => $hideControls,
+                    "resetOnEnd" =>  $reset_on_end,
                     "tooltips" => [
                         "controls" => true,
                         "seek" => true
