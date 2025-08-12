@@ -4,7 +4,7 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.6.2
+ * Version:     2.7.0
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * License:     GPLv3    
@@ -17,12 +17,15 @@ if ( function_exists( 'h5vp_fs' ) ) {
     if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
         require_once dirname( __FILE__ ) . '/vendor/autoload.php';
     }
+    if ( file_exists( dirname( __FILE__ ) . '/inc/admin.php' ) ) {
+        require_once dirname( __FILE__ ) . '/inc/admin.php';
+    }
     /*Some Set-up*/
     define( 'H5VP_PRO_PLUGIN_DIR', plugin_dir_url( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.6.2' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.7.0' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
@@ -44,8 +47,9 @@ if ( function_exists( 'h5vp_fs' ) ) {
                 ),
                 'has_affiliation' => 'selected',
                 'menu'            => array(
-                    'slug'    => 'edit.php?post_type=videoplayer',
-                    'support' => false,
+                    'slug'       => 'html5-video-player',
+                    'support'    => false,
+                    'first-path' => 'admin.php?page=html5-video-player',
                 ),
                 'is_live'         => true,
             ) );
@@ -96,3 +100,31 @@ if ( function_exists( 'h5vp_fs' ) ) {
         new H5VP_Main();
     }
 }
+add_action( 'wp_footer', function () {
+    ?>
+
+    <style>
+        /* .plyr__progress input[type=range]::-ms-scrollbar-track {
+            box-shadow: none !important;
+        }
+
+        .plyr__progress input[type=range]::-webkit-scrollbar-track {
+            box-shadow: none !important;
+        } */
+
+        .plyr {
+            input[type=range]::-webkit-slider-runnable-track {
+                box-shadow: none;
+            }
+
+            input[type=range]::-moz-range-track {
+                box-shadow: none;
+            }
+
+            input[type=range]::-ms-track {
+                box-shadow: none;
+            }
+        }
+    </style>
+<?php 
+} );

@@ -50,8 +50,19 @@ class VideoPlayer
                         // 'google' => 'Google Drive',
                     ),
                     'default' => 'library',
-                    'class' => 'bplugins-meta-readonly',
+                    // 'class' => 'bplugins-meta-readonly',
                     'dependency' => array('h5vp_video_streaming', '==', '0')
+                ),
+                array(
+                    'id' => 'h5vp_video_link_youtube_vimeo',
+                    'type' => 'text',
+                    'title' => 'Source URL',
+                    'placeholder' => 'https://',
+                    'library' => 'video',
+                    'button_title' => 'Add Video',
+                    'desc' => 'Youtube video url or ID',
+                    'dependency' => array(array('h5vp_video_source', 'not-any', 'library,amazons3,google')),
+                    'attributes' => array('style' => 'width: 100%;')
                 ),
                 array(
                     'id' => 'h5vp_aws_file_picker',
@@ -199,18 +210,7 @@ class VideoPlayer
                     'dependency' => array('h5vp_video_streaming', '==', '1'),
                     'attributes' => array('style' => 'width:100%;')
                 ),
-                array(
-                    'id' => 'h5vp_video_link_youtube_vimeo',
-                    'type' => 'text',
-                    'title' => 'Source URL',
-                    'placeholder' => 'https://',
-                    'library' => 'video',
-                    'button_title' => 'Add Video',
-                    'class' => 'bplugins-meta-readonly',
-                    'desc' => 'Youtube/vimeo video url or ID',
-                    'dependency' => array(array('h5vp_video_source', 'not-any', 'library,amazons3,google'), array('h5vp_video_streaming', '!=', '1')),
-                    'attributes' => array('style' => 'width: 100%;')
-                ),
+
                 array(
                     'id' => 'h5vp_aws_file_picker',
                     'title' => ' ',

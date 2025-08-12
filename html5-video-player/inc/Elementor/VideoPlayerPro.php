@@ -1095,7 +1095,8 @@ class VideoPlayerPro extends Widget_Base
 			'storage' => [
 				'enabled' => false,
 			],
-			'ratio' => null
+			'ratio' => null,
+			// 'speed' => []
 		];
 
 		$block_name = in_array($provider, ['youtube', 'vimeo']) ? $provider : 'video';

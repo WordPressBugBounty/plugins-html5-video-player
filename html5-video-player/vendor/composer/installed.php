@@ -3,7 +3,7 @@
         'name' => 'raju/html5-video-player-pro',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '73b43f6299e78e2d2854db9de69d6daa9d9d54de',
+        'reference' => 'e46435f505b4ccbf5488b0b0bea1f2f69f99336a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'freemius/wordpress-sdk' => array(
-            'pretty_version' => '2.12.0',
-            'version' => '2.12.0.0',
-            'reference' => 'db6f35a2b3d318a53330409dbeab49156ee76dd8',
+            'pretty_version' => '2.12.1',
+            'version' => '2.12.1.0',
+            'reference' => 'fedeba08eb3e62af5f84bd6d602f98636467cffc',
             'type' => 'library',
             'install_path' => __DIR__ . '/../freemius/wordpress-sdk',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'raju/html5-video-player-pro' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '73b43f6299e78e2d2854db9de69d6daa9d9d54de',
+            'reference' => 'e46435f505b4ccbf5488b0b0bea1f2f69f99336a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

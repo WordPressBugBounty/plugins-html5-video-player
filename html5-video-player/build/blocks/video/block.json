@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "version": "2.6.1",
+  "version": "2.7.0",
   "name": "html5-player/video",
   "title": "HTML5 Video Player",
   "description": "Embed Video anywhere in your website ",
@@ -501,8 +501,11 @@
       "preview": true
     }
   },
-  "style": "file:./../view.css",
-  "editorStyle": "file:./index.css",
+  "viewStyle": "file:./../view.css",
+  "editorStyle": [
+    "file:./index.css",
+    "bplugins-plyrio"
+  ],
   "editorScript": [
     "file:./index.js",
     "bplugins-plyrio",
@@ -512,6 +515,8 @@
   "viewScript": [
     "file:./../view.js",
     "wp-util",
-    "bplugins-plyrio"
+    "bplugins-plyrio",
+    "react-dom",
+    "react"
   ]
 }

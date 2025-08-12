@@ -117,36 +117,6 @@ class GlobalChanges
         return $block_categories;
     }
 
-    public function arrayToString($array = [])
-    {
-        $implode = implode(',', $array);
-        return $implode;
-    }
-
-    public function getVideoTitle($videos, $videoId)
-    {
-        foreach ($videos as $video) {
-            if ($video->id == $videoId) {
-                return $video->title !== '' ? $video->title : $video->src;
-            }
-        }
-    }
-
-    public function ageAveView($seconds = 0, $views = 0) {}
-
-    /**
-     * format second
-     */
-    public function secToHR($seconds)
-    {
-        $hours = floor($seconds / 3600);
-        $minutes = floor(($seconds / 60) % 60);
-        $seconds = $seconds % 60;
-        $hLabel = $hours > 1 ? 'hours' : 'hour';
-        $mLabel = $minutes > 1 ? 'minutes' : 'minute';
-        $sLabel = $seconds > 1 ? 'seconds' : 'second';
-        return $hours > 0 ? "$hours $hLabel $minutes $mLabel " : ($minutes > 0 ? "$minutes $mLabel $seconds $sLabel" : "$seconds $sLabel");
-    }
 
 
     function h5vp_shortcode_button()

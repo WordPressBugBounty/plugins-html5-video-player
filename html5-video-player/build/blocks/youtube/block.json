@@ -1,6 +1,7 @@
 {
-  "apiVersion": 2,
-  "version": "2.6.1",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "version": "2.7.0",
   "name": "html5-player/youtube",
   "title": "Youtube Player",
   "description": "Video Player",
@@ -182,7 +183,7 @@
     "seo": {
       "type": "object",
       "default": {
-        "name": "ddd",
+        "name": "",
         "description": "",
         "duration": ""
       }
@@ -502,13 +503,16 @@
   },
   "editorScript": [
     "file:./index.js",
-    "bplugins-plyrio"
+    "bplugins-plyrio",
+    "wp-util"
   ],
-  "style": "file:./../view.css",
+  "viewStyle": "file:./../view.css",
   "render": "file:./../render.php",
   "viewScript": [
     "file:./../view.js",
     "wp-util",
-    "bplugins-plyrio"
+    "bplugins-plyrio",
+    "react",
+    "react-dom"
   ]
 }

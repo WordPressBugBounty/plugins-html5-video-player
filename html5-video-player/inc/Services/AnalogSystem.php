@@ -2,19 +2,8 @@
 
 namespace H5VP\Services;
 
-use H5VP\Helper\DefaultArgs;
-use H5VP\Services\PlaylistTemplate;
-
 class AnalogSystem
 {
-
-    public static function playlistHtml($id)
-    {
-        $data  = DefaultArgs::parsePlaylistArgs(self::getPlaylistData($id));
-        return $data;
-        return PlaylistTemplate::html_old($data);
-    }
-
     static function parsePlaylistData($id)
     {
         $videos = self::get_videos($id, 'h5vp_playlist', []);
@@ -88,100 +77,6 @@ class AnalogSystem
         ];
     }
 
-
-    public static function getPlaylistData($id)
-    {
-        $videos = self::get_videos($id, 'h5vp_playlist', []);
-        //GPM = get playlist metadat
-        $controls = [
-            'play-large' => self::GPM($id, 'h5vp_hide_large_play_btn', 'show'),
-            'restart' => self::GPM($id, 'h5vp_hide_restart_btn', 'mobile'),
-            'rewind' => self::GPM($id, 'h5vp_hide_rewind_btn', 'mobile'),
-            'play' => self::GPM($id, 'h5vp_hide_play_btn', 'show'),
-            'fast-forward' => self::GPM($id, 'h5vp_hide_fast_forward_btn', 'mobile'),
-            'progress' => self::GPM($id, 'h5vp_hide_video_progressbar', 'show'),
-            'current-time' => self::GPM($id, 'h5vp_hide_current_time', 'show'),
-            'duration' => self::GPM($id, 'h5vp_hide_video_duration', 'mobile'),
-            'mute' => self::GPM($id, 'h5vp_hide_mute_btn', 'show'),
-            'volume' => self::GPM($id, 'h5vp_hide_volume_control', 'show'),
-            'captions' => 'show',
-            'settings' => self::GPM($id, 'h5vp_hide_Setting_btn', 'show'),
-            'pip' => self::GPM($id, 'h5vp_hide_pip_btn', 'mobile'),
-            'airplay' => self::GPM($id, 'h5vp_hide_airplay_btn', 'mobile'),
-            'download' => self::GPM($id, 'h5vp_hide_downlaod_btn', 'mobile'),
-            'fullscreen' => self::GPM($id, 'h5vp_hide_fullscreen_btn', 'show'),
-        ];
-
-        $controls = array_filter($controls, function ($control) {
-            return $control != 'hide';
-        });
-
-        $controls = array_keys($controls);
-
-        $options = [
-            'controls' => $videos['h5vp_controls'] ?? $controls,
-            'muted' => (bool)self::GPM($id, 'h5vp_muted_playerio', '0', true),
-            'seekTime' => (int)self::GPM($id, 'h5vp_seek_time_playerio', '10'),
-            'hideControls' => (bool)self::GPM($id, 'h5vp_auto_hide_control_playerio', '1', true),
-            'resetOnEnd' => true,
-        ];
-
-        $infos = [
-            'id' => $id,
-            'loop' => self::GPM($id, 'h5vp_repeat_playlist', 'yes'),
-            'next' => self::GPM($id, 'h5vp_play_nextvideo', 'yes'),
-            'viewType' => self::GPM($id, 'h5vp_playlist_view_type', 'listwithposter'),
-            'carouselItems' => self::GPM($id, 'h5vp_listwithposter_colum', '3'),
-            'provider' => isset($videos[0]['h5vp_video_provider']) ? $videos[0]['h5vp_video_provider'] : 'library',
-            'slideVideos' => self::GPM($id, 'h5vp_playlist_view_type') == 'listwithposter' ? self::GPM($id, 'slide_videos', true, true) : false,
-        ];
-
-        $borderWidth = self::get_videos($id, 'border_width', ['all' => '7', 'unit' => 'px']);
-
-        $template = [
-            'videos' => $videos,
-            'width' => self::GPM($id, 'h5vp_player_width_playerio') ? self::GPM($id, 'h5vp_player_width_playerio') . 'px' : '100%',
-            'skin' => self::GPM($id, 'h5vp_playlist_view_type', 'listwithposter'),
-            'arrowSize' => self::GPM($id, 'h5vp_listwithposter_arrow_size', '25') . 'px',
-            'arrowColor' => self::GPM($id, 'h5vp_listwithposter_arrow_color', '#222'),
-            'preload' => self::GPM($id, 'h5vp_preload_playerio', 'metadata'),
-            'slideVideos' => self::GPM($id, 'slide_videos', true),
-            'column' => (int) self::GPM($id, 'h5vp_listwithposter_colum', '3'),
-            'modern' => self::GPM($id, 'modern', 'imageText'),
-            'listBG' => self::get_videos($id, 'listbg', '#ffffff'),
-            'textColor' => self::get_videos($id, 'text_color', self::GPM($id, 'h5vp_listwithposter_text_color', '#333')),
-            'listHoverBG' => self::get_videos($id, 'listhoverbg', '#333333'),
-            'textHoverColor' => self::get_videos($id, 'text_hover_color', '#ffffff'),
-            'borderColor' => self::get_videos($id, 'border_color', '#ffffff'),
-            'borderWidth' => $borderWidth['all'] . $borderWidth['unit'],
-        ];
-
-        return [
-            'options' => $options,
-            'infos' => $infos,
-            'template' => $template,
-        ];
-
-        return [
-            'options' => $options,
-            'styles' => []
-        ];
-    }
-
-    public static function get_post_meta($id, $key, $default = false)
-    {
-        if (metadata_exists('post', $id, $key)) {
-            $value = get_post_meta($id, $key, true);
-            if ($value != '') {
-                return $value;
-            } else {
-                return $default;
-            }
-        } else {
-            return $default;
-        }
-    }
-
     public static function GPM($id, $key, $default = false, $true = false)
     {
         $meta = metadata_exists('post', $id, 'h5vp_playlist_options') ? get_post_meta($id, 'h5vp_playlist_options', true) : '';
@@ -230,6 +125,4 @@ class AnalogSystem
             return $default;
         }
     }
-
-    public static function getQuickPlayerData() {}
 }

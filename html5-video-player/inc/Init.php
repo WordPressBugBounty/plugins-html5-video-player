@@ -13,6 +13,7 @@ class Init
             Base\ExtendMime::class,
             // Base\AdminNotice::class, // no notice available at this moment
             Base\GlobalChanges::class,
+            Base\Analytics::class,
             Services\EnqueueAssets::class,
             Services\Shortcodes::class,
             Field\VideoPlayer::class,

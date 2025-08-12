@@ -16,7 +16,7 @@ class Block
 
     public function classic_to_gutenberg_block($id)
     {
-        $provider = $this->get_post_meta($id, 'h5vp_video_source');
+        $provider = $this->get_post_meta($id, 'h5vp_video_source', 'self-hosted');
         $block_name = in_array($provider, ['amazons3', 'self-hosted', 'library']) ? 'video' : $provider;
         $width = $this->get_post_meta($id, 'h5vp_player_width_playerio') ? $this->get_post_meta($id, 'h5vp_player_width_playerio') . 'px' : '100%';
         $source = $this->get_post_meta($id, 'h5vp_video_link');
@@ -32,18 +32,18 @@ class Block
         }
 
         if (in_array($provider, ['vimeo', 'youtube'])) {
-            $source = $this->get_post_meta($id, 'h5vp_video_link_youtube_vimeo');
+            $source = $this->get_post_meta($id, 'h5vp_video_link_youtube_vimeo', '');
         }
 
         return [
             'blockName' => "html5-player/$block_name",
             'attrs' => [
-                "provider" => $provider,
+                "provider" => $provider === 'library' ? 'self-hosted' : $provider,
                 "imported" => false,
                 "clientId" => "",
                 "uniqueId" => wp_unique_id('h5vp'),
                 "source" => $source,
-                "poster" => $this->get_post_meta($id, 'h5vp_video_thumbnails'),
+                "poster" => $this->get_post_meta($id, 'h5vp_video_thumbnails', ''),
                 "options" => [
                     "controls" => $this->get_post_meta($id, 'h5vp_controls', ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']),
                     "settings" => ["captions", "quality", "speed", "loop"],

@@ -19,7 +19,7 @@ class Settings
             \CSF::createOptions($this->prefix, array(
                 'menu_title' => 'Settings',
                 'menu_slug' => 'html5vp_settings',
-                'menu_parent' => 'edit.php?post_type=videoplayer',
+                'menu_parent' => 'html5-video-player',
                 'menu_type' => 'submenu',
                 'theme' => 'light',
                 'data_type' => 'unserialize',

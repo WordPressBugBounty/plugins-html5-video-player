@@ -1,21 +1,21 @@
-=== HTML5 Video Player - mp4 Video Player Plugin and Block  ===
+=== HTML5 Video Player – Embed and Play Videos in Custom Player  ===
 Contributors: bplugins, shehabulislam, freemius, abuhayat
 Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 2.6.2
+Stable tag: 2.7.0
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s easy to use, fast, and supports MP4, WebM, OGG, and FLV formats.
+HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s easy to use, fast, and supports MP4, WebM, OGG, FLV, Youtube and Vimeo.
 
 == Description ==
 **The #1 No-Code Video Player Plugin – Trusted by 30,000+ Websites Worldwide**
 
 
-[**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) | [**Documentation**](https://bplugins.com/docs/html5-video-player/) | [**Pricing**](https://bplugins.com/products/html5-video-player/#pricing) | [**Support**](https://bplugins.com/support/) | [**Demo**](https://bplugins.com/products/html5-video-player/#demos)
+[**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) | [**Documentation**](https://bplugins.com/docs/html5-video-player/) | [**Pricing**](https://bplugins.com/products/html5-video-player/pricing/) | [**Support**](https://bplugins.com/support/) | [**Demo**](https://bplugins.com/products/html5-video-player/#demos)
 
 [**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) is a flexible and fully responsive video player plugin for WordPress. It allows you to embed MP4 and other video formats with ease. You can customize the player to match your site design and support playback across all major browsers and devices.
 The plugin supports video embedding using shortcodes or Gutenberg blocks, making it easy to add video players to posts, pages, or widgets without writing any code. With built-in customization options, users can control video behavior such as autoplay, loop, mute, and more.
@@ -46,7 +46,7 @@ The plugin supports video embedding using shortcodes or Gutenberg blocks, making
 
 
 ### HTML5 Video Player Pro – Unlock Premium Features
-The [**Pro version**](https://bplugins.com/products/html5-video-player/#pricing) adds more flexibility and advanced controls for managing video playback and customization:
+The [**Pro version**](https://bplugins.com/products/html5-video-player/pricing/) adds more flexibility and advanced controls for managing video playback and customization:
 
 **What’s New in the Pro Version?**
 
@@ -108,7 +108,7 @@ The [**Pro version**](https://bplugins.com/products/html5-video-player/#pricing)
 
 - **Additional ID/CSS Class**: Add unique IDs or CSS classes for advanced custom styling.
 
-[**Try the Pro Version**](https://bplugins.com/products/html5-video-player/#pricing) – Unlock all premium features today!
+[**Try the Pro Version**](https://bplugins.com/products/html5-video-player/pricing/) – Unlock all premium features today!
 
 
 ### How to Use HTML5 Video Player – Quick Start Guide
@@ -139,7 +139,7 @@ That’s it – your video is live!
 
 Whether you're embedding an MP4 player or building a video gallery, **HTML5 Video Player** is the go-to solution for a powerful, professional **video player plugin** on WordPress.
 
-[**Live Video**](https://bplugins.com/products/html5-video-player) | [**Buy The Pro**](https://bplugins.com/products/html5-video-player/#pricing)
+[**Live Video**](https://bplugins.com/products/html5-video-player) | [**Buy The Pro**](https://bplugins.com/products/html5-video-player/pricing/)
 
 ### Use Cases
 - Embed product demo videos
@@ -252,6 +252,14 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.7.0 - 12 Aug, 2025 =
+* Fixed: Elementor issue
+* Fixed: Box shadow in progressbar
+* New Page: Dashboard
+* New Block: Vimeo Player
+* New Block: Youtube Player
+* Improved: Code
 
 = 2.6.2 - 3 July, 2025 =
 * Fixed: Not initialized properly when metadata is set to none

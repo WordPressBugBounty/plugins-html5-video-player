@@ -14,7 +14,6 @@ class EnqueueAssets
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
         add_action('wp_head', [$this, 'quickPlayerStyle']);
-        add_action('admin_head', [$this, 'adminHead']);
     }
 
     public static function instance()
@@ -115,12 +114,10 @@ class EnqueueAssets
             }
 
             <?php
-                } ?><?php echo Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '') ?>
+                } ?><?php echo wp_kses_post(Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '')) ?>
         </style>
 <?php
 
-        echo Functions::trim(ob_get_clean());
+        echo wp_kses(Functions::trim(ob_get_clean()), ['style' => []]);
     }
-
-    public function adminHead() {}
 }

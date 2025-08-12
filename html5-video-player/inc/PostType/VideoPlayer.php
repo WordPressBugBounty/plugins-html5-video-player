@@ -61,20 +61,21 @@ class VideoPlayer
             $this->post_type,
             array(
                 'labels' => array(
-                    'name' => __('Html5 Video Player'),
-                    'singular_name' => __('Video Player'),
-                    'add_new' => __('Add New Player'),
-                    'add_new_item' => __('Add New Player'),
-                    'edit_item' => __('Edit Player'),
-                    'new_item' => __('New Player'),
-                    'view_item' => __('View Player'),
-                    'search_items' => __('Search Player'),
-                    'not_found' => __('Sorry, we couldn\'t find the Player you are looking for.'),
+                    'name' => __('Html5 Video Player', 'h5vp'),
+                    'singular_name' => __('Video Player', 'h5vp'),
+                    'add_new' => __('Add New Player', 'h5vp'),
+                    'add_new_item' => __('Add New Player', 'h5vp'),
+                    'edit_item' => __('Edit Player', 'h5vp'),
+                    'new_item' => __('New Player', 'h5vp'),
+                    'view_item' => __('View Player', 'h5vp'),
+                    'search_items' => __('Search Player', 'h5vp'),
+                    'not_found' => __('Sorry, we couldn\'t find the Player you are looking for.', 'h5vp'),
                 ),
                 'public' => false,
                 'show_ui' => true,
                 // 'publicly_queryable' => true,
                 // 'exclude_from_search' => true,
+                'show_in_menu' => 'html5-video-player',
                 'menu_position' => 14,
                 'menu_icon' => H5VP_PRO_PLUGIN_DIR . 'admin/img/icn.png',
                 'has_archive' => false,
@@ -83,7 +84,7 @@ class VideoPlayer
                 'rewrite' => false,
                 'show_in_rest' => true,
                 'supports' => array('title', 'editor'),
-                'template' => h5vp_fs()->can_use_premium_code() ? [['html5-player/parent']] : [['html5-player/parent', [], [['html5-player/video']]]],
+                'template' =>  [['html5-player/parent']],
                 'template_lock' => 'all',
             )
         );
@@ -216,11 +217,10 @@ class VideoPlayer
         }
 
         return [
-            'presto-player/reusable',
-            'presto-player/self-hosted',
-            'presto-player/youtube',
-            'presto-player/vimeo',
-            'presto-player/bunny'
+            'html5-player/parent',
+            'html5-player/video',
+            'html5-player/vimeo',
+            'html5-player/youtube'
         ];
     }
 
@@ -231,17 +231,17 @@ class VideoPlayer
 ?>
             <div class="h5vp_playlist_shortcode">
                 <div class="shortcode-heading">
-                    <div class="icon"><span class="dashicons dashicons-video-alt3"></span> <?php _e("HTML5 Video Player", "h5vp"); ?></div>
-                    <div class="text"> <a href="https://bplugins.com/support/" target="_blank"><?php _e("Supports", "h5vp"); ?></a></div>
+                    <div class="icon"><span class="dashicons dashicons-video-alt3"></span> <?php echo esc_html__("HTML5 Video Player", "h5vp"); ?></div>
+                    <div class="text"> <a href="https://bplugins.com/support/" target="_blank"><?php echo esc_html__("Supports", "h5vp"); ?></a></div>
                 </div>
                 <div class="shortcode-left">
-                    <h3><?php _e("Shortcode", "h5vp") ?></h3>
-                    <p><?php _e("Copy and paste this shortcode into your posts, pages and widget content:", "h5vp") ?></p>
+                    <h3><?php echo esc_html__("Shortcode", "h5vp") ?></h3>
+                    <p><?php echo esc_html__("Copy and paste this shortcode into your posts, pages and widget content:", "h5vp") ?></p>
                     <div class="shortcode" selectable>[html5_video id='<?php echo esc_attr($post->ID); ?>']</div>
                 </div>
                 <div class="shortcode-right">
-                    <h3><?php _e("Template Include", "h5vp") ?></h3>
-                    <p><?php _e("Copy and paste the PHP code into your template file:", "h5vp"); ?></p>
+                    <h3><?php echo esc_html__("Template Include", "h5vp") ?></h3>
+                    <p><?php echo esc_html__("Copy and paste the PHP code into your template file:", "h5vp"); ?></p>
                     <div class="shortcode">&lt;?php echo do_shortcode('[html5_video id="<?php echo esc_attr($post->ID); ?>"]');
                         ?&gt;</div>
                 </div>
