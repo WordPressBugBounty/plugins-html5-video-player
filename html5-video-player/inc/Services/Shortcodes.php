@@ -66,6 +66,11 @@ class Shortcodes
       return null;
     }
     $block = Block::getInstance()->classic_to_gutenberg_block($post->ID);
+    if ($rendered_content = render_block($block)) {
+      return $rendered_content;
+    } else {
+      return 'something is wrong';
+    }
     return render_block($block);
   }
 

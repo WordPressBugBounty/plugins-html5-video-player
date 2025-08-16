@@ -4,7 +4,7 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,6 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s easy to use, fast, and supports MP4, WebM, OGG, FLV, Youtube and Vimeo.
 
 == Description ==
+
 **The #1 No-Code Video Player Plugin – Trusted by 30,000+ Websites Worldwide**
 
 
@@ -252,6 +253,10 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.7.1 - 16 Aug, 2025 =
+* Fixed: Video does not play when Gutenberg plugin installed
+
 
 = 2.7.0 - 12 Aug, 2025 =
 * Fixed: Elementor issue

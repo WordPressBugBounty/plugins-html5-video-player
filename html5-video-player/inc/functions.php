@@ -37,7 +37,7 @@ if (!function_exists(('h5vp_process_block_attributes'))) {
 
         if (isset($attributes['styles'])) {
             $attributes['styles']['.plyr'] = [
-                '--plyr-color-main' => $option('h5vp_player_primary_color')
+                '--plyr-color-main' => $option('h5vp_player_primary_color', '#00b2ff')
             ];
         }
 

@@ -28,6 +28,8 @@ class Ajax
         // from ajaxCall.php
         add_action('wp_ajax_h5vp_export_data', [$this, 'h5vp_export_data']);
         // add_action('wp_ajax_save_password', [$this, 'save_password']);
+
+        add_action('wp_ajax_h5vp_save_preferred_editor', [$this, 'h5vp_save_preferred_editor']);
     }
 
     public static function instance()
@@ -66,7 +68,7 @@ class Ajax
         $this->model = $this->namespace . $this->requestModel;
 
         if (!class_exists($this->model)) {
-            wp_send_json_error('request destination failed!');
+            wp_send_json_error('Model does not exists!');
         }
 
         $model = new $this->model();
@@ -78,13 +80,13 @@ class Ajax
             unset($this->params['model']);
             return $model->{$this->requestMethod}($this->params);
         } else {
-            wp_send_json_error('request destination failed!');
+            wp_send_json_error('Method does not exists!');
         }
     }
 
     public function invalid()
     {
-        wp_send_json_error('request destination failed!');
+        wp_send_json_error('invalid request!');
     }
 
 
@@ -138,5 +140,24 @@ class Ajax
     {
         $aws = new \H5VP\Base\AWS();
         wp_send_json_success($aws->get_s3_list_objects());
+    }
+
+    public function h5vp_save_preferred_editor()
+    {
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_security_code'])), 'h5vp_security_key')) {
+            wp_send_json_error('invalid request');
+        }
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Invalid Authorization');
+        }
+
+        $editor = sanitize_text_field(wp_unslash($_POST['editor']));
+
+        $options = get_option('h5vp_option', []);
+        $options['h5vp_gutenberg_enable'] = $editor === 'gutenberg' ? '1' : '0';
+        update_option('h5vp_option', $options);
+
+        wp_send_json_success(['status' => 'success']);
     }
 }

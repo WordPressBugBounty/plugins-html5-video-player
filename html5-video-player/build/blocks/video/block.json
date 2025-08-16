@@ -1,7 +1,5 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "version": "2.7.0",
+  "apiVersion": 2,
   "name": "html5-player/video",
   "title": "HTML5 Video Player",
   "description": "Embed Video anywhere in your website ",
@@ -513,10 +511,10 @@
   ],
   "render": "file:./../render.php",
   "viewScript": [
-    "file:./../view.js",
+    "react",
+    "react-dom",
     "wp-util",
     "bplugins-plyrio",
-    "react-dom",
-    "react"
+    "file:./../view.js"
   ]
 }

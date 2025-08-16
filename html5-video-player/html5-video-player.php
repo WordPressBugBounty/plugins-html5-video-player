@@ -4,7 +4,7 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.7.0
+ * Version:     2.7.1
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * License:     GPLv3    
@@ -25,7 +25,7 @@ if ( function_exists( 'h5vp_fs' ) ) {
     define( 'H5VP_PRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.7.0' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'localhost' ? time() : '2.7.1' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
@@ -49,7 +49,7 @@ if ( function_exists( 'h5vp_fs' ) ) {
                 'menu'            => array(
                     'slug'       => 'html5-video-player',
                     'support'    => false,
-                    'first-path' => 'admin.php?page=html5-video-player',
+                    'first-path' => 'admin.php?page=choose-preferred-editor',
                 ),
                 'is_live'         => true,
             ) );

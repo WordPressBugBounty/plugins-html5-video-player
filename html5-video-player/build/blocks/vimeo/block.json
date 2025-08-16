@@ -1,7 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "version": "2.7.0",
   "name": "html5-player/vimeo",
   "title": "Vimeo Player",
   "description": "Vimeo Player",
@@ -508,10 +507,10 @@
   ],
   "render": "file:./../render.php",
   "viewScript": [
-    "file:./../view.js",
     "wp-util",
-    "bplugins-plyrio",
     "react",
-    "react-dom"
+    "react-dom",
+    "bplugins-plyrio",
+    "file:./../view.js"
   ]
 }

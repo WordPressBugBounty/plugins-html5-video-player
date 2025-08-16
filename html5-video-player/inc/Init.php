@@ -11,7 +11,7 @@ class Init
         return [
             Database\Init::class,
             Base\ExtendMime::class,
-            // Base\AdminNotice::class, // no notice available at this moment
+            Base\Menu::class,
             Base\GlobalChanges::class,
             Base\Analytics::class,
             Services\EnqueueAssets::class,
