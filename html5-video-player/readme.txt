@@ -1,10 +1,10 @@
 === HTML5 Video Player – Embed and Play Videos in Custom Player  ===
-Contributors: bplugins, shehabulislam, freemius, abuhayat
+Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
-Tested up to: 6.8
-Stable tag: 2.7.1
+Tested up to: 6.9
+Stable tag: 2.7.2
 Requires PHP: 7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -18,8 +18,11 @@ HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s 
 
 [**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) | [**Documentation**](https://bplugins.com/docs/html5-video-player/) | [**Pricing**](https://bplugins.com/products/html5-video-player/pricing/) | [**Support**](https://bplugins.com/support/) | [**Demo**](https://bplugins.com/products/html5-video-player/#demos)
 
+https://youtube.com/watch?v=rOVr8TX5C70
+
 [**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) is a flexible and fully responsive video player plugin for WordPress. It allows you to embed MP4 and other video formats with ease. You can customize the player to match your site design and support playback across all major browsers and devices.
-The plugin supports video embedding using shortcodes or Gutenberg blocks, making it easy to add video players to posts, pages, or widgets without writing any code. With built-in customization options, users can control video behavior such as autoplay, loop, mute, and more.
+
+The plugin supports video embedding using shortCodes or Gutenberg blocks, making it easy to add video players to posts, pages, or widgets without writing any code. With built-in customization options, users can control video behavior such as autoplay, loop, mute, and more.
 
 
 ### Key Features – Free Version
@@ -116,7 +119,7 @@ The [**Pro version**](https://bplugins.com/products/html5-video-player/pricing/)
 
 Getting started is easy!
 
-https://youtube.com/watch?v=dLU67e708fg
+https://youtube.com/watch?v=58P9jOzn7M4
 
 #### Step-by-Step Setup
 
@@ -235,6 +238,8 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 - The free version requires PHP **7.1** or higher.
 - The Pro version (with advanced features and Freemius integration) requires PHP **8.1** or higher.
 
+= Where do I report security bugs found in this plugin? =
+Please report security bugs found in the source code of the Flash & HTML5 Video plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fb205-6f66-453b-bdaa-c7c587b83810). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 == Screenshots ==
 
@@ -253,6 +258,14 @@ If you find a conflict between our plugin and a third-party plugin, please let u
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.7.2 - 25 Oct, 2025 =
+* Fixed: Stream Video does not play on iPhone (Premium)
+* Update: Dashboard
+* Feature: Change Brand Color 
+
+= 2.7.1 - 24 Sep, 2025 =
+* Fixed: Stream video does not play on playlist
 
 = 2.7.1 - 16 Aug, 2025 =
 * Fixed: Video does not play when Gutenberg plugin installed

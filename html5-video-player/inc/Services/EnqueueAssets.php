@@ -27,7 +27,7 @@ class EnqueueAssets
     public function enqueueAssets()
     {
         //plyrio
-        wp_register_script('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/js/plyr-v3.7.8.js', array(), H5VP_PRO_VER, false);
+        wp_register_script('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/js/plyr-v3.8.3.polyfilled.js', array(), '3.8.3', false);
         wp_register_script('html5-player-video-view-script', H5VP_PRO_PLUGIN_DIR . 'build/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, false);
 
         wp_register_script('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'build/frontend-playlist.js', array('react', 'react-dom', 'wp-util', 'bplugins-plyrio'), H5VP_PRO_VER, false);

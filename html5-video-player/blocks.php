@@ -29,10 +29,10 @@ if (!class_exists('H5VP_Block')) {
         {
             wp_register_script('html5-player-blocks', plugin_dir_url(__FILE__) . 'build/editor.js', array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'jquery', 'bplugins-plyrio'), H5VP_PRO_VER, true);
 
-            wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.7.8.js', array(), H5VP_PRO_VER, false);
+            wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.8.3.polyfilled.js', array(), '3.8.3', false);
 
             wp_register_script('h5vp-hls', H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js', array('bplugins-plyrio'), H5VP_PRO_VER, true);
-            wp_register_script('h5vp-dash', H5VP_PRO_PLUGIN_DIR . 'public/js/dash.min.js', array('bplugins-plyrio'), H5VP_PRO_VER, true);
+            wp_register_script('h5vp-dash', H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js', array('bplugins-plyrio'), H5VP_PRO_VER, true);
 
             wp_register_style('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all');
             wp_register_style('h5vp-editor', plugin_dir_url(__FILE__) . 'build/editor.css', array(), H5VP_PRO_VER, 'all');
@@ -45,7 +45,7 @@ if (!class_exists('H5VP_Block')) {
                 'userId' => get_current_user_id(),
                 'isPipe' => (bool) h5vp_fs()->can_use_premium_code(),
                 'hls' => H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js',
-                'dash' => H5VP_PRO_PLUGIN_DIR . 'public/js/dash.min.js',
+                'dash' => H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js',
                 'nonce' => wp_create_nonce('wp_ajax')
             ];
 

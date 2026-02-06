@@ -43,12 +43,24 @@ if (!class_exists('H5APAdmin')) {
 				[$this, 'dashboardPage'],
 				0
 			);
+
+			add_submenu_page(
+				'html5-video-player',
+				__('Add New', 'h5vp'),
+				__(' &#8627; Add New', 'h5vp'),
+				'edit_posts',
+				'html5-video-player-add-new',
+				[$this, 'redirectToAddNew'],
+				2
+			);
 		}
 
 		function dashboardPage()
 		{ ?>
 			<div id='h5vpAdminDashboard' data-info=<?php echo esc_attr(wp_json_encode([
-														'version' => H5VP_PRO_VER
+														'version' => H5VP_PRO_VER,
+														'isPremium' => h5vp_fs()->can_use_premium_code(),
+														'hasPro' => true
 													])); ?>></div>
 		<?php }
 
@@ -56,6 +68,22 @@ if (!class_exists('H5APAdmin')) {
 		{ ?>
 			<div id='h5vpAdminUpgrade'>Coming soon...</div>
 <?php }
+
+		/**	
+		 * Redirect to add new Model Viewer
+		 * */
+		function redirectToAddNew()
+		{
+			if (function_exists('headers_sent') && headers_sent()) {
+			?>
+				<script>
+					window.location.href = "<?php echo esc_url(admin_url('post-new.php?post_type=videoplayer')); ?>";
+				</script>
+			<?php
+			} else {
+				wp_redirect(admin_url('post-new.php?post_type=videoplayer'));
+			}
+		}
 	}
 	new H5VPAdmin;
 }

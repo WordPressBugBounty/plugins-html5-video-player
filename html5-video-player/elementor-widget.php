@@ -110,7 +110,7 @@ final class Elementor_Addons
 	 */
 	public function frontend_assets_scripts()
 	{
-		wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.7.8.js', array('jquery'), '3.7.8', false);
+		wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.8.3.polyfilled.js', array('jquery'), '3.8.3', false);
 		wp_register_script('html5-player-video-view-script', plugin_dir_url(__FILE__) . 'build/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), time(), true);
 
 		wp_register_style('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all');

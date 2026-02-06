@@ -31,6 +31,19 @@ class ShortcodesPro extends Shortcodes
     wp_enqueue_script('bplugins-owl-carousel');
     wp_enqueue_style('bplugins-owl-carousel');
 
+    
+    if(is_array($data['videos'])){
+      foreach ($data['videos'] as $key => $video) {
+        if (strpos($video['video_source'], '.m3u8') !== false) {
+          wp_enqueue_script('h5vp-hls');
+        }
+        if (strpos($video['video_source'], '.mpd') !== false) {
+            wp_enqueue_script('h5vp-dash');
+        }
+      }
+    }
+
+
     ob_start(); ?>
 
     <style>

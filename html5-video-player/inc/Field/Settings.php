@@ -58,6 +58,12 @@ class Settings
                     'title' => __('Play one player at a time', 'h5vp'),
                     'default' => false,
                 ],
+                [
+                    'id' => 'h5vp_player_primary_color',
+                    'type' => 'color',
+                    'title' => __('Brand Color', 'h5vp'),
+                    'default' => '#00b2ff',
+                ],
             ]
         ]);
     }
