@@ -2,7 +2,7 @@
 Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
-Requires at least: 5.8
+Requires at least: 5.7
 Tested up to: 6.9
 Stable tag: 2.7.2
 Requires PHP: 7.1
@@ -217,7 +217,7 @@ You can install it as other regular WordPress plugins. No different way. Please 
 
 = What Video type can I play? =
 
-You can play mp4, ogg video files.
+You can play mp4, ogg video files. Planning to add flv video support.
 
 = How many players i can publish on my site? =
 
