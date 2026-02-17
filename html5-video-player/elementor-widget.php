@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use H5VP\Elementor\VideoPlayer;
 use H5VP\Elementor\SelectFile;
 

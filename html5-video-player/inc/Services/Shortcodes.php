@@ -2,6 +2,8 @@
 
 namespace H5VP\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use H5VP\Helper\Block;
 
 
@@ -60,8 +62,8 @@ class Shortcodes
   {
     if ($isGutenberg) {
       $blocks = parse_blocks($post->post_content);
-      if (isset($blocks[0]['innerBlocks'][0])) {
-        return render_block($blocks[0]['innerBlocks'][0]);
+      if (isset($blocks[0])) {
+        return render_block($blocks[0]);
       }
       return null;
     }

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "html5-player/popup-trigger",
+  "title": "HTML5 Video Player Popup Trigger",
+  "icon": "button",
+  "category": "widgets",
+  "textdomain": "h5vp",
+  "keywords": [
+    "HTML5 Video Player Popup Trigger",
+    "Media Player Popup Trigger"
+  ],
+  "attributes": {
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "targetId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "inserter": false,
+    "reusable": false,
+    "html": false,
+    "lock": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

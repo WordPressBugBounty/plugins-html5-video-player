@@ -1,7 +1,9 @@
 {
-  "apiVersion": 2,
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
   "name": "html5-player/video",
   "title": "HTML5 Video Player",
+  "version": "2.8.0",
   "description": "Embed Video anywhere in your website ",
   "category": "media",
   "icon": "video-alt2",
@@ -114,7 +116,7 @@
           "enabled": false,
           "selector": null,
           "hasBtn": false,
-          "type": "poster",
+          "type": "button",
           "btnText": "Watch Video",
           "align": "center",
           "btnStyle": {
@@ -127,7 +129,8 @@
               "bottom": "10px",
               "left": "20px"
             }
-          }
+          },
+          "isTrigger": false
         },
         "overlay": {
           "enabled": false,
@@ -181,6 +184,14 @@
         "hideYoutubeUI": false,
         "startTime": null,
         "hideLoadingPlaceholder": false
+      }
+    },
+    "onlyLoggedIn": {
+      "type": "object",
+      "default": {
+        "whoCanSeeThisVideo": "everyone",
+        "allowedRoles": [],
+        "message": "This video is only for registered users. Please login to view the video."
       }
     },
     "seo": {
@@ -320,7 +331,7 @@
     },
     "popupType": {
       "type": "string",
-      "default": "poster"
+      "default": "button"
     },
     "playsinline": {
       "type": "boolean",

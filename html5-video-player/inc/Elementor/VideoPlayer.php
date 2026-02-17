@@ -2,6 +2,8 @@
 
 namespace H5VP\Elementor;
 
+
+
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 
@@ -525,6 +527,7 @@ class VideoPlayer extends Widget_Base
 			'storage' => [
 				'enabled' => true,
 			],
+			'ratio' => '16/9',
 		];
 
 
@@ -549,7 +552,7 @@ class VideoPlayer extends Widget_Base
 			"innerContent" => [],
 		];
 
-		// wp_kses_post(render_block($block));
+		echo wp_kses_post(render_block($block));
 	}
 
 	public static function i($array, $key1, $key2 = '', $default = false)

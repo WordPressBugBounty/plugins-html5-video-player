@@ -2,6 +2,8 @@
 
 namespace H5VP\Model;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use PPV\Base\Help;
 
 class Ajax
@@ -30,6 +32,9 @@ class Ajax
         // add_action('wp_ajax_save_password', [$this, 'save_password']);
 
         add_action('wp_ajax_h5vp_save_preferred_editor', [$this, 'h5vp_save_preferred_editor']);
+
+        // get editable roles
+        add_action('wp_ajax_h5vp_get_editable_roles', [$this, 'get_editable_roles']);
     }
 
     public static function instance()
@@ -50,7 +55,7 @@ class Ajax
 
     public function prepareAjax()
     {
-        if (!wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'wp_ajax')) {
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'] ?? '')), 'wp_ajax')) {
             wp_send_json_error('403 Forbidden');
         }
 
@@ -73,12 +78,18 @@ class Ajax
 
         $model = new $this->model();
 
+        
         if (method_exists($model, $this->requestMethod)) {
             unset($this->params['method']);
             unset($this->params['action']);
             unset($this->params['nonce']);
             unset($this->params['model']);
-            return $model->{$this->requestMethod}($this->params);
+            // wp_send_json_success($this->requestMethod);
+            $result = $model->{$this->requestMethod}($this->params);
+            wp_send_json_success($result);
+            // if(!isset($result['success'])){
+            //     wp_send_json_success($result);
+            // } 
         } else {
             wp_send_json_error('Method does not exists!');
         }
@@ -100,13 +111,13 @@ class Ajax
 
     public function h5vp_export_data()
     {
-        $nonce = sanitize_text_field($_POST['nonce']);
+        $nonce = sanitize_text_field(wp_unslash($_POST['nonce'] ?? ''));
 
         if (!wp_verify_nonce($nonce, 'wp_ajax')) {
             wp_send_json_error('invalid request');
         }
 
-        $id = sanitize_text_field($_POST['id']);
+        $id = sanitize_text_field(wp_unslash($_POST['id'] ?? ''));
         $output['id'] = $id;
         if (!$id) die();
 
@@ -144,7 +155,7 @@ class Ajax
 
     public function h5vp_save_preferred_editor()
     {
-        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_security_code'])), 'h5vp_security_key')) {
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_security_code'] ?? '')), 'h5vp_security_key')) {
             wp_send_json_error('invalid request');
         }
 
@@ -152,12 +163,34 @@ class Ajax
             wp_send_json_error('Invalid Authorization');
         }
 
-        $editor = sanitize_text_field(wp_unslash($_POST['editor']));
+        $editor = sanitize_text_field(wp_unslash($_POST['editor'] ?? ''));
 
         $options = get_option('h5vp_option', []);
         $options['h5vp_gutenberg_enable'] = $editor === 'gutenberg' ? '1' : '0';
         update_option('h5vp_option', $options);
 
         wp_send_json_success(['status' => 'success']);
+    }
+
+    public function get_editable_roles()
+    {
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_security_code'] ?? '')), 'wp_ajax')) {
+            wp_send_json_error('invalid request');
+        }
+
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error('Invalid Authorization');
+        }
+
+        global $wp_roles;
+        $roles = $wp_roles->roles;
+        $user_roles = array();
+        foreach ($roles as $role_key => $role) {
+            $user_roles[] = [
+                'label' => $role['name'],
+                'value' => $role_key
+            ];
+        }
+        wp_send_json_success( $user_roles);
     }
 }

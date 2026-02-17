@@ -335,6 +335,7 @@
 .h5vp_front_shortcode {
   position: relative;
   display: inline-block;
+  background: #146ef5;
 }
 
 .h5vp_front_shortcode .htooltip {

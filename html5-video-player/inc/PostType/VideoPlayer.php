@@ -2,6 +2,8 @@
 
 namespace H5VP\PostType;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use H5VP\Helper\Functions as Utils;
 
 class VideoPlayer
@@ -20,7 +22,7 @@ class VideoPlayer
         add_action('init', [$this, 'init']);
         // add_filter('allowed_block_types', [$this, 'allowedTypes'], 10, 2);
         // add_filter('enter_title_here', [$this, 'videoTitle']);
-        add_action('edit_form_after_title', [$this, 'shortcodeArea']);
+        // add_action('edit_form_after_title', [$this, 'shortcodeArea']);
 
         // // post type ui
         add_filter("manage_{$this->post_type}_posts_columns", [$this, 'postTypeColumns'], 1);
@@ -39,6 +41,8 @@ class VideoPlayer
         // add_filter( 'wp_insert_post_data' , [$this, 'filter_post_data'] , '99', 2 );
 
         add_filter('save_post', [$this, 'filter_post_data'], '99', 2);
+
+        add_action('add_meta_boxes', [$this, 'shortcode_area_metabox']);
     }
 
     public static function instance()
@@ -64,7 +68,7 @@ class VideoPlayer
                     'name' => __('Html5 Video Player', 'h5vp'),
                     'singular_name' => __('Video Player', 'h5vp'),
                     'add_new' => __('Add New Player', 'h5vp'),
-                    'add_new_item' => __('Add New Player', 'h5vp'),
+                    'add_new_item' => __(' &#8627; Add New', 'h5vp'),
                     'edit_item' => __('Edit Player', 'h5vp'),
                     'new_item' => __('New Player', 'h5vp'),
                     'view_item' => __('View Player', 'h5vp'),
@@ -75,7 +79,7 @@ class VideoPlayer
                 'show_ui' => true,
                 // 'publicly_queryable' => true,
                 // 'exclude_from_search' => true,
-                'show_in_menu' => 'html5-video-player',
+                // 'show_in_menu' => 'html5-video-player',
                 'menu_position' => 14,
                 'menu_icon' => H5VP_PRO_PLUGIN_DIR . 'admin/img/icn.png',
                 'has_archive' => false,
@@ -84,7 +88,7 @@ class VideoPlayer
                 'rewrite' => false,
                 'show_in_rest' => true,
                 'supports' => array('title', 'editor'),
-                'template' =>  [['html5-player/parent']],
+                'template' =>  [['html5-player/parent'], ["html5-player/popup-trigger"]],
                 'template_lock' => 'all',
             )
         );
@@ -186,12 +190,16 @@ class VideoPlayer
 
     public function postTypeContent($column_name, $post_id)
     {
+        $shortcode = [
+            'shortcode' => '[html5_video id=' . esc_attr($post_id) . ']',
+            'shortcode_deprecated' => '[video id=' . esc_attr($post_id) . ']',
+        ];
         switch ($column_name) {
             case 'shortcode':
-                echo '<div class="h5vp_front_shortcode"><input style="text-align: center; border: none; outline: none; background-color: #1e8cbe; color: #fff; padding: 4px 10px; border-radius: 3px;" value="[html5_video id=' . esc_attr($post_id) . ']" ><span class="htooltip">Copy To Clipboard</span></div>';
+                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="'.esc_attr($shortcode['shortcode']).'">Copy Shortcode</button><span class="htooltip">Copy To Clipboard</span> </div>';
                 break;
             case 'shortcode_deprecated':
-                echo '<div class="h5vp_front_shortcode"><input style="text-align: center; border: none; outline: none; background-color: #1e8cbe; color: #fff; padding: 4px 10px; border-radius: 3px;" value="[video id=' . esc_attr($post_id) . ']" ><span class="htooltip">Copy To Clipboard</span></div>';
+                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="'.esc_attr($shortcode['shortcode_deprecated']).'">Copy Shortcode </button><span class="htooltip">Copy To Clipboard</span></div>';
                 break;
             case 'export':
                 echo '<button class="button button-primary h5vp_export_button" data-id=' . esc_attr($post_id) . '>Export</button> <button class="button button-primary h5vp_import_button" data-id=' . esc_attr($post_id) . '>Import</button>';
@@ -222,32 +230,6 @@ class VideoPlayer
             'html5-player/vimeo',
             'html5-player/youtube'
         ];
-    }
-
-    public function shortcodeArea()
-    {
-        global $post;
-        if ($post->post_type == 'videoplayer') {
-?>
-            <div class="h5vp_playlist_shortcode">
-                <div class="shortcode-heading">
-                    <div class="icon"><span class="dashicons dashicons-video-alt3"></span> <?php echo esc_html__("HTML5 Video Player", "h5vp"); ?></div>
-                    <div class="text"> <a href="https://bplugins.com/support/" target="_blank"><?php echo esc_html__("Supports", "h5vp"); ?></a></div>
-                </div>
-                <div class="shortcode-left">
-                    <h3><?php echo esc_html__("Shortcode", "h5vp") ?></h3>
-                    <p><?php echo esc_html__("Copy and paste this shortcode into your posts, pages and widget content:", "h5vp") ?></p>
-                    <div class="shortcode" selectable>[html5_video id='<?php echo esc_attr($post->ID); ?>']</div>
-                </div>
-                <div class="shortcode-right">
-                    <h3><?php echo esc_html__("Template Include", "h5vp") ?></h3>
-                    <p><?php echo esc_html__("Copy and paste the PHP code into your template file:", "h5vp"); ?></p>
-                    <div class="shortcode">&lt;?php echo do_shortcode('[html5_video id="<?php echo esc_attr($post->ID); ?>"]');
-                        ?&gt;</div>
-                </div>
-            </div>
-<?php
-        }
     }
 
     /**
@@ -291,5 +273,37 @@ class VideoPlayer
             return $array[$key];
         }
         return $default;
+    }
+
+
+    // shortcode area
+    public function shortcode_area_metabox()
+    {
+        global $post;
+        if ($post->post_type == $this->post_type) {
+           add_meta_box(
+            'shortcode_area',
+            __('Shortcode', 'h5vp'),
+            [$this, 'shortcode_area'],
+            'videoplayer',
+            'side',
+            'default'
+        );
+        }
+    }
+
+    function shortcode_area(){
+        global $post;
+        $id = $post->ID;
+
+        $shortcode = "[html5_video id='" . esc_attr($id) . "']";
+        ?>
+        <div class="h5vp-down-arrow"></div>
+        <div class="h5vp_front_shortcode_area">
+            <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'h5vp'); ?></label>
+            <br />
+            <button class="button button-bplugins button-large h5vp_shortcode_copy_btn" data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php esc_html_e('Copy Shortcode', 'h5vp'); ?></button>
+        </div>
+        <?php
     }
 }

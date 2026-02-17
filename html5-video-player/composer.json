@@ -1,0 +1,17 @@
+{
+  "name": "raju/html5-video-player-pro",
+  "autoload": {
+    "psr-4": {
+      "H5VP\\": "inc/"
+    }
+  },
+  "authors": [
+    {
+      "name": "shehabulislam",
+      "email": "rajudjp28@gmail.com"
+    }
+  ],
+  "require": {
+    "freemius/wordpress-sdk": "^2.11"
+  }
+}

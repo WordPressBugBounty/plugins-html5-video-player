@@ -1,6 +1,8 @@
 <?php
 namespace H5VP\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Functions{
 
     protected static $settings = null;

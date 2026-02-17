@@ -4,13 +4,18 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.7.2
+ * Version:     2.8.0
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
- * License:     GPLv3    
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html  
  * Text Domain: h5vp
  * 
  */
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+    // Exit if accessed directly.
+}
 if ( function_exists( 'h5vp_fs' ) ) {
     h5vp_fs()->set_basename( false, __FILE__ );
 } else {
@@ -25,7 +30,7 @@ if ( function_exists( 'h5vp_fs' ) ) {
     define( 'H5VP_PRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'dev.local' ? time() : '2.7.2' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'dev.local' ? time() : '2.8.0' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
@@ -47,9 +52,11 @@ if ( function_exists( 'h5vp_fs' ) ) {
                 ),
                 'has_affiliation' => 'selected',
                 'menu'            => array(
-                    'slug'       => 'html5-video-player',
-                    'support'    => false,
-                    'first-path' => 'admin.php?page=choose-preferred-editor',
+                    'slug'        => 'edit.php?post_type=videoplayer',
+                    'support'     => false,
+                    'affiliation' => false,
+                    'contact'     => false,
+                    'first-path'  => 'admin.php?page=choose-preferred-editor',
                 ),
                 'is_live'         => true,
             ) );
@@ -89,7 +96,7 @@ if ( function_exists( 'h5vp_fs' ) ) {
             }
 
             function pipe_handler() {
-                if ( !wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'wp_ajax' ) ) {
+                if ( !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ?? '' ) ), 'wp_ajax' ) ) {
                     wp_send_json_success( false );
                 }
                 wp_send_json_success( h5vp_fs()->can_use_premium_code() );

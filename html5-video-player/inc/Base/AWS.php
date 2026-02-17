@@ -2,6 +2,8 @@
 
 namespace H5VP\Base;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class AWS
 {
     private $secrets;

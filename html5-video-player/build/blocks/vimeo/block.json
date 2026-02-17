@@ -5,6 +5,7 @@
   "title": "Vimeo Player",
   "description": "Vimeo Player",
   "category": "media",
+  "version": "2.8.0",
   "icon": "video-alt2",
   "keywords": [
     "Vimeo Player",
@@ -110,7 +111,7 @@
           "enabled": false,
           "selector": null,
           "hasBtn": false,
-          "type": "poster",
+          "type": "button",
           "btnText": "Watch Video",
           "align": "center",
           "btnStyle": {
@@ -123,7 +124,8 @@
               "bottom": "10px",
               "left": "20px"
             }
-          }
+          },
+          "isTrigger": false
         },
         "overlay": {
           "enabled": false,
@@ -177,6 +179,14 @@
             "backgroundColor": "#ffffffe3"
           }
         }
+      }
+    },
+    "onlyLoggedIn": {
+      "type": "object",
+      "default": {
+        "whoCanSeeThisVideo": "everyone",
+        "allowedRoles": [],
+        "message": "This video is only for registered users. Please login to view the video."
       }
     },
     "seo": {

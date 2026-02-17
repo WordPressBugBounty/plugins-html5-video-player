@@ -1,9 +1,10 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 use H5VP\Base\AWS;
 
 if (!function_exists('h5vp_get_option')) {
-    function h5vp_get_option($key)
+    function h5vp_get_option($key = 'h5vp_option')
     {
         $option = get_option($key);
 
@@ -50,6 +51,9 @@ if (!function_exists('h5vp_extract_base_url')) {
     function h5vp_extract_base_url($url)
     {
         $parts = parse_url($url);
+        if(!isset($parts['scheme']) || !isset($parts['host'])) {
+            return $url;
+        }
 
         $base_url = $parts['scheme'] . '://' . $parts['host'];
 
@@ -117,5 +121,27 @@ if (!function_exists('xorEncode')) {
             $out .= chr(ord($str[$i]) ^ ord($key[$i % strlen($key)]));
         }
         return base64_encode($out);
+    }
+}
+
+
+if (!function_exists('h5vp_getPostMeta')) {
+    function h5vp_getPostMeta($id, $key)
+    {
+        $meta = get_post_meta($id, $key, true);
+        return function ($key, $default = null, $is_boolean = false, $key2 = null) use ($meta) {
+            if ($key === 'all') {
+                return $meta;
+            }
+            if ($key2) {
+                $value = isset($meta[$key][$key2]) ? $meta[$key][$key2] : $default;
+            } else {
+                $value = isset($meta[$key]) ? $meta[$key] : $default;
+            }
+            if ($is_boolean) {
+                return $value == '1';
+            }
+            return $value;
+        };
     }
 }

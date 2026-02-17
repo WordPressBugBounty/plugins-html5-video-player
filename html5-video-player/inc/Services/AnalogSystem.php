@@ -2,6 +2,8 @@
 
 namespace H5VP\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class AnalogSystem
 {
     static function parsePlaylistData($id)

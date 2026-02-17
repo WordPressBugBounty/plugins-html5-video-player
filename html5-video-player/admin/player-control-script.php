@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
 //should be delete later raju
 add_action('wp_footer', function () {
     global $post;
@@ -93,10 +96,3 @@ add_action('wp_footer', function () {
     }
 }, 30);
 
-// add_filter('h5vp_player_script_45', function($content, $id){
-//     echo $content;
-// },20,2);
-
-// add_filter('h5vp_player_script_42', function($content, $id){
-//     echo $content;
-// },20,2);

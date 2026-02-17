@@ -2,6 +2,8 @@
 
 namespace H5VP\Base;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class GlobalChanges
 {
 
@@ -81,6 +83,7 @@ class GlobalChanges
         }
         if ('videoplayer' == get_post_type() || 'h5vpplaylist' == get_post_type() || $page == 'videoplayer_page_html5vp_quick_player') {
             $url = 'https://wordpress.org/support/plugin/html5-video-player/reviews/?filter=5#new-post';
+            /* translators: 1: number of messages */
             $text = sprintf(__(' If you like <strong>Html5 Video Player</strong> please leave us a <a href="%s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. Your Review is very important to us as it helps us to grow more. ', 'h5vp'), $url);
         }
         return $text;

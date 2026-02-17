@@ -2,12 +2,13 @@
 Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
-Requires at least: 5.7
+Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 2.7.2
+Stable tag: 2.8.0
 Requires PHP: 7.1
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPL v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
 
 HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s easy to use, fast, and supports MP4, WebM, OGG, FLV, Youtube and Vimeo.
 
@@ -21,8 +22,7 @@ HTML5 Video Player Plugin lets you embed responsive videos in WordPress. It’s 
 https://youtube.com/watch?v=rOVr8TX5C70
 
 [**HTML5 Video Player**](https://bplugins.com/products/html5-video-player/) is a flexible and fully responsive video player plugin for WordPress. It allows you to embed MP4 and other video formats with ease. You can customize the player to match your site design and support playback across all major browsers and devices.
-
-The plugin supports video embedding using shortCodes or Gutenberg blocks, making it easy to add video players to posts, pages, or widgets without writing any code. With built-in customization options, users can control video behavior such as autoplay, loop, mute, and more.
+The plugin supports video embedding using shortcodes or Gutenberg blocks, making it easy to add video players to posts, pages, or widgets without writing any code. With built-in customization options, users can control video behavior such as autoplay, loop, mute, and more.
 
 
 ### Key Features – Free Version
@@ -217,7 +217,7 @@ You can install it as other regular WordPress plugins. No different way. Please 
 
 = What Video type can I play? =
 
-You can play mp4, ogg video files. Planning to add flv video support.
+You can play mp4, ogg video files.
 
 = How many players i can publish on my site? =
 
@@ -258,6 +258,23 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.8.0 - 4 Feb, 2026 =
+* New: Custom Play Button (Premium)
+* New: Display video based on user role — logged-in users, logged-out users, or everyone (Premium).
+* New: Edit Icon in toolbar to change/upload new video
+* Update: Icons before each PanelBody title in the Gutenberg block
+* Update: Help text for control fields
+* Update: Remove Extra menus (affiliate, contact) 
+* Update: Move the shortcode area from the top to the right in the classic editor
+* Update: SVG icons now loading from the self-host 
+* Improved: Gutenberg Block Settings UI
+* Improved: Classic Shortcode Generator UI
+* Improved: Overall UI consistency and clarity
+* Fixed: Analytics issue and added new information to get accurate analytics
+* Fixed: Play/Pause icon does not work in playlist video list
+* Fixed: hasBtn enable/disable getting error on block (Popup)
+
 
 = 2.7.2 - 25 Oct, 2025 =
 * Fixed: Stream Video does not play on iPhone (Premium)

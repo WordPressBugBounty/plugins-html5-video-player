@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function h5vp_add_duplicate_button($actions, $post)
 {
@@ -25,8 +25,8 @@ add_action('post_row_actions', 'h5vp_add_duplicate_button', 10, 2);
 function h5vp_dulicate_player()
 {
     global $wpdb;
-    $main_id = $_POST['postid'];
-    $security = $_POST['security'];
+    $main_id = sanitize_text_field(wp_unslash($_POST['postid'] ?? ''));
+    $security = sanitize_text_field(wp_unslash($_POST['security'] ?? ''));
 
     $newPost = get_post($main_id, 'ARRAY_A');
 
@@ -34,10 +34,10 @@ function h5vp_dulicate_player()
     $newPost['post_name'] = $newPost['post_name'] . '-copy';
     $newPost['post_status'] = 'draft';
 
-    $newPost['post_date'] = date('Y-m-d H:i:s', current_time('timestamp', 0));
-    $newPost['post_date_gmt'] = date('Y-m-d H:i:s', current_time('timestamp', 1));
-    $newPost['post_modified'] = date('Y-m-d H:i:s', current_time('timestamp', 0));
-    $newPost['post_modified_gmt'] = date('Y-m-d H:i:s', current_time('timestamp', 1));
+    $newPost['post_date'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 0));
+    $newPost['post_date_gmt'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 1));
+    $newPost['post_modified'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 0));
+    $newPost['post_modified_gmt'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 1));
 
     // Remove some of the keys
     unset($newPost['ID']);
@@ -68,15 +68,15 @@ add_action('wp_ajax_h5vp_dulicate_player', 'h5vp_dulicate_player');
 
 
 function h5vp_duplicate_notice()
-{
+{ 
+    $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
 
-    if (isset($_POST['name'])) {
+    if ($name) {
         echo '<div class="notice notice-success is-dismissible">
-        <p>' . esc_html($_POST['name']) . '</p>
+        <p>' . esc_html($name) . '</p>
     </div>';
     }
-    $result = $_GET['duplicate'] ?? false;
-    $result = sanitize_text_field($result) ?? false;
+    $result = sanitize_text_field(wp_unslash($_GET['duplicate'] ?? false));
     if ($result == 'success') {
 ?>
         <div class="notice notice-success is-dismissible">

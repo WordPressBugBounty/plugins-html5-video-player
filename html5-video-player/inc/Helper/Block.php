@@ -2,6 +2,8 @@
 
 namespace H5VP\Helper;
 
+if (! defined('ABSPATH')) exit; // Exit if accessed directly
+
 class Block
 {
 
@@ -87,7 +89,7 @@ class Block
                         "enabled" => count($chapters) > 0,
                         "points" => $chapters,
                     ],
-                    "preload" => 'none'
+                    "preload" => $this->get_post_meta($id, 'h5vp_preload_playerio', 'metadata'),
                 ],
                 "features" => [
                     "popup" => [
@@ -159,7 +161,13 @@ class Block
                     "disablePause" => $this->get_post_meta($id, 'h5vp_disable_pause', false, true),
                     "hideYoutubeUI" => $this->get_post_meta($id, 'hideYoutubeUI', false, true),
                     "startTime" => $this->get_post_meta($id, 'h5vp_start_time', 0),
-                    "hideLoadingPlaceholder" => false
+                    "hideLoadingPlaceholder" => false,
+                    'customPlayButtonSelector' => $this->get_post_meta($id, 'h5vp_custom_play_button_css_selector', ''),
+                ],
+                'onlyLoggedIn' => [
+                    'whoCanSeeThisVideo' => $this->get_post_meta($id, 'whoo_can_see_this_video', 'everyone'),
+                    'allowedRoles' => $this->get_post_meta($id, 'h5vp_allowed_user_roles', []),
+                    'message' => $this->get_post_meta($id, 'h5vp_loggedin_user_text', 'This video is only for registered users. Please login to view the video.')
                 ],
                 'seo' => [
                     'name' => $this->get_post_meta($id, 'h5vp_seo_name', ''),
@@ -318,7 +326,7 @@ class Block
                     "disablePause" => false,
                     "hideYoutubeUI" => $hideYoutubeUI,
                     "startTime" => false,
-                    "hideLoadingPlaceholder" => false
+                    "hideLoadingPlaceholder" => false,
                 ],
 
                 "hideYoutubeUI" =>  $hideYoutubeUI,

@@ -2,6 +2,7 @@
 
 namespace H5VP;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Init
 {
@@ -21,6 +22,9 @@ class Init
             Field\QuickPlayer::class,
             Field\PlaylistFieldPro::class,
             Model\Ajax::class,
+            // Model\Analytics::class,
+            Rest\Analytics::class,
+            Rest\Generic::class,
             Base\Notice::class
         ];
     }

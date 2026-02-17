@@ -1,7 +1,7 @@
 <?php
 
 namespace H5VP\Rest;
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 use H5VP\Model\Video;
 
 class VideoController extends \WP_REST_Controller

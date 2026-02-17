@@ -2,6 +2,8 @@
 
 namespace H5VP\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use H5VP\Helper\Functions;
 use H5VP\Helper\LocalizeScript;
 
@@ -62,7 +64,7 @@ class EnqueueAssets
 
         if ((!empty($post) && 'videoplayer' == $post->post_type || $screen == 'edit.php') || (!empty($post) && 'h5vpplaylist' == $post->post_type) || $screen == 'videoplayer_page_h5vp-support' || $screen == 'videoplayer_page_html5vp_settings' || $screen == 'videoplayer_page_html5vp_quick_player' || $screen == 'videoplayer_page_free-plugins-from-bplugins' || $screen == 'videoplayer_page_premium-plugins' || $screen == 'plugins.php' || $screen = 'videoplayer_page_analytics') {
 
-            wp_enqueue_script('h5vp-chart', 'https://cdn.jsdelivr.net/npm/chart.js', array('jquery'), H5VP_PRO_VER, false);
+            wp_enqueue_script('h5vp-chart', H5VP_PRO_PLUGIN_DIR . 'admin/js/chart.js', array('jquery'), H5VP_PRO_VER, false);
             wp_enqueue_script('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.js', array('jquery', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
             wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
 
@@ -88,6 +90,17 @@ class EnqueueAssets
         if ($screen == 'videoplayer_page_free-plugins-from-bplugins') {
             wp_enqueue_script('plugin-install');
             wp_enqueue_script('updates');
+        }
+
+        // analytics assets
+        wp_register_script('h5vp-analytics', H5VP_PRO_PLUGIN_DIR . 'build/admin/analytics/index.js', array('react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
+        wp_register_style('h5vp-analytics', H5VP_PRO_PLUGIN_DIR . 'build/admin/analytics/index.css', array(), H5VP_PRO_VER, 'all');
+        if($screen == 'videoplayer_page_analytics') {
+            wp_enqueue_script('h5vp-analytics');
+            wp_enqueue_style('h5vp-analytics');
+            wp_localize_script('h5vp-analytics', 'h5vpAnalytics', array(
+                'nonce' => wp_create_nonce('wp_ajax')
+            ));
         }
     }
 

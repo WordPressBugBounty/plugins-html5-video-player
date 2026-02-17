@@ -2,6 +2,8 @@
 
 namespace H5VP\Base;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Menu
 {
 
@@ -9,6 +11,7 @@ class Menu
     {
         add_action('admin_menu', array($this, 'register_menu'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+        add_action('admin_head', [$this, 'admin_head']);
     }
 
     public function register_menu()
@@ -35,4 +38,19 @@ class Menu
         <div class="" id="h5vp-choose-preferred-editor"></div>
 <?php
     }
+
+    public function admin_head()
+    {
+        ?>
+        <style>
+            .fs-submenu-item.html5-video-player.pricing.upgrade-mode {
+                background: #146ef5;
+                border-radius: 3px;
+                color: #fff;
+                display: inline-block;
+                padding: 9px 20px 9px 18px;
+            }
+        </style>
+    <?php
+    }   
 }

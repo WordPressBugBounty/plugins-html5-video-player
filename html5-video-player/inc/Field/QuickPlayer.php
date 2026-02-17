@@ -2,6 +2,8 @@
 
 namespace H5VP\Field;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class QuickPlayer
 {
     private $prefix = 'h5vp_quick';
@@ -19,7 +21,7 @@ class QuickPlayer
             \CSF::createOptions($this->prefix, array(
                 'menu_title' => 'Quick Player',
                 'menu_slug' => 'html5vp_quick_player',
-                'menu_parent' => 'html5-video-player',
+                'menu_parent' => 'edit.php?post_type=videoplayer',
                 'menu_type' => 'submenu',
                 'theme' => 'light',
                 'data_type' => 'unserialize',
@@ -28,6 +30,7 @@ class QuickPlayer
                 'framework_class' => 'h5vp_quick_player',
                 'framework_title' => 'HTML5 Quick Video Player Preset',
                 'show_bar_menu' => false,
+                // 'menu_position' => 3
                 // 'menu_capability' => 'edit_posts'
             ));
 
@@ -40,6 +43,11 @@ class QuickPlayer
         \CSF::createSection($this->prefix, array(
             'title' => 'Quick Player',
             'fields' => array(
+                 array(
+                    'type' => 'heading',
+                    'title' => ' ',
+                    'content' => '<div style="display:flex;justify-content:end;gap:5px"><a href="https://bplugins.com/docs/html5-video-player/how-to/quick-player/" target="_blank" class="button button-primary" rel="noopener noreferrer"> Full Documentation</a></div>',
+                ),
                 array(
                     'title' => 'Shortcode',
                     'type' => 'content',

@@ -1,4 +1,6 @@
 <?php
+
+ if ( ! defined( 'ABSPATH' ) ) exit;
 /*-------------------------------------------------------------------------------*/
 /*   AJAX Get Slider List
 /*-------------------------------------------------------------------------------*/
@@ -45,9 +47,10 @@ function h5vp_pro_reg_script() {
 }
 add_action( 'admin_init', 'h5vp_pro_reg_script' );
 
+$request_uri = sanitize_url( wp_unslash($_SERVER['REQUEST_URI']), null );
 
 //-------------------------------------------------------------------------------------------------	
-if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post.php' ) ) {
+if ( strstr( $request_uri, 'wp-admin/post-new.php' ) || strstr( $request_uri, 'wp-admin/post.php' ) ) {
 	
 // ADD STYLE & SCRIPT
 	add_action( 'admin_head', 'h5vp_pro_editor_add_init' );
@@ -82,35 +85,36 @@ if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) || strstr( $_SER
 // GENERATE POPUP CONTENT
 add_action('admin_footer', 'h5vp_pro_popup_content');	
 function h5vp_pro_popup_content() {
+	$request_uri = sanitize_url( wp_unslash($_SERVER['REQUEST_URI']), null );
 
-if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post.php' ) ) {
+	if ( strstr( $request_uri, 'wp-admin/post-new.php' ) || strstr( $request_uri, 'wp-admin/post.php' ) ) {
 
-if ( get_post_type( get_the_ID() ) != 'videoplayer' ) {
-// START GENERATE POPUP CONTENT
+	if ( get_post_type( get_the_ID() ) != 'videoplayer' ) {
+	// START GENERATE POPUP CONTENT
 
-?>
-<div id="h5vpmodal" style="display:none;">
-<div id="tinyform" style="width: 550px;">
-<form method="post">
+	?>
+	<div id="h5vpmodal" style="display:none;">
+	<div id="tinyform" style="width: 550px;">
+	<form method="post">
 
-<div class="h5vp_input" id="h5vptinymce_select_slider_div">
-<label class="label_option" for="h5vptinymce_select_slider">Html5 Video Player</label>
-	<select class="h5vp_select" name="h5vptinymce_select_slider" id="h5vptinymce_select_slider">
-    <option id="selectslider" type="text" value="select">- Select Player -</option>
-</select>
-<div class="clearfix"></div>
-</div>
+	<div class="h5vp_input" id="h5vptinymce_select_slider_div">
+	<label class="label_option" for="h5vptinymce_select_slider">Html5 Video Player</label>
+		<select class="h5vp_select" name="h5vptinymce_select_slider" id="h5vptinymce_select_slider">
+		<option id="selectslider" type="text" value="select">- Select Player -</option>
+	</select>
+	<div class="clearfix"></div>
+	</div>
 
-<div class="h5vp_button">
-<input type="button" value="Insert Shortcode" name="h5vp_insert_scrt" id="h5vp_insert_scrt" class="button-secondary" />	
-<div class="clearfix"></div>
-</div>
+	<div class="h5vp_button">
+	<input type="button" value="Insert Shortcode" name="h5vp_insert_scrt" id="h5vp_insert_scrt" class="button-secondary" />	
+	<div class="clearfix"></div>
+	</div>
 
-</form>
-</div>
-</div>
-<?php 
-	}
+	</form>
+	</div>
+	</div>
+	<?php 
+		}
   } //END
 }
 

@@ -2,6 +2,8 @@
 
 namespace H5VP\Services;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use H5VP\Services\AnalogSystem;
 use H5VP\Helper\DefaultArgs;
 
@@ -24,27 +26,29 @@ class ShortcodesPro extends Shortcodes
       return false;
     }
 
-
     $data = AnalogSystem::parsePlaylistData($atts['id']);
+    $meta = h5vp_getPostMeta($atts['id'], 'h5vp_playlist');
     wp_enqueue_script('html5-player-playlist');
     wp_enqueue_style('html5-player-playlist');
     wp_enqueue_script('bplugins-owl-carousel');
     wp_enqueue_style('bplugins-owl-carousel');
 
-    
-    if(is_array($data['videos'])){
+
+    if (is_array($data['videos'])) {
       foreach ($data['videos'] as $key => $video) {
         if (strpos($video['video_source'], '.m3u8') !== false) {
           wp_enqueue_script('h5vp-hls');
         }
         if (strpos($video['video_source'], '.mpd') !== false) {
-            wp_enqueue_script('h5vp-dash');
+          wp_enqueue_script('h5vp-dash');
         }
       }
     }
 
+    $unique_id = wp_unique_id('h5vp_playlist_');
+    ob_start();
 
-    ob_start(); ?>
+?>
 
     <style>
       .h5vp_playlist .plyr {
@@ -52,7 +56,7 @@ class ShortcodesPro extends Shortcodes
       }
     </style>
 
-    <div class="h5vp_playlist" data-attributes="<?php echo esc_attr(wp_json_encode($data)) ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('wp_ajax')) ?>"></div>
+    <div class="h5vp_playlist <?php echo esc_attr($unique_id) ?>" data-attributes="<?php echo esc_attr(wp_json_encode($data)) ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('wp_ajax')) ?>"></div>
 
 <?php
 

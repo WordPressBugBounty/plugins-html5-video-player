@@ -2,6 +2,8 @@
 
 namespace H5VP\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class DefaultArgs
 {
 

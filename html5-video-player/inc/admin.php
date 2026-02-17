@@ -1,12 +1,22 @@
 <?php
+if (! defined('ABSPATH')) exit;
 
 if (!class_exists('H5APAdmin')) {
 	class H5VPAdmin
 	{
+		protected static $_instance = null;
 		function __construct()
 		{
 			add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
-			add_action('admin_menu', [$this, 'adminMenu']);
+			add_action('admin_menu', [$this, 'adminMenu'], 20);
+		}
+
+		public static function getInstance()
+		{
+			if (null === self::$_instance) {
+				self::$_instance = new self;
+			}
+			return self::$_instance;
 		}
 
 		function adminEnqueueScripts($hook)
@@ -23,35 +33,14 @@ if (!class_exists('H5APAdmin')) {
 
 		function adminMenu()
 		{
-
-			add_menu_page(
-				__('HTML5 Video Player', 'h5vp'),
-				__('HTML5 Video Player', 'h5vp'),
+			add_submenu_page(
+				'edit.php?post_type=videoplayer',
+				__('Demo & Help', 'h5ap'),
+				__('Demo & Help', 'h5ap'),
 				'manage_options',
 				'html5-video-player',
 				[$this, 'dashboardPage'],
-				H5VP_PRO_PLUGIN_DIR . 'admin/img/icn.png',
-				15
-			);
-
-			add_submenu_page(
-				'html5-video-player',
-				__('Dashboard', 'h5ap'),
-				__('Dashboard', 'h5ap'),
-				'manage_options',
-				'html5-video-player',
-				[$this, 'dashboardPage'],
-				0
-			);
-
-			add_submenu_page(
-				'html5-video-player',
-				__('Add New', 'h5vp'),
-				__(' &#8627; Add New', 'h5vp'),
-				'edit_posts',
-				'html5-video-player-add-new',
-				[$this, 'redirectToAddNew'],
-				2
+				20
 			);
 		}
 
@@ -68,22 +57,6 @@ if (!class_exists('H5APAdmin')) {
 		{ ?>
 			<div id='h5vpAdminUpgrade'>Coming soon...</div>
 <?php }
-
-		/**	
-		 * Redirect to add new Model Viewer
-		 * */
-		function redirectToAddNew()
-		{
-			if (function_exists('headers_sent') && headers_sent()) {
-			?>
-				<script>
-					window.location.href = "<?php echo esc_url(admin_url('post-new.php?post_type=videoplayer')); ?>";
-				</script>
-			<?php
-			} else {
-				wp_redirect(admin_url('post-new.php?post_type=videoplayer'));
-			}
-		}
 	}
-	new H5VPAdmin;
+	H5VPAdmin::getInstance();
 }
