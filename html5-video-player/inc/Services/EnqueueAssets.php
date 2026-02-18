@@ -61,14 +61,21 @@ class EnqueueAssets
     public function enqueueAdminAssets($screen)
     {
         global $post;
-
-        if ((!empty($post) && 'videoplayer' == $post->post_type || $screen == 'edit.php') || (!empty($post) && 'h5vpplaylist' == $post->post_type) || $screen == 'videoplayer_page_h5vp-support' || $screen == 'videoplayer_page_html5vp_settings' || $screen == 'videoplayer_page_html5vp_quick_player' || $screen == 'videoplayer_page_free-plugins-from-bplugins' || $screen == 'videoplayer_page_premium-plugins' || $screen == 'plugins.php' || $screen = 'videoplayer_page_analytics') {
-
+        // improve the next line code quality
+        $post_type = null;
+        if(function_exists('get_post_type')) {
+            $post_type = get_post_type() ? get_post_type() : $_GET['post_type'] ?? '';
+        }
+        
+        $isInPages = in_array($screen, array( 'videoplayer_page_h5vp-support', 'videoplayer_page_html5vp_settings', 'videoplayer_page_html5vp_quick_player', 'videoplayer_page_free-plugins-from-bplugins', 'videoplayer_page_premium-plugins', 'plugins.php', 'videoplayer_page_analytics'));
+        $isInPostType = in_array($post_type, array('videoplayer', 'h5vpplaylist'));
+        
+        if ($isInPages || $isInPostType) {
+            
             wp_enqueue_script('h5vp-chart', H5VP_PRO_PLUGIN_DIR . 'admin/js/chart.js', array('jquery'), H5VP_PRO_VER, false);
             wp_enqueue_script('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.js', array('jquery', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
             wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
-
-
+            
             // aws s3 picker 
             if (!empty($post) && 'videoplayer' == $post->post_type && $screen == 'post-new.php' || $screen == 'post.php') {
                 wp_enqueue_style('h5vp-aws-picker', H5VP_PRO_PLUGIN_DIR . 'build/admin/aws-s3-picker.css');
@@ -78,7 +85,13 @@ class EnqueueAssets
                 ]);
             }
 
-            wp_localize_script('h5vp-admin', 'h5vpAdmin', array(
+        }
+
+        foreach([
+            'html5-player-video-editor-script',
+            'html5-player-parent-editor-script',
+        ] as $script) {
+            wp_localize_script($script, 'h5vpAdmin', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'website' => site_url(),
                 'email' => get_option('admin_email'),
@@ -86,7 +99,7 @@ class EnqueueAssets
                 'nonce' => wp_create_nonce('wp_ajax')
             ));
         }
-
+        
         if ($screen == 'videoplayer_page_free-plugins-from-bplugins') {
             wp_enqueue_script('plugin-install');
             wp_enqueue_script('updates');

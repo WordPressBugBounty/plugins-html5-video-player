@@ -4,7 +4,7 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 Requires PHP: 7.1
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -259,7 +259,11 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 
 == Changelog ==
 
-= 2.8.0 - 4 Feb, 2026 =
+= 2.8.1 - 18 Feb, 2026 =
+* Fixed: crashed the WooCommerce order view page
+* Fixed: Loading your CSS everywhere.
+
+= 2.8.0 - 17 Feb, 2026 =
 * New: Custom Play Button (Premium)
 * New: Display video based on user role — logged-in users, logged-out users, or everyone (Premium).
 * New: Edit Icon in toolbar to change/upload new video

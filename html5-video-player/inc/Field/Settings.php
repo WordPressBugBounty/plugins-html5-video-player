@@ -28,7 +28,7 @@ class Settings
                 'show_all_options' => false,
                 'save_defaults' => true,
                 'framework_class' => 'h5vp_options',
-                'framework_title' => 'HTML5 Video Player Preset',
+                'framework_title' => 'Settings',
                 'show_bar_menu' => false,
                 // 'menu_capability' => 'edit_posts'
             ));

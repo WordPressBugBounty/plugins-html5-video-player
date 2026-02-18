@@ -2,7 +2,7 @@
 
 namespace H5VP\PostType;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (! defined('ABSPATH')) exit; // Exit if accessed directly
 
 use H5VP\Helper\Functions as Utils;
 
@@ -72,6 +72,7 @@ class VideoPlayer
                     'edit_item' => __('Edit Player', 'h5vp'),
                     'new_item' => __('New Player', 'h5vp'),
                     'view_item' => __('View Player', 'h5vp'),
+                    'all_items' => __('All Players', 'h5vp'),
                     'search_items' => __('Search Player', 'h5vp'),
                     'not_found' => __('Sorry, we couldn\'t find the Player you are looking for.', 'h5vp'),
                 ),
@@ -196,10 +197,10 @@ class VideoPlayer
         ];
         switch ($column_name) {
             case 'shortcode':
-                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="'.esc_attr($shortcode['shortcode']).'">Copy Shortcode</button><span class="htooltip">Copy To Clipboard</span> </div>';
+                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode']) . '">Copy Shortcode</button><span class="htooltip">Copy To Clipboard</span> </div>';
                 break;
             case 'shortcode_deprecated':
-                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="'.esc_attr($shortcode['shortcode_deprecated']).'">Copy Shortcode </button><span class="htooltip">Copy To Clipboard</span></div>';
+                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode_deprecated']) . '">Copy Shortcode </button><span class="htooltip">Copy To Clipboard</span></div>';
                 break;
             case 'export':
                 echo '<button class="button button-primary h5vp_export_button" data-id=' . esc_attr($post_id) . '>Export</button> <button class="button button-primary h5vp_import_button" data-id=' . esc_attr($post_id) . '>Import</button>';
@@ -281,29 +282,30 @@ class VideoPlayer
     {
         global $post;
         if ($post->post_type == $this->post_type) {
-           add_meta_box(
-            'shortcode_area',
-            __('Shortcode', 'h5vp'),
-            [$this, 'shortcode_area'],
-            'videoplayer',
-            'side',
-            'default'
-        );
+            add_meta_box(
+                'shortcode_area',
+                __('Shortcode', 'h5vp'),
+                [$this, 'shortcode_area'],
+                'videoplayer',
+                'side',
+                'default'
+            );
         }
     }
 
-    function shortcode_area(){
+    function shortcode_area()
+    {
         global $post;
         $id = $post->ID;
 
         $shortcode = "[html5_video id='" . esc_attr($id) . "']";
-        ?>
+?>
         <div class="h5vp-down-arrow"></div>
         <div class="h5vp_front_shortcode_area">
             <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'h5vp'); ?></label>
             <br />
             <button class="button button-bplugins button-large h5vp_shortcode_copy_btn" data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php esc_html_e('Copy Shortcode', 'h5vp'); ?></button>
         </div>
-        <?php
+<?php
     }
 }
