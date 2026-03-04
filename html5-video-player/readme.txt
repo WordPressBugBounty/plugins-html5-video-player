@@ -4,7 +4,7 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 2.8.1
+Stable tag: 2.9.0
 Requires PHP: 7.1
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -258,6 +258,12 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.9.0 - 03 Mar, 2026 =
+* New: Integrate Google Analytics GA4 (Premium)
+* Fixed: Duplicate Video Player
+* Update: Help & Demo page
+* Update: Move shortcode area to top
 
 = 2.8.1 - 18 Feb, 2026 =
 * Fixed: crashed the WooCommerce order view page

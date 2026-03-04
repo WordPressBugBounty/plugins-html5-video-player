@@ -90,6 +90,7 @@ class EnqueueAssets
         foreach([
             'html5-player-video-editor-script',
             'html5-player-parent-editor-script',
+            'h5vp-admin'
         ] as $script) {
             wp_localize_script($script, 'h5vpAdmin', array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),

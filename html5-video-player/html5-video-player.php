@@ -4,7 +4,7 @@
  * Plugin Name: Html5 Video Player
  * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.8.1
+ * Version:     2.9.0
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * License:           GPL v2 or later
@@ -30,35 +30,36 @@ if ( function_exists( 'h5vp_fs' ) ) {
     define( 'H5VP_PRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'dev.local' ? time() : '2.8.1' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'dev.local' ? time() : '2.9.0' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
         if ( !isset( $h5vp_fs ) ) {
             // Include Freemius SDK.
             $h5vp_fs = fs_dynamic_init( array(
-                'id'              => '14259',
-                'slug'            => 'html5-video-player',
-                'premium_slug'    => 'html5-video-player-pro',
-                'type'            => 'plugin',
-                'public_key'      => 'pk_42a72d9cdea87e78854f59cdc1293',
-                'is_premium'      => false,
-                'premium_suffix'  => 'Pro',
-                'has_addons'      => false,
-                'has_paid_plans'  => true,
-                'trial'           => array(
+                'id'               => '14259',
+                'slug'             => 'html5-video-player',
+                'premium_slug'     => 'html5-video-player-pro',
+                'type'             => 'plugin',
+                'public_key'       => 'pk_42a72d9cdea87e78854f59cdc1293',
+                'is_premium'       => false,
+                'premium_suffix'   => 'Pro',
+                'has_addons'       => false,
+                'has_paid_plans'   => true,
+                'trial'            => array(
                     'days'               => 7,
                     'is_require_payment' => true,
                 ),
-                'has_affiliation' => 'selected',
-                'menu'            => array(
+                'has_affiliation'  => 'selected',
+                'menu'             => array(
                     'slug'        => 'edit.php?post_type=videoplayer',
                     'support'     => false,
                     'affiliation' => false,
                     'contact'     => false,
                     'first-path'  => 'admin.php?page=choose-preferred-editor',
                 ),
-                'is_live'         => true,
+                'is_live'          => true,
+                'is_org_compliant' => true,
             ) );
         }
         return $h5vp_fs;
@@ -66,9 +67,6 @@ if ( function_exists( 'h5vp_fs' ) ) {
 
     h5vp_fs();
     do_action( 'h5vp_fs_loaded' );
-    // if (file_exists(dirname(__FILE__) . '/admin/awsmanager/vendor/autoload.php') && version_compare(PHP_VERSION, '8.1', '>=')) {
-    //     require_once(dirname(__FILE__) . '/admin/awsmanager/vendor/autoload.php');
-    // }
     require_once __DIR__ . '/includes.php';
     add_action( 'plugins_loaded', function () {
         if ( class_exists( 'H5VP\\Init' ) ) {

@@ -73,7 +73,6 @@ class Shortcodes
     } else {
       return 'something is wrong';
     }
-    return render_block($block);
   }
 
   public function video_player($atts)

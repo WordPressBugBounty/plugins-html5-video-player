@@ -28,6 +28,10 @@ function h5vp_dulicate_player()
     $main_id = sanitize_text_field(wp_unslash($_POST['postid'] ?? ''));
     $security = sanitize_text_field(wp_unslash($_POST['security'] ?? ''));
 
+    if (!wp_verify_nonce($security, 'h5vp_duplicate_nonce') || !current_user_can('edit_posts')) {
+        wp_send_json_error(['message' => 'Security check failed']);
+    }
+
     $newPost = get_post($main_id, 'ARRAY_A');
 
     $newPost['post_title'] = $newPost['post_title'] . '-Copy';
@@ -61,8 +65,10 @@ function h5vp_dulicate_player()
 
     update_post_meta($newPostId, 'h5vp_total_views', 0);
 
-    echo esc_html($newPostId);
-    die();
+    wp_send_json_success(array(
+        'message' => 'Player duplicated successfully',
+        'post_id' => $newPostId
+    ));
 }
 add_action('wp_ajax_h5vp_dulicate_player', 'h5vp_dulicate_player');
 

@@ -28,7 +28,10 @@ class Analytics{
                 $token = $params['token'] ?? ($request->get_param('token') ?? '');
 
                 $data = $this->h5vp_verify_analytics_token($token);
-                return $data !== false;
+                if(isset($data['uid']) && isset($data['pid'])){
+                    return true;
+                }
+                return false;
             },
         ]);
     }

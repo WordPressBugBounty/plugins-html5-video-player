@@ -124,6 +124,9 @@ class AWS
     //Clicked AWS File Picker (ajax call)
     function h5vp_aws_picker()
     {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('You are not authorized to upload files');
+        }
         wp_send_json_success($this->get_s3_list_objects());
     }
 }

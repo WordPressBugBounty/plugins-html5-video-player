@@ -80,6 +80,9 @@ if (!class_exists('H5VP_Block')) {
                 'userId'   => $user_id ?: null,
                 'iat'      => $issued_at,
                 'ttl'      => $ttl,
+                'enableBuilInAnalytics' => (bool) h5vp_fs()->can_use_premium_code() && $get_option('enable_analytics'),
+                '_enabledGA4' => (bool) h5vp_fs()->can_use_premium_code() && $get_option('enable_ga4'),
+                'ga4_tracking_id' => $get_option('ga4_tracking_id', '')
             ]);
             
         }

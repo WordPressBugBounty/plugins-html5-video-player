@@ -76,10 +76,45 @@ class ShortcodesPro extends Shortcodes
       'repeat' => false,
       'muted' => false,
       'width' => '',
-      'preload' => null,
+      'preload' => 'metadata',
       'ios_native' => 'true',
       'controls' => null,
-      'hideControls' => null
+      'hideControls' => null,
+      'playsinline' => true,
+      'seek_time' => 10,
+      'ratio' => null,
+      'thumb_in_pause' => false,
+      'watermark' => false,
+      'watermark_type' => 'email',
+      'watermark_text' => '',
+      'watermark_color' => '#f00',
+      // 'password_protected' => false,
+      // 'password' => '',
+      // 'password_error_message' => '',
+      // 'password_btn_text' => '',
+      // 'password_btn_color' => '#f00',
+      // 'password_btn_bg_color' => '#fff',
+      // 'password_heading' => '',
+      'sticky' => false,
+      'sticky_position' => 'top_right',
+      'play_when_visible' => false,
+      'disable_pause' => false,
+
+      'hide_youtube_ui' => false,
+
+      'start_time' => null,
+      'hide_loading_placeholder' => false,
+      'additional_id' => '',
+
+      'who_can_see_this_video' => 'everyone',
+      'allowed_roles' => '',
+      'logged_out_user_text' => 'This video is only for registered users. Please login to watch the video.',
+      
+      'popup' => false,
+      'popup_type' => 'button',
+      'popup_btn_text' => 'Watch Video',
+      'popup_btn_color' => '#fff',
+      'popup_btn_bg_color' => '#006BA1',
     );
   }
 }

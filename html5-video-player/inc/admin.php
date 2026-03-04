@@ -36,7 +36,7 @@ if (!class_exists('H5APAdmin')) {
 			add_submenu_page(
 				'edit.php?post_type=videoplayer',
 				__('Demo & Help', 'h5ap'),
-				__('Demo & Help', 'h5ap'),
+				'<span style="color: #f18500;">'. __('Demo & Help', 'h5ap') .'</span>',
 				'manage_options',
 				'html5-video-player',
 				[$this, 'dashboardPage'],
@@ -49,7 +49,9 @@ if (!class_exists('H5APAdmin')) {
 			<div id='h5vpAdminDashboard' data-info=<?php echo esc_attr(wp_json_encode([
 														'version' => H5VP_PRO_VER,
 														'isPremium' => h5vp_fs()->can_use_premium_code(),
-														'hasPro' => true
+														'hasPro' => file_exists(H5VP_PRO_PLUGIN_PATH. 'inc/Base/LicenseActivation.php'),
+														'nonce' => wp_create_nonce( 'apbCreatePage' ),
+														'licenseActiveNonce' => wp_create_nonce( 'bPlLicenseActivation' )
 													])); ?>></div>
 		<?php }
 

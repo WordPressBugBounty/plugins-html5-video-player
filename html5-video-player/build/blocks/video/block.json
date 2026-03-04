@@ -191,7 +191,7 @@
       "default": {
         "whoCanSeeThisVideo": "everyone",
         "allowedRoles": [],
-        "message": "This video is only for registered users. Please login to view the video."
+        "message": "This video is only for registered users. Please login to watch the video."
       }
     },
     "seo": {
@@ -518,7 +518,9 @@
   "editorScript": [
     "file:./index.js",
     "bplugins-plyrio",
-    "wp-util"
+    "wp-util",
+    "wp-data",
+    "wp-block-editor"
   ],
   "render": "file:./../render.php",
   "viewScript": [

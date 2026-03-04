@@ -22,7 +22,7 @@ class VideoPlayer
         add_action('init', [$this, 'init']);
         // add_filter('allowed_block_types', [$this, 'allowedTypes'], 10, 2);
         // add_filter('enter_title_here', [$this, 'videoTitle']);
-        // add_action('edit_form_after_title', [$this, 'shortcodeArea']);
+        add_action('edit_form_after_title', [$this, 'shortcode_area']);
 
         // // post type ui
         add_filter("manage_{$this->post_type}_posts_columns", [$this, 'postTypeColumns'], 1);
@@ -42,7 +42,6 @@ class VideoPlayer
 
         add_filter('save_post', [$this, 'filter_post_data'], '99', 2);
 
-        add_action('add_meta_boxes', [$this, 'shortcode_area_metabox']);
     }
 
     public static function instance()
@@ -197,10 +196,10 @@ class VideoPlayer
         ];
         switch ($column_name) {
             case 'shortcode':
-                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode']) . '">Copy Shortcode</button><span class="htooltip">Copy To Clipboard</span> </div>';
+                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode']) . '">' . esc_attr($shortcode['shortcode']) . '</button> <svg class="h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode']) . '" data-type="icon" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M8 4V16C8 17.1046 8.89543 18 10 18L18 18C19.1046 18 20 17.1046 20 16V7.24162C20 6.7034 19.7831 6.18789 19.3982 5.81161L16.0829 2.56999C15.7092 2.2046 15.2074 2 14.6847 2H10C8.89543 2 8 2.89543 8 4Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> <path d="M16 18V20C16 21.1046 15.1046 22 14 22H6C4.89543 22 4 21.1046 4 20V9C4 7.89543 4.89543 7 6 7H8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </svg><span class="htooltip">Copy To Clipboard</span> </div>';
                 break;
             case 'shortcode_deprecated':
-                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode_deprecated']) . '">Copy Shortcode </button><span class="htooltip">Copy To Clipboard</span></div>';
+                echo '<div class="h5vp_front_shortcode"><button class="button button-primary h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode_deprecated']) . '">' . esc_attr($shortcode['shortcode_deprecated']) . '</button> <svg class="h5vp_shortcode_copy_btn" data-clipboard-text="' . esc_attr($shortcode['shortcode_deprecated']) . '" data-type="icon" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M8 4V16C8 17.1046 8.89543 18 10 18L18 18C19.1046 18 20 17.1046 20 16V7.24162C20 6.7034 19.7831 6.18789 19.3982 5.81161L16.0829 2.56999C15.7092 2.2046 15.2074 2 14.6847 2H10C8.89543 2 8 2.89543 8 4Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> <path d="M16 18V20C16 21.1046 15.1046 22 14 22H6C4.89543 22 4 21.1046 4 20V9C4 7.89543 4.89543 7 6 7H8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </svg><span class="htooltip">Copy To Clipboard</span> </div>';
                 break;
             case 'export':
                 echo '<button class="button button-primary h5vp_export_button" data-id=' . esc_attr($post_id) . '>Export</button> <button class="button button-primary h5vp_import_button" data-id=' . esc_attr($post_id) . '>Import</button>';
@@ -277,35 +276,26 @@ class VideoPlayer
     }
 
 
-    // shortcode area
-    public function shortcode_area_metabox()
-    {
-        global $post;
-        if ($post->post_type == $this->post_type) {
-            add_meta_box(
-                'shortcode_area',
-                __('Shortcode', 'h5vp'),
-                [$this, 'shortcode_area'],
-                'videoplayer',
-                'side',
-                'default'
-            );
-        }
-    }
+
 
     function shortcode_area()
     {
+
+        if($this->post_type != get_post_type()){
+            return;
+        }
         global $post;
         $id = $post->ID;
 
         $shortcode = "[html5_video id='" . esc_attr($id) . "']";
-?>
-        <div class="h5vp-down-arrow"></div>
-        <div class="h5vp_front_shortcode_area">
-            <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'h5vp'); ?></label>
-            <br />
-            <button class="button button-bplugins button-large h5vp_shortcode_copy_btn" data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php esc_html_e('Copy Shortcode', 'h5vp'); ?></button>
+        ?>
+        <div class="h5vp_shortcode_area_after_title">
+            <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'model-viewer'); ?></label>
+           <div class="shortcode_area">
+             <button class="button button-bplugins button-large h5vp_shortcode_copy_btn" data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php echo esc_html($shortcode); ?></button>
+             <svg class='h5vp_shortcode_copy_btn' data-type="icon" data-clipboard-text='<?php echo esc_attr($shortcode) ?>' width='22px' height='22px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M8 4V16C8 17.1046 8.89543 18 10 18L18 18C19.1046 18 20 17.1046 20 16V7.24162C20 6.7034 19.7831 6.18789 19.3982 5.81161L16.0829 2.56999C15.7092 2.2046 15.2074 2 14.6847 2H10C8.89543 2 8 2.89543 8 4Z' stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/> <path d='M16 18V20C16 21.1046 15.1046 22 14 22H6C4.89543 22 4 21.1046 4 20V9C4 7.89543 4.89543 7 6 7H8' stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/> </svg>
+           </div>
         </div>
-<?php
+        <?php
     }
 }

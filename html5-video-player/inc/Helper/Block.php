@@ -133,7 +133,7 @@ class Block
                         "btnStyle" => []
                     ],
                     "thumbInPause" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_reset_on_end_playerio', false, true),
+                        "enabled" => $this->get_post_meta($id, 'h5vp_poster_when_pause', false, true),
                         "type" => "default"
                     ],
                     "watermark" => [
@@ -222,6 +222,8 @@ class Block
         $quick = h5vp_get_option('h5vp_quick');
         $option = h5vp_get_option('h5vp_option');
         extract($attrs);
+        $get_attr = $this->get_attr($attrs);
+
         $preload = isset($attrs['preload']) && !empty($attrs['preload']) ? $preload : $quick('h5vp_preload_quick', 'metadata');
         $hideYoutubeUI = $quick('h5vp_hide_youtube_ui', '0') === '1';
         $hideControls = isset($attrs['hideControls']) && $attrs['hideControls'] ? $hideControls === 'true' : $quick('h5vp_auto_hide_control_quick', '1') === '1';
@@ -230,6 +232,7 @@ class Block
         $block_name = $source == 'library' ? 'video' : $source;
         $muted = isset($attrs['muted']) ? $muted : $quick('h5vp_muted_quick', true);
         $repeat = isset($attrs['repeat']) && !empty($attrs['repeat']) ? $repeat : $quick('h5vp_repeat_quick', 'none');
+        $seek_time = isset($attrs['seek_time']) && !empty($attrs['seek_time']) ? $seek_time : $quick('h5vp_seek_time_quick', 10);
         $width = isset($attrs['width']) && !empty($attrs['width']) ? $width : $quick('h5vp_player_width_quick') . 'px';
 
         $code_controls = isset($attrs['controls']) ? explode(',', $controls) : null;
@@ -255,8 +258,8 @@ class Block
                     "settings" => ["captions", "quality", "speed", "loop"],
                     "loadSprite" => true,
                     "autoplay" => $autoplay === 'true' ? true : false,
-                    "playsinline" => true,
-                    "seekTime" => (int) $quick('h5vp_seek_time_quick', 10),
+                    "playsinline" => $attrs['playsinline'] ?? 'true' === 'true' ? true : false,
+                    "seekTime" => (int) $seek_time,
                     "volume" => 1,
                     "muted" => (bool) $autoplay ? true : ($muted === 'true' ? true : false),
                     "hideControls" => $hideControls,
@@ -270,7 +273,7 @@ class Block
                         "language" => "auto",
                         "update" => true
                     ],
-                    "ratio" => "16:9", // here is the isssue
+                    "ratio" => $attrs['aspect_ratio'] ?? '16:9', // here is the isssue
                     "storage" => [
                         "enabled" => true,
                         "key" => "plyr"
@@ -296,7 +299,19 @@ class Block
                 ],
                 "features" => [
                     "popup" => [
-                        "enabled" => false,
+                        "enabled" => $get_attr('popup', false, true),
+                        "type" => $get_attr('popup_type', 'button'),
+                        "btnText" => $get_attr('popup_btn_text', 'Watch Video'),
+                        "btnStyle" => [
+                            "color" => $get_attr('popup_btn_color', '#fff'),
+                            "backgroundColor" => $get_attr('popup_btn_bg_color', '#f00'),
+                            "padding" => [
+                                "top" => '7px',
+                                "right" => '10px',
+                                "bottom" => '7px',
+                                "left" => '10px',
+                            ]
+                        ]
                     ],
                     "overlay" => [
                         "enabled" => false,
@@ -306,32 +321,36 @@ class Block
                         "enabled" => false
                     ],
                     "thumbInPause" => [
-                        "enabled" => false,
+                        "enabled" => $get_attr('thumb_in_pause', false, true),
                         "type" => "default"
                     ],
                     "watermark" => [
-                        "enabled" => false,
-                        "type" => "email",
-                        "text" => "",
-                        "color" => "#f00"
+                        "enabled" => $get_attr('watermark', false, true),
+                        "type" => $get_attr('watermark_type', 'email'),
+                        "text" => $get_attr('watermark_text', 'watermark text'),
+                        "color" => $get_attr('watermark_color', '#f00')
                     ],
                     "passwordProtected" => [
                         "enabled" => false,
                     ],
                     "sticky" => [
-                        "enabled" => false,
-                        "position" => "top_right"
+                        "enabled" => $get_attr('sticky', false, true),
+                        "position" => $get_attr('sticky_position', 'top_right')
                     ],
-                    "playWhenVisible" => false,
-                    "disablePause" => false,
+                    "playWhenVisible" => $get_attr('play_when_visible', false, true),
+                    "disablePause" => $get_attr('disable_pause', false, true),
                     "hideYoutubeUI" => $hideYoutubeUI,
-                    "startTime" => false,
-                    "hideLoadingPlaceholder" => false,
+                    "startTime" => $get_attr('start_time'),
+                    "hideLoadingPlaceholder" => $get_attr('hide_loading_placeholder', false, true),
                 ],
-
+                'onlyLoggedIn' => [
+                    'whoCanSeeThisVideo' => $get_attr('who_can_see_this_video', 'everyone'),
+                    'allowedRoles' => explode(',', $get_attr('allowed_roles', '')),
+                    'message' => $get_attr('logged_out_user_text', 'This video is only for registered users. Please login to view the video.')
+                ],
                 "hideYoutubeUI" =>  $hideYoutubeUI,
                 "additionalCSS" => "",
-                "additionalID" => "",
+                "additionalID" => $get_attr('additional_id', ''),
                 "autoplayWhenVisible" => false,
                 "styles" => [
                     "plyr_wrapper" => [
@@ -360,5 +379,16 @@ class Block
             $meta = $default;
         }
         return $meta;
+    }
+
+    function get_attr($attrs)
+    {
+        return function($key, $default = false, $is_boolean = false) use ($attrs) {
+            $value = $attrs[$key] ?? $default;
+            if ($is_boolean) {
+                $value = $value == 'true' ? true : false;
+            }
+            return $value;
+        };
     }
 }
