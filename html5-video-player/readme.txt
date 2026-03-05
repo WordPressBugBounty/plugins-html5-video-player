@@ -259,6 +259,9 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 
 == Changelog ==
 
+= 2.9.1 - 05 Mar, 2026 =
+* Fixed: Cross origin issue
+
 = 2.9.0 - 03 Mar, 2026 =
 * New: Integrate Google Analytics GA4 (Premium)
 * Fixed: Duplicate Video Player
