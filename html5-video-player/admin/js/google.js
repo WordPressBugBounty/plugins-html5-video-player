@@ -1,7 +1,6 @@
 // ; (function ($) {
 //     $(document).ready(function () {
 
-// console.log('working from google js');
 // The Browser API key obtained from the Google API Console.
 // Replace with your own Browser API key, or your own key.
 var developerKey = h5vpGoogleApi.apikey;
@@ -63,9 +62,7 @@ function handleAuthResult(authResult) {
 
 // Create and render a Picker object for searching images.
 function createPicker() {
-  // console.log("createPicker");
   if (pickerApiLoaded && oauthToken) {
-    // console.log("loaded and have auth token");
     var view = new google.picker.View(google.picker.ViewId.DOCS);
     //view.setMimeTypes("image/png,image/jpeg,image/jpg");
     var picker = new google.picker.PickerBuilder()
@@ -85,7 +82,6 @@ function createPicker() {
 // A simple callback implementation.
 function pickerCallback(data) {
   if (data.action == google.picker.Action.PICKED) {
-    // console.log(data);
     var embedUrl = data.docs[0].embedUrl;
     document.getElementById("h5vp_google_document_url").value = embedUrl;
   }

@@ -2,7 +2,8 @@
 
 namespace H5VP\Base;
 
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 class Notice
 {
@@ -32,7 +33,7 @@ class Notice
                     $is_dismissed = get_user_meta(get_current_user_id(), 'h5vp_aws_notice_dismissed', true);
                     if ($is_dismissed !== 'dismissed' && !defined('BPLUGINS_S3_VERSION')) {
                         // required bPlugins aws s3 extension
-                        echo wp_kses_post('<div class="h5vp_aws_notice notice notice-error is-dismissible" data-nonce="' . esc_attr(wp_create_nonce('wp_ajax')) . '"><p>' . __('"bPlugins AWS S3 Extension" is Required to work AWS S3 features. Please contact support to get the extension. ', 'h5vp') . ' <a target="_blank" href="https://bplugins.com/support">Support</a></p></div>');
+                        echo wp_kses_post('<div class="h5vp_aws_notice notice notice-warning is-dismissible" data-nonce="' . esc_attr(wp_create_nonce('wp_ajax')) . '"><p>' . __('"bPlugins AWS S3 Extension" is Required to work AWS S3 features. Please contact support to get the extension. ', 'h5vp') . ' <a target="_blank" href="https://bplugins.com/support">Support</a></p></div>');
                     }
                 });
             }
@@ -49,7 +50,8 @@ class Notice
         try {
             $result = update_user_meta($user_id, 'h5vp_aws_notice_dismissed', 'dismissed');
             wp_send_json_success(get_user_meta($result));
-        } catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
             wp_send_json_error($th->getMessage());
         }
     }
@@ -66,7 +68,7 @@ class Notice
             <style>
 
             </style>
-            <div class="h5vp_upgrade_notice <?php echo esc_attr($is_videos_page ? 'pdfposters' : 'settings') ?> ">
+            <div class="h5vp_upgrade_notice <?php echo esc_attr($is_videos_page ? 'pdfposters' : 'settings')?> ">
                 <div class="flex">
                     <svg height="30" viewBox="0 0 34 34" width="30" xmlns="http://www.w3.org/2000/svg">
                         <path id="XMLID_1341_" d="m27.5 1h-21c-3.04 0-5.5 2.47-5.5 5.5v21c0 3.03 2.46 5.5 5.5 5.5h21c3.03 0 5.5-2.47 5.5-5.5v-21c0-3.03-2.47-5.5-5.5-5.5zm-14.5 3h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5zm8.58 12.19c.26.19.42.49.42.81 0 .33-.16.63-.42.82l-7 5c-.18.12-.38.18-.58.18-.16 0-.32-.03-.46-.11-.33-.17-.54-.51-.54-.89v-10c0-.37.21-.71.54-.88s.73-.15 1.04.07zm-13.58 13.81h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5zm0-23h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5zm6.5 23h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5zm6.5 0h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5zm0-23h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5zm6.5 23h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5zm0-23h-1.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h1.5c.82 0 1.5.67 1.5 1.5s-.68 1.5-1.5 1.5z" />
@@ -75,7 +77,7 @@ class Notice
                 </div>
                 <p>No-Code Video Player Plugin – Trusted by 30,000+ Websites Worldwide.</p>
                 <div>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=html5-video-player#/pricing')) ?>" class="button button-primary" target="_blank">Upgrade To Pro <svg enable-background="new 0 0 515.283 515.283" height="16" viewBox="0 0 515.283 515.283" width="16" xmlns="http://www.w3.org/2000/svg">
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=html5-video-player#/pricing'))?>" class="button button-primary" target="_blank">Upgrade To Pro <svg enable-background="new 0 0 515.283 515.283" height="16" viewBox="0 0 515.283 515.283" width="16" xmlns="http://www.w3.org/2000/svg">
                             <g>
                                 <g>
                                     <g>

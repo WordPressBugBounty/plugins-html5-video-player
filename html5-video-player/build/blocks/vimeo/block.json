@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "html5-player/vimeo",
   "title": "Vimeo Player",
-  "description": "Vimeo Player",
+  "description": "Vimeo Video Player",
   "category": "media",
   "version": "2.9.1",
   "icon": "video-alt2",
@@ -17,6 +17,13 @@
     "provider": {
       "type": "string",
       "default": "vimeo"
+    },
+    "presetId": {
+      "type": [
+        "string",
+        "number"
+      ],
+      "default": null
     },
     "imported": {
       "type": "boolean",
@@ -406,10 +413,12 @@
       "default": false
     },
     "overlayType": {
-      "type": "boolean"
+      "type": "string",
+      "default": "text"
     },
     "overlayText": {
-      "type": "string"
+      "type": "string",
+      "default": "Simple Text"
     },
     "overlayPosition": {
       "type": "string",
@@ -449,7 +458,7 @@
       "default": {
         "enabled": false,
         "text": "Simple Text",
-        "btnText": "Watch Again",
+        "btnText": "Click here",
         "btnLink": "",
         "btnStyle": {}
       }
@@ -512,7 +521,11 @@
   },
   "style": "file:./../view.css",
   "editorScript": [
-    "file:./index.js",
+    "file:../blocks.js",
+    "bplugins-plyrio"
+  ],
+  "editorStyle": [
+    "file:../blocks.css",
     "bplugins-plyrio"
   ],
   "render": "file:./../render.php",

@@ -81,7 +81,7 @@ class VideoPlayer
                 // 'exclude_from_search' => true,
                 // 'show_in_menu' => 'html5-video-player',
                 'menu_position' => 14,
-                'menu_icon' => H5VP_PRO_PLUGIN_DIR . 'admin/img/icn.png',
+                'menu_icon' => H5VP_PRO_PLUGIN_DIR . 'admin/img/logo.svg',
                 'has_archive' => false,
                 'hierarchical' => false,
                 'capability_type' => 'page',

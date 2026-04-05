@@ -2,7 +2,8 @@
 
 namespace H5VP\Model;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 use PPV\Base\Help;
 
@@ -17,7 +18,9 @@ class Ajax
     private $namespace = "H5VP\Model\\";
     private $model;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function register()
     {
@@ -53,6 +56,15 @@ class Ajax
         return $default;
     }
 
+    private function getAllowedActions(): array
+    {
+        return [
+            'Video' => ['get_id_response', 'check_password', 'save_password', 'create'],
+            'Preset' => ['get_presets', 'get_preset', 'save_preset', 'delete_preset'],
+            // Add other allowed combinations
+        ];
+    }
+
     public function prepareAjax()
     {
         if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'] ?? '')), 'wp_ajax')) {
@@ -68,8 +80,8 @@ class Ajax
     {
         $data = $this->params;
 
-        $this->requestModel = $this->isset($data, 'model', 'Model');
-        $this->requestMethod = $this->isset($data, 'method', 'invalid');
+        $this->requestModel = sanitize_text_field($this->isset($data, 'model', 'Model'));
+        $this->requestMethod = sanitize_text_field($this->isset($data, 'method', 'invalid'));
         $this->model = $this->namespace . $this->requestModel;
 
         if (!class_exists($this->model)) {
@@ -78,21 +90,17 @@ class Ajax
 
         $model = new $this->model();
 
-        
+
         if (method_exists($model, $this->requestMethod)) {
-            unset($this->params['method']);
-            unset($this->params['action']);
-            unset($this->params['nonce']);
-            unset($this->params['model']);
-            // wp_send_json_success($this->requestMethod);
+            unset($this->params['method'], $this->params['action'], $this->params['nonce'], $this->params['model']);
+
             $result = $model->{$this->requestMethod}($this->params);
             wp_send_json_success($result);
-            // if(!isset($result['success'])){
-            //     wp_send_json_success($result);
-            // } 
         } else {
             wp_send_json_error('Method does not exists!');
         }
+
+
     }
 
     public function invalid()
@@ -119,7 +127,8 @@ class Ajax
 
         $id = sanitize_text_field(wp_unslash($_POST['id'] ?? ''));
         $output['id'] = $id;
-        if (!$id) die();
+        if (!$id)
+            wp_die();
 
         $is_administrator = $this->user_has_role(get_current_user_id(), 'administrator');
 
@@ -144,7 +153,7 @@ class Ajax
             echo wp_json_encode($output);
         }
 
-        die();
+        wp_die();
     }
 
     function h5vp_aws_picker()
@@ -191,6 +200,6 @@ class Ajax
                 'value' => $role_key
             ];
         }
-        wp_send_json_success( $user_roles);
+        wp_send_json_success($user_roles);
     }
 }

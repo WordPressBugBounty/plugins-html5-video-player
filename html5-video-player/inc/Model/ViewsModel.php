@@ -2,9 +2,8 @@
 
 namespace H5VP\Model;
 
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
-
-use wpdb;
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 class ViewsModel
 {
@@ -16,7 +15,7 @@ class ViewsModel
     protected $table;
     protected $videosTable;
 
-    public function __construct(?wpdb $db = null)
+    public function __construct($db = null)
     {
         global $wpdb;
         $this->db = $db ?: $wpdb;
@@ -30,11 +29,12 @@ class ViewsModel
      */
     public function findBySessionInstanceVideo(string $session_id, string $instance_id, int $video_id): ?int
     {
-        $session_id  = sanitize_text_field($session_id);
+        $session_id = sanitize_text_field($session_id);
         $instance_id = sanitize_text_field($instance_id);
-        $video_id    = absint($video_id);
+        $video_id = absint($video_id);
 
-        if (!$session_id || !$instance_id || !$video_id) return null;
+        if (!$session_id || !$instance_id || !$video_id)
+            return null;
 
         $sql = $this->db->prepare(
             "SELECT id FROM {$this->table}
@@ -84,10 +84,11 @@ class ViewsModel
     public function increment(int $id, int $add_seconds = 0, int $progress_max = 0, int $completed = 0, int $post_id = 0): bool
     {
         $id = absint($id);
-        if (!$id) return false;
+        if (!$id)
+            return false;
 
-        $add_seconds = max(0, (int)$add_seconds);
-        $progress_max = max(0, min(100, (int)$progress_max));
+        $add_seconds = max(0, (int) $add_seconds);
+        $progress_max = max(0, min(100, (int) $progress_max));
         $completed = $completed ? 1 : 0;
         $post_id = absint($post_id);
 
@@ -114,7 +115,8 @@ class ViewsModel
         }
 
         // Nothing to update
-        if (!$sets) return true;
+        if (!$sets)
+            return true;
 
         $args[] = $id;
 
@@ -132,7 +134,8 @@ class ViewsModel
     public function softDelete(int $id): bool
     {
         $id = absint($id);
-        if (!$id) return false;
+        if (!$id)
+            return false;
 
         $now = current_time('mysql', 1);
 
@@ -153,7 +156,8 @@ class ViewsModel
     public function touch(int $id): bool
     {
         $id = absint($id);
-        if (!$id) return false;
+        if (!$id)
+            return false;
 
         $result = $this->db->query($this->db->prepare(
             "UPDATE {$this->table}
@@ -178,17 +182,17 @@ class ViewsModel
 
         // Required
         $row['session_id'] = isset($data['session_id']) ? sanitize_text_field($data['session_id']) : '';
-        $row['video_id']   = isset($data['video_id']) ? absint($data['video_id']) : 0;
-        $row['duration']   = isset($data['duration']) ? max(0, (int)$data['duration']) : 0;
+        $row['video_id'] = isset($data['video_id']) ? absint($data['video_id']) : 0;
+        $row['duration'] = isset($data['duration']) ? max(0, (int) $data['duration']) : 0;
 
         // Optional
-        $row['instance_id']  = isset($data['instance_id']) ? sanitize_text_field($data['instance_id']) : null;
-        $row['completed']    = isset($data['completed']) ? ((int)$data['completed'] ? 1 : 0) : 0;
+        $row['instance_id'] = isset($data['instance_id']) ? sanitize_text_field($data['instance_id']) : null;
+        $row['completed'] = isset($data['completed']) ? ((int) $data['completed'] ? 1 : 0) : 0;
 
-        $pm = isset($data['progress_max']) ? (int)$data['progress_max'] : 0;
+        $pm = isset($data['progress_max']) ? (int) $data['progress_max'] : 0;
         $row['progress_max'] = max(0, min(100, $pm));
 
-        $row['ip_address']   = isset($data['ip_address']) ? sanitize_text_field($data['ip_address']) : '';
+        $row['ip_address'] = isset($data['ip_address']) ? sanitize_text_field($data['ip_address']) : '';
 
         // Let MySQL defaults handle created_at/updated_at
         $row['deleted_at'] = null;
@@ -226,7 +230,8 @@ class ViewsModel
     public function getById(int $id): ?array
     {
         $id = absint($id);
-        if (!$id) return null;
+        if (!$id)
+            return null;
 
         $sql = $this->db->prepare(
             "SELECT * FROM {$this->table}
@@ -242,10 +247,11 @@ class ViewsModel
     public function getByVideo(int $video_id, ?string $from = null, ?string $to = null, int $limit = 100, int $offset = 0): array
     {
         $video_id = absint($video_id);
-        if (!$video_id) return [];
+        if (!$video_id)
+            return [];
 
         $where = ["video_id = %d", "deleted_at IS NULL"];
-        $args  = [$video_id];
+        $args = [$video_id];
 
         if ($from) {
             $where[] = "created_at >= %s";
@@ -274,10 +280,11 @@ class ViewsModel
     public function getByPost(int $post_id, ?string $from = null, ?string $to = null): array
     {
         $post_id = absint($post_id);
-        if (!$post_id) return [];
+        if (!$post_id)
+            return [];
 
         $where = ["post_id = %d", "deleted_at IS NULL"];
-        $args  = [$post_id];
+        $args = [$post_id];
 
         if ($from) {
             $where[] = "created_at >= %s";
@@ -306,10 +313,11 @@ class ViewsModel
         $from = $args['from'] ?? null;
         $to = $args['to'] ?? null;
 
-        if (!$user_id) return [];
+        if (!$user_id)
+            return [];
 
         $where = ["user_id = %d", "deleted_at IS NULL", "duration != 0"];
-        $args  = [$user_id];
+        $args = [$user_id];
 
         if ($from) {
             $where[] = "created_at >= %s";
@@ -334,7 +342,7 @@ class ViewsModel
     public function count(array $filters = []): int
     {
         $where = ["deleted_at IS NULL"];
-        $args  = [];
+        $args = [];
 
         if (!empty($filters['video_id'])) {
             $where[] = "video_id = %d";
@@ -376,10 +384,11 @@ class ViewsModel
         $video_id = absint($args['video_id']);
         $from = $args['from'] ?? null;
         $to = $args['to'] ?? null;
-        if (!$video_id) return [];
+        if (!$video_id)
+            return [];
 
         $where = ["video_id = %d", "deleted_at IS NULL"];
-        $args  = [$video_id];
+        $args = [$video_id];
 
         if ($from) {
             $where[] = "created_at >= %s";
@@ -413,11 +422,13 @@ class ViewsModel
         $args = $this->prepare_date_range($args);
         $video_id = absint($args['video_id']);
 
-        if (!$video_id) return 0.0;
+        if (!$video_id)
+            return 0.0;
 
         $stats = $this->getVideoStats($args);
 
-        if (empty($stats['views'])) return 0.0;
+        if (empty($stats['views']))
+            return 0.0;
 
         return round(
             // ((int)$stats['completed_views'] / (int)$stats['views') * 100,
@@ -435,7 +446,7 @@ class ViewsModel
         $to = $args['to'] ?? null;
 
         $where = ["deleted_at IS NULL"];
-        $args  = [];
+        $args = [];
 
         if ($from) {
             $where[] = "created_at >= %s";
@@ -470,15 +481,15 @@ class ViewsModel
     public function getViews(array $args = []): array
     {
         $defaults = [
-            'video_id'   => null,
-            'post_id'    => null,
-            'user_id'    => null,
+            'video_id' => null,
+            'post_id' => null,
+            'user_id' => null,
             'session_id' => null,
-            'from'       => null,  // 'YYYY-mm-dd HH:ii:ss'
-            'to'         => null,
+            'from' => null,  // 'YYYY-mm-dd HH:ii:ss'
+            'to' => null,
             'with_video' => false,
-            'limit'      => 50,
-            'offset'     => 0,
+            'limit' => 50,
+            'offset' => 0,
         ];
 
         $args = wp_parse_args($args, $defaults);
@@ -517,8 +528,8 @@ class ViewsModel
             $binds[] = $args['to'];
         }
 
-        $limit  = max(1, (int)$args['limit']);
-        $offset = max(0, (int)$args['offset']);
+        $limit = max(1, (int) $args['limit']);
+        $offset = max(0, (int) $args['offset']);
 
         $binds[] = $limit;
         $binds[] = $offset;
@@ -528,9 +539,9 @@ class ViewsModel
             "SELECT
                 {$this->table}.*,
                 {$this->table}.video_id AS view_video_id
-                {$this->videoSelectSql((bool)$args['with_video'])}
+                {$this->videoSelectSql((bool) $args['with_video'])}
             FROM {$this->table}
-            {$this->videoJoinSql((bool)$args['with_video'])}
+            {$this->videoJoinSql((bool) $args['with_video'])}
             WHERE " . implode(" AND ", $where) . "
             ORDER BY {$this->table}.created_at DESC
             LIMIT %d OFFSET %d",
@@ -618,7 +629,8 @@ class ViewsModel
 
     protected function videoJoinSql(bool $withVideo): string
     {
-        if (!$withVideo) return '';
+        if (!$withVideo)
+            return '';
         return " LEFT JOIN {$this->videosTable} AS v
                 ON v.id = {$this->table}.video_id
                 AND v.deleted_at IS NULL ";
@@ -626,7 +638,8 @@ class ViewsModel
 
     protected function videoSelectSql(bool $withVideo): string
     {
-        if (!$withVideo) return '';
+        if (!$withVideo)
+            return '';
 
         // pick only what you need
         return ",
@@ -651,7 +664,8 @@ class ViewsModel
         // 2) Collect unique video_ids
         $videoIds = [];
         foreach ($views as $v) {
-            if (!empty($v['video_id'])) $videoIds[] = (int)$v['video_id'];
+            if (!empty($v['video_id']))
+                $videoIds[] = (int) $v['video_id'];
         }
 
         // 3) Bulk load videos
@@ -661,9 +675,9 @@ class ViewsModel
         // 4) Attach nested video object
         $out = [];
         foreach ($views as $v) {
-            $vid = (int)($v['video_id'] ?? 0);
+            $vid = (int) ($v['video_id'] ?? 0);
             $out[] = [
-                'view'  => $v,
+                'view' => $v,
                 'video' => $vid && isset($videoMap[$vid]) ? $videoMap[$vid] : null,
             ];
         }
@@ -731,9 +745,9 @@ class ViewsModel
 
 
         $allowed = [
-            'views'      => 'total_views',
+            'views' => 'total_views',
             'watch_time' => 'total_watch_time',
-            'completed'  => 'completed_views',
+            'completed' => 'completed_views',
         ];
         $orderCol = $allowed[$orderBy] ?? 'total_views';
 
@@ -784,7 +798,8 @@ class ViewsModel
         $to = $args['to'] ?? null;
         $limit = $args['limit'] ?? 50;
 
-        if (!$user_id) return [];
+        if (!$user_id)
+            return [];
 
         $where = [
             "vw.deleted_at IS NULL",
@@ -805,7 +820,7 @@ class ViewsModel
             $binds[] = $to;
         }
 
-        $binds[] = max(1, (int)$limit);
+        $binds[] = max(1, (int) $limit);
 
         $sql = $this->db->prepare(
             "SELECT
@@ -835,7 +850,8 @@ class ViewsModel
         $video_id = absint($args['video_id']);
         $from = $args['from'] ?? null;
         $to = $args['to'] ?? null;
-        if (!$video_id) return [];
+        if (!$video_id)
+            return [];
 
         $where = ["vw.deleted_at IS NULL", "vw.video_id = %d", "vw.duration != 0"];
         $binds = [$video_id];
@@ -907,7 +923,7 @@ class ViewsModel
         $formatted_time = $current_date_time->format('Y-m-d H:i:s');
         // $args = $this->prepare_date_range($args);
         $from = $args['from'];
-        $to   = $args['to'] ?? $formatted_time;
+        $to = $args['to'] ?? $formatted_time;
         $video_id = absint($args['video_id'] ?? 0);
         $post_id = absint($args['post_id'] ?? 0);
 
@@ -968,27 +984,27 @@ class ViewsModel
         $avg_progress = [];
 
         $start = new \DateTime($from);
-        $end   = new \DateTime($to);
+        $end = new \DateTime($to);
         $start->setTime(0, 0, 0);
         $end->setTime(0, 0, 0);
         while ($start <= $end) {
             $key = $start->format('Y-m-d');
             $labels[] = $start->format('F j');
 
-            $views[]        = isset($map[$key]) ? (int)$map[$key]['views'] : 0;
-            $watch[]        = isset($map[$key]) ? (int)$map[$key]['watch_time'] : 0;
-            $completed[]    = isset($map[$key]) ? (int)$map[$key]['completed'] : 0;
-            $avg_progress[] = isset($map[$key]) ? (float)$map[$key]['avg_progress'] : 0;
+            $views[] = isset($map[$key]) ? (int) $map[$key]['views'] : 0;
+            $watch[] = isset($map[$key]) ? (int) $map[$key]['watch_time'] : 0;
+            $completed[] = isset($map[$key]) ? (int) $map[$key]['completed'] : 0;
+            $avg_progress[] = isset($map[$key]) ? (float) $map[$key]['avg_progress'] : 0;
 
             $start->modify('+1 day');
         }
 
         return [
-            'labels'        => $labels,
-            'views'         => $views,
-            'watch_time'    => $watch,
-            'completed'     => $completed,
-            'avg_progress'  => $avg_progress,
+            'labels' => $labels,
+            'views' => $views,
+            'watch_time' => $watch,
+            'completed' => $completed,
+            'avg_progress' => $avg_progress,
         ];
     }
     public function getVideoPageStats(array $args = []): array
@@ -997,10 +1013,11 @@ class ViewsModel
         $args = $this->prepare_date_range($args);
         $video_id = absint($args['video_id'] ?? 0);
         $from = $args['from'] ?? null;
-        $to   = $args['to'] ?? null;
+        $to = $args['to'] ?? null;
         $limit = absint($args['limit'] ?? 10);
 
-        if (!$video_id) return [];
+        if (!$video_id)
+            return [];
 
         $where = [
             "vw.deleted_at IS NULL",
@@ -1019,7 +1036,7 @@ class ViewsModel
             $binds[] = $to;
         }
 
-        $binds[] = max(1, (int)$limit);
+        $binds[] = max(1, (int) $limit);
 
         $sql = $this->db->prepare(
             "SELECT
@@ -1075,23 +1092,23 @@ class ViewsModel
 
         // Add permalink + fix missing titles
         foreach ($rows as &$r) {
-            $pid = (int)($r['post_id'] ?? 0);
+            $pid = (int) ($r['post_id'] ?? 0);
             $r['page_title'] = $r['page_title'] ?: "(Post #{$pid})";
-            $r['page_url']   = $pid ? get_permalink($pid) : null;
+            $r['page_url'] = $pid ? get_permalink($pid) : null;
 
             // Cast numeric strings to numbers (nice for JS)
-            $r['views'] = (int)$r['views'];
-            $r['unique_sessions'] = (int)$r['unique_sessions'];
-            $r['unique_users'] = (int)$r['unique_users'];
-            $r['total_watch_time'] = (int)$r['total_watch_time'];
-            $r['avg_watch_time'] = (float)$r['avg_watch_time'];
-            $r['max_watch_time'] = (int)$r['max_watch_time'];
-            $r['completed_views'] = (int)$r['completed_views'];
-            $r['avg_progress'] = (float)$r['avg_progress'];
-            $r['max_progress'] = (int)$r['max_progress'];
-            $r['completion_rate'] = (float)$r['completion_rate'];
-            $r['dropoff_rate'] = (float)$r['dropoff_rate'];
-            $r['replay_views'] = (int)$r['replay_views'];
+            $r['views'] = (int) $r['views'];
+            $r['unique_sessions'] = (int) $r['unique_sessions'];
+            $r['unique_users'] = (int) $r['unique_users'];
+            $r['total_watch_time'] = (int) $r['total_watch_time'];
+            $r['avg_watch_time'] = (float) $r['avg_watch_time'];
+            $r['max_watch_time'] = (int) $r['max_watch_time'];
+            $r['completed_views'] = (int) $r['completed_views'];
+            $r['avg_progress'] = (float) $r['avg_progress'];
+            $r['max_progress'] = (int) $r['max_progress'];
+            $r['completion_rate'] = (float) $r['completion_rate'];
+            $r['dropoff_rate'] = (float) $r['dropoff_rate'];
+            $r['replay_views'] = (int) $r['replay_views'];
         }
         unset($r);
 

@@ -2,7 +2,8 @@
 
 namespace H5VP\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+  exit; // Exit if accessed directly
 
 use H5VP\Services\AnalogSystem;
 use H5VP\Helper\DefaultArgs;
@@ -17,7 +18,9 @@ class ShortcodesPro extends Shortcodes
     add_shortcode('video_playlist', [$this, 'video_playlist']);
   }
 
-  public function register() {}
+  public function register()
+  {
+  }
 
 
   public function video_playlist($atts)
@@ -48,17 +51,22 @@ class ShortcodesPro extends Shortcodes
     $unique_id = wp_unique_id('h5vp_playlist_');
     ob_start();
 
-?>
+    ?>
 
     <style>
       .h5vp_playlist .plyr {
-        --plyr-color-main: <?php echo esc_attr(DefaultArgs::brandColor()); ?>;
+        --plyr-color-main:
+          <?php echo esc_attr(DefaultArgs::brandColor());
+          ?>
+        ;
       }
     </style>
 
-    <div class="h5vp_playlist <?php echo esc_attr($unique_id) ?>" data-attributes="<?php echo esc_attr(wp_json_encode($data)) ?>" data-nonce="<?php echo esc_attr(wp_create_nonce('wp_ajax')) ?>"></div>
+    <div class="h5vp_playlist <?php echo esc_attr($unique_id) ?>"
+      data-attributes="<?php echo esc_attr(wp_json_encode($data)) ?>"
+      data-nonce="<?php echo esc_attr(wp_create_nonce('wp_ajax')) ?>"></div>
 
-<?php
+    <?php
 
     return ob_get_clean();
   }
@@ -71,17 +79,17 @@ class ShortcodesPro extends Shortcodes
       'poster' => '',
       'mp4' => null,
       'src' => null,
-      'autoplay' => false,
-      'reset_on_end' => false,
-      'repeat' => false,
-      'muted' => false,
+      'autoplay' => null,
+      'reset_on_end' => null,
+      'repeat' => null,
+      'muted' => null,
       'width' => '',
-      'preload' => 'metadata',
+      'preload' => null, // geting from quick settings
       'ios_native' => 'true',
       'controls' => null,
-      'hideControls' => null,
-      'playsinline' => true,
-      'seek_time' => 10,
+      'hide_controls' => null, // geting from quick settings
+      'playsinline' => null,
+      'seek_time' => null, // geting from quick settings
       'ratio' => null,
       'thumb_in_pause' => false,
       'watermark' => false,
@@ -109,7 +117,7 @@ class ShortcodesPro extends Shortcodes
       'who_can_see_this_video' => 'everyone',
       'allowed_roles' => '',
       'logged_out_user_text' => 'This video is only for registered users. Please login to watch the video.',
-      
+
       'popup' => false,
       'popup_type' => 'button',
       'popup_btn_text' => 'Watch Video',

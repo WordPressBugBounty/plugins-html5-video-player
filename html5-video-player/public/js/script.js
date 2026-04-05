@@ -14,8 +14,6 @@
       const id = video.data("id");
       const H5VP_Video_Obj = new H5VP_Video();
 
-      // console.log('player', id)
-
       setTimeout(() => {
         if (provider == "library" || provider == "amazons3") {
           H5VP_Video_Obj.newVideo(".player" + id + " video", options, infos, id);
@@ -109,7 +107,7 @@ class H5VP_Video {
               data: 1,
               id: id,
             },
-            function (data) {}
+            function (data) { }
           );
         }
         i++;
@@ -332,7 +330,7 @@ class H5VP_Video {
 
   videoHls(selector, player, infos) {
     if (!Hls.isSupported()) {
-      console.log("hls not support");
+      console.warn("hls not support");
     } else {
       const video = document.querySelector(selector);
       // For more Hls.js options, see https://github.com/dailymotion/hls.js

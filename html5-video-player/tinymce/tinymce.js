@@ -66,10 +66,10 @@ jQuery(document).ready(function ($) {
 
   function grabslider() {
     jQuery.ajax({
-      url: ajaxurl,
+      url: h5vp_tinymce_vars.ajax_url,
       data: {
         action: "h5vp_pro_grab_slider_list_ajax",
-        grabslider: "yes",
+        nonce: h5vp_tinymce_vars.nonce,
       },
       dataType: "JSON",
       type: "POST",

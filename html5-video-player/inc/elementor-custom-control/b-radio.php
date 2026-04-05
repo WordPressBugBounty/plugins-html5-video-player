@@ -6,7 +6,8 @@
  *
  * @since 1.0.0
  */
-class BPlugins_B_Radio extends \Elementor\Base_Data_Control {
+class BPlugins_B_Radio extends \Elementor\Base_Data_Control
+{
 
 	/**
 	 * Get control type.
@@ -18,7 +19,8 @@ class BPlugins_B_Radio extends \Elementor\Base_Data_Control {
 	 *
 	 * @return string Control type.
 	 */
-	public function get_type() {
+	public function get_type()
+	{
 		return 'b-radio';
 	}
 
@@ -31,14 +33,15 @@ class BPlugins_B_Radio extends \Elementor\Base_Data_Control {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function enqueue() {
+	public function enqueue()
+	{
 		wp_enqueue_media();
 		wp_enqueue_style('thickbox');
-	    wp_enqueue_script('media-upload');
-	    wp_enqueue_script('thickbox');
+		wp_enqueue_script('media-upload');
+		wp_enqueue_script('thickbox');
 		// Scripts
 		// wp_register_script( 'bplugins-elementor-controls', plugins_url( '/controls.js', __FILE__ ), [ 'jquery' ], '1.0.0', true );
-		wp_enqueue_script( 'bplugins-elementor-controls' );
+		wp_enqueue_script('bplugins-elementor-controls');
 	}
 
 	/**
@@ -49,14 +52,15 @@ class BPlugins_B_Radio extends \Elementor\Base_Data_Control {
 	 *
 	 * @return array Control default settings.
 	 */
-	protected function get_default_settings() {
+	protected function get_default_settings()
+	{
 		return [
 			'label_block' => true,
 			'options' => [
 				'new' => 'New '
 			]
 		];
-		
+
 	}
 
 	/**
@@ -65,20 +69,21 @@ class BPlugins_B_Radio extends \Elementor\Base_Data_Control {
 	 * @since 1.0.0
 	 * @access public
 	 */
-	public function content_template() {
+	public function content_template()
+	{
 		$control_uid = $this->get_control_uid();
-		
-		?>
 
-		<div class="elementor-control-field">
-		{{{Object.keys(data.options).map(item => {
-			<div>{{{item}}}</div>
-		})}}};
-		</div>
-		
-		<# if ( data.description ) { console.log('data', data) #>
-		<div class="elementor-control-field-description">{{{ data.description }}}</div>
-		<# } #>
+?>
+
+<div class="elementor-control-field">
+	{{{Object.keys(data.options).map(item => {
+	<div>{{{item}}}</div>
+	})}}};
+</div>
+
+<# if ( data.description ) { #>
+	<div class="elementor-control-field-description">{{{ data.description }}}</div>
+	<# } #>
 		<?php
 	}
 }

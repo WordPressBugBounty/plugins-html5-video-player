@@ -2,7 +2,8 @@
 
 namespace H5VP\Helper;
 
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 class Block
 {
@@ -52,7 +53,7 @@ class Block
                     "loadSprite" => true,
                     "autoplay" => $this->get_post_meta($id, 'h5vp_auto_play_playerio', false, true),
                     "playsinline" => true,
-                    "seekTime" => (int)$this->get_post_meta($id, 'h5vp_seek_time_playerio', 10),
+                    "seekTime" => (int) $this->get_post_meta($id, 'h5vp_seek_time_playerio', 10),
                     "volume" => 1,
                     "muted" => $this->get_post_meta($id, 'h5vp_muted_playerio', false, true),
                     "hideControls" => $this->get_post_meta($id, 'h5vp_auto_hide_control_playerio', false, true),
@@ -66,7 +67,7 @@ class Block
                         "language" => "auto",
                         "update" => true
                     ],
-                    "ratio" => $this->get_post_meta($id, 'h5vp_ratio', '16:9'),
+                    "ratio" => $this->get_post_meta($id, 'h5vp_ratio', null),
                     "storage" => [
                         "enabled" => true,
                         "key" => "plyr"
@@ -113,17 +114,19 @@ class Block
                     ],
                     "overlay" => [
                         "enabled" => $this->get_post_meta($id, 'h5vp_enable_overlay', false, true),
-                        "items" => [[
-                            "color" => $this->get_post_meta($id, 'h5vp_overlay_text_color', '#ffffff'), // -,
-                            "backgroundColor" => $this->get_post_meta($id, 'h5vp_overlay_background', '#333'),
-                            "fontSize" => "16px",
-                            "link" => $this->get_post_meta($id, 'h5vp_overlay_url', ''),
-                            "logo" => $this->get_post_meta($id, 'h5vp_overlay_logo', [])['url'] ?? null, // image url or base64 image pat
-                            "text" => $this->get_post_meta($id, 'h5vp_overlay_text', ''),
-                            "position" => $this->get_post_meta($id, 'overlay_position', 'top_right'),
-                            "type" => $this->get_post_meta($id, 'h5vp_overlay_type', '0', true) ? 'text' : 'logo',
-                            "opacity" => $this->get_post_meta($id, 'overlay_opacity', 0.7),
-                        ]]
+                        "items" => [
+                            [
+                                "color" => $this->get_post_meta($id, 'h5vp_overlay_text_color', '#ffffff'), // -,
+                                "backgroundColor" => $this->get_post_meta($id, 'h5vp_overlay_background', '#333'),
+                                "fontSize" => "16px",
+                                "link" => $this->get_post_meta($id, 'h5vp_overlay_url', ''),
+                                "logo" => $this->get_post_meta($id, 'h5vp_overlay_logo', [])['url'] ?? null, // image url or base64 image pat
+                                "text" => $this->get_post_meta($id, 'h5vp_overlay_text', ''),
+                                "position" => $this->get_post_meta($id, 'overlay_position', 'top_right'),
+                                "type" => $this->get_post_meta($id, 'h5vp_overlay_type', '0', true) ? 'text' : 'logo',
+                                "opacity" => $this->get_post_meta($id, 'overlay_opacity', 0.7),
+                            ]
+                        ]
                     ],
                     "endScreen" => [
                         "enabled" => $this->get_post_meta($id, 'h5vp_endscreen_enable', false, true),
@@ -174,10 +177,10 @@ class Block
                     'description' => $this->get_post_meta($id, 'h5vp_seo_description', ''),
                     'duration' => $this->get_post_meta($id, 'h5vp_seo_duration', 0),
                 ],
-                "qualities" => $this->get_post_meta($id, 'h5vp_quality_playerio'),
+                "quality" => $this->get_post_meta($id, 'h5vp_quality_playerio'),
                 "subtitle" => $this->get_post_meta($id, 'h5vp_subtitle_playerio'),
                 "thumbInPause" => false,
-                "hideYoutubeUI" =>  $this->get_post_meta($id, 'hideYoutubeUI', false, true),
+                "hideYoutubeUI" => $this->get_post_meta($id, 'hideYoutubeUI', false, true),
                 "additionalCSS" => "",
                 "additionalID" => "",
                 "autoplayWhenVisible" => false,
@@ -221,21 +224,13 @@ class Block
 
         $quick = h5vp_get_option('h5vp_quick');
         $option = h5vp_get_option('h5vp_option');
-        extract($attrs);
         $get_attr = $this->get_attr($attrs);
 
-        $preload = isset($attrs['preload']) && !empty($attrs['preload']) ? $preload : $quick('h5vp_preload_quick', 'metadata');
-        $hideYoutubeUI = $quick('h5vp_hide_youtube_ui', '0') === '1';
-        $hideControls = isset($attrs['hideControls']) && $attrs['hideControls'] ? $hideControls === 'true' : $quick('h5vp_auto_hide_control_quick', '1') === '1';
-        $reset_on_end = isset($attrs['reset_on_end']) && $attrs['reset_on_end'] ? $reset_on_end === 'true' : $quick('h5vp_reset_on_end_quick', '1') === '1';
-        $file = $file ? $file : ($src ? $src : $mp4);
-        $block_name = $source == 'library' ? 'video' : $source;
-        $muted = isset($attrs['muted']) ? $muted : $quick('h5vp_muted_quick', true);
-        $repeat = isset($attrs['repeat']) && !empty($attrs['repeat']) ? $repeat : $quick('h5vp_repeat_quick', 'none');
-        $seek_time = isset($attrs['seek_time']) && !empty($attrs['seek_time']) ? $seek_time : $quick('h5vp_seek_time_quick', 10);
-        $width = isset($attrs['width']) && !empty($attrs['width']) ? $width : $quick('h5vp_player_width_quick') . 'px';
+        $hideYoutubeUI = $get_attr('hide_youtube_ui', $quick('h5vp_hide_youtube_ui', '0'), true);
+        $block_name = $get_attr('source', 'library') == 'library' ? 'video' : $get_attr('source', 'library');
+        $width = $get_attr('width', $quick('h5vp_player_width_quick') . 'px');
 
-        $code_controls = isset($attrs['controls']) ? explode(',', $controls) : null;
+        $code_controls = isset($attrs['controls']) ? explode(',', $get_attr('controls', '')) : null;
         $final_controls = [];
 
         if (is_array($code_controls)) {
@@ -249,21 +244,21 @@ class Block
         return [
             'blockName' => "html5-player/$block_name",
             'attrs' => [
-                "provider" => $source,
+                "provider" => $get_attr('source'),
                 "uniqueId" => wp_unique_id('h5vp'),
-                "source" => $file,
-                "poster" => $poster,
+                "source" => $get_attr('file', $get_attr('src', $get_attr('mp4'))),
+                "poster" => $get_attr('poster'),
                 "options" => [
                     "controls" => $controls,
                     "settings" => ["captions", "quality", "speed", "loop"],
                     "loadSprite" => true,
-                    "autoplay" => $autoplay === 'true' ? true : false,
-                    "playsinline" => $attrs['playsinline'] ?? 'true' === 'true' ? true : false,
-                    "seekTime" => (int) $seek_time,
+                    "autoplay" => $get_attr('autoplay', 'false', true),
+                    "playsinline" => $get_attr('playsinline', 'true', true),
+                    "seekTime" => (int) $get_attr('seek_time', $quick('h5vp_seek_time_quick', 10)),
                     "volume" => 1,
-                    "muted" => (bool) $autoplay ? true : ($muted === 'true' ? true : false),
-                    "hideControls" => $hideControls,
-                    "resetOnEnd" =>  $reset_on_end,
+                    "muted" => (bool) $get_attr('muted', $quick('h5vp_muted_quick', '0'), true),
+                    "hideControls" => $get_attr('hide_controls', $quick('h5vp_auto_hide_control_quick', '1'), true),
+                    "resetOnEnd" => $get_attr('reset_on_end', $quick('h5vp_reset_on_end_quick', '1'), true),
                     "tooltips" => [
                         "controls" => true,
                         "seek" => true
@@ -273,7 +268,7 @@ class Block
                         "language" => "auto",
                         "update" => true
                     ],
-                    "ratio" => $attrs['aspect_ratio'] ?? '16:9', // here is the isssue
+                    "ratio" => $attrs['aspect_ratio'] ?? null, // here is the isssue
                     "storage" => [
                         "enabled" => true,
                         "key" => "plyr"
@@ -282,13 +277,13 @@ class Block
                         "options" => explode(',', $option('h5vp_speed', '0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 4'))
                     ],
                     "loop" => [
-                        "active" => $repeat === 'true' ? true : false,
+                        "active" => $get_attr('repeat', $quick('h5vp_repeat_quick', '0'), true),
                     ],
                     "ads" => [
                         "enabled" => false,
                         "tagUrl" => '',
                     ],
-                    "preload" => $preload,
+                    "preload" => $get_attr('preload', $quick('h5vp_preload_quick', 'metadata')),
                     'markers' => [
                         'enabled' => false,
                         'points' => []
@@ -348,7 +343,7 @@ class Block
                     'allowedRoles' => explode(',', $get_attr('allowed_roles', '')),
                     'message' => $get_attr('logged_out_user_text', 'This video is only for registered users. Please login to view the video.')
                 ],
-                "hideYoutubeUI" =>  $hideYoutubeUI,
+                "hideYoutubeUI" => $hideYoutubeUI,
                 "additionalCSS" => "",
                 "additionalID" => $get_attr('additional_id', ''),
                 "autoplayWhenVisible" => false,
@@ -383,10 +378,11 @@ class Block
 
     function get_attr($attrs)
     {
-        return function($key, $default = false, $is_boolean = false) use ($attrs) {
+        return function ($key, $default = false, $is_boolean = false) use ($attrs) {
             $value = $attrs[$key] ?? $default;
             if ($is_boolean) {
-                $value = $value == 'true' ? true : false;
+                // $value can be true or 1 or false or 0
+                $value = $value === 'true' || $value === '1' ? true : false;
             }
             return $value;
         };

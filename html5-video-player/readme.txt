@@ -4,8 +4,8 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 2.9.0
-Requires PHP: 7.1
+Stable tag: 2.10.1
+Requires PHP: 7.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -258,6 +258,18 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.10.1 - 05 Apr, 2026 =
+* Improved: PHP Compatibility	
+* Fixed: Security Vulnerabilities	
+* Fixed: Video Fullscreen Orientation on mobile (Only the last video works correctly)
+* Fixed: Duplicate caption for vimeo video
+* Improved Code
+
+= 2.10.0 - 15 Mar, 2026 =
+* New: Add logo in admin menu
+* New: Add Presets
+* Update: Freemius SDK
 
 = 2.9.1 - 05 Mar, 2026 =
 * Fixed: Cross origin issue

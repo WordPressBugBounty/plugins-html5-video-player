@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "html5-player/youtube",
   "title": "Youtube Player",
-  "description": "Video Player",
+  "description": "Youtube Video Player",
   "version": "2.9.0",
   "category": "media",
   "icon": "video-alt2",
@@ -17,6 +17,13 @@
     "provider": {
       "type": "string",
       "default": "youtube"
+    },
+    "presetId": {
+      "type": [
+        "string",
+        "number"
+      ],
+      "default": null
     },
     "imported": {
       "type": "boolean",
@@ -406,10 +413,12 @@
       "default": false
     },
     "overlayType": {
-      "type": "boolean"
+      "type": "string",
+      "default": "text"
     },
     "overlayText": {
-      "type": "string"
+      "type": "string",
+      "default": "Simple Text"
     },
     "overlayPosition": {
       "type": "string",
@@ -449,7 +458,7 @@
       "default": {
         "enabled": false,
         "text": "Simple Text",
-        "btnText": "Watch Again",
+        "btnText": "Click here",
         "btnLink": "",
         "btnStyle": {}
       }
@@ -511,9 +520,13 @@
     }
   },
   "editorScript": [
-    "file:./index.js",
+    "file:../blocks.js",
     "bplugins-plyrio",
     "wp-util"
+  ],
+  "editorStyle": [
+    "file:../blocks.css",
+    "bplugins-plyrio"
   ],
   "viewStyle": "file:./../view.css",
   "render": "file:./../render.php",

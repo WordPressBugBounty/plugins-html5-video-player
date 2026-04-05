@@ -2,7 +2,8 @@
 
 namespace H5VP\Field;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 class QuickPlayer
 {
@@ -43,17 +44,17 @@ class QuickPlayer
         \CSF::createSection($this->prefix, array(
             'title' => 'Quick Player',
             'fields' => array(
-                 array(
+                    array(
                     'type' => 'heading',
                     'title' => ' ',
-                    'content' => '<div style="display:flex;justify-content:end;gap:5px"><a href="https://bplugins.com/docs/html5-video-player/how-to/quick-player/" target="_blank" class="button button-primary" rel="noopener noreferrer"> Full Documentation</a></div>',
+                    'content' => '<div style="display:flex;justify-content:end;gap:5px"><a href="https://bplugins.com/docs/html5-video-player/how-to-use/#quick-player" target="_blank" class="button button-primary" rel="noopener noreferrer"> Full Documentation</a></div>',
                 ),
-                array(
+                    array(
                     'title' => 'Shortcode',
                     'type' => 'content',
                     'content' => '<code>[video_player file=yourvideo poster=poster.jpeg source=library]</code> <p>Use this shortcode to show video in your website quickly. change the source to youtube/vimeo to show youtube/vimeo video</p>',
                 ),
-                array(
+                    array(
                     'id' => 'h5vp_all_video_quick',
                     'title' => 'Apply Html5 Video Player for all previous videos',
                     'desc' => 'Normal Shortcode/Elementor/Gutenberg HTML5 Video Player will not work if you enable this option',
@@ -63,13 +64,13 @@ class QuickPlayer
                     'text_on' => 'Yes'
                 ),
 
-                array(
+                    array(
                     'id' => 'h5vp_reset_on_end_quick',
                     'title' => 'Reset On End',
                     'type' => 'switcher',
                     'default' => '1',
                 ),
-                array(
+                    array(
                     'id' => 'h5vp_player_width_quick',
                     'title' => 'Player Width',
                     'type' => 'spinner',
@@ -78,21 +79,21 @@ class QuickPlayer
                     'max' => '5000',
                     'desc' => 'set the player width. Height will be calculate base on the value. Left blank for Responsive player',
                 ),
-                array(
+                    array(
                     'id' => 'h5vp_seek_time_quick',
                     'title' => 'Seek Time',
                     'type' => 'number',
                     'desc' => 'The time, in seconds, to seek when a user hits fast forward or rewind. Default value is 10 Sec.',
                     'default' => '10',
                 ),
-                array(
+                    array(
                     'id' => 'h5vp_auto_hide_control_quick',
                     'title' => 'Auto Hide Control',
                     'type' => 'switcher',
                     'desc' => 'On if you want the controls (such as a play/pause button etc) hide automaticaly.',
                     'default' => true
                 ),
-                array(
+                    array(
                     'id' => 'h5vp_preload_quick',
                     'title' => 'Preload',
                     'type' => 'radio',
@@ -105,7 +106,7 @@ class QuickPlayer
                     'desc' => 'Specify how the video file should be loaded when the page loads.',
                     'default' => 'metadata',
                 ),
-                array(
+                    array(
                     'id' => 'controls',
                     'type' => 'button_set',
                     'class' => 'bplugins-meta-readonly',
@@ -141,7 +142,7 @@ class QuickPlayer
                     ),
                     'help' => 'Click on the item to turn ON/OFF',
                 ),
-                array(
+                    array(
                     'id' => 'h5vp_hide_youtube_ui',
                     'title' => 'Hide Youtube UI (Experimental, check it\'s working or not for you)',
                     'type' => 'switcher',

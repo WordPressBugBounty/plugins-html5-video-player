@@ -2,7 +2,8 @@
 
 namespace H5VP\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+  exit; // Exit if accessed directly
 
 use H5VP\Helper\Block;
 
@@ -20,13 +21,17 @@ class Shortcodes
     add_shortcode('html5_video', [$this, 'html5_video'], 10, 2);
   }
 
-  public function register() {}
+  public function register()
+  {
+  }
 
   public function html5_video($atts)
   {
-    extract(shortcode_atts(array(
+    shortcode_atts(array(
       'id' => null,
-    ), $atts));
+    ), $atts);
+
+    $id = $atts['id'];
 
     $post_type = get_post_type($id);
     $post = get_post($id);
@@ -103,7 +108,7 @@ class Shortcodes
       'preload' => null,
       'ios_native' => 'true',
       'controls' => null,
-      'hideControls' => null
+      'hide_controls' => null
     );
   }
 

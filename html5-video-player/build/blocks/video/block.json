@@ -18,6 +18,13 @@
       "type": "string",
       "default": "self-hosted"
     },
+    "presetId": {
+      "type": [
+        "string",
+        "number"
+      ],
+      "default": null
+    },
     "imported": {
       "type": "boolean",
       "default": false
@@ -119,17 +126,7 @@
           "type": "button",
           "btnText": "Watch Video",
           "align": "center",
-          "btnStyle": {
-            "color": "#fff",
-            "backgroundColor": "#006BA1",
-            "fontSize": "16px",
-            "padding": {
-              "top": "10px",
-              "right": "20px",
-              "bottom": "10px",
-              "left": "20px"
-            }
-          },
+          "btnStyle": {},
           "isTrigger": false
         },
         "overlay": {
@@ -339,18 +336,7 @@
     },
     "popupBtnStyle": {
       "type": "object",
-      "default": {
-        "color": "#fff",
-        "backgroundColor": "#006BA1",
-        "fontSize": "16px",
-        "padding": {
-          "top": "10px",
-          "right": "20px",
-          "bottom": "10px",
-          "left": "20px"
-        },
-        "align": "center"
-      }
+      "default": {}
     },
     "popupBtnText": {
       "type": "string",
@@ -406,10 +392,12 @@
       "default": false
     },
     "overlayType": {
-      "type": "boolean"
+      "type": "string",
+      "default": "text"
     },
     "overlayText": {
-      "type": "string"
+      "type": "string",
+      "default": "Simple Text"
     },
     "overlayPosition": {
       "type": "string",
@@ -449,7 +437,7 @@
       "default": {
         "enabled": false,
         "text": "Simple Text",
-        "btnText": "Watch Again",
+        "btnText": "Click Here",
         "btnLink": "",
         "btnStyle": {}
       }
@@ -512,11 +500,11 @@
   },
   "viewStyle": "file:./../view.css",
   "editorStyle": [
-    "file:./index.css",
+    "file:../blocks.css",
     "bplugins-plyrio"
   ],
   "editorScript": [
-    "file:./index.js",
+    "file:../blocks.js",
     "bplugins-plyrio",
     "wp-util",
     "wp-data",

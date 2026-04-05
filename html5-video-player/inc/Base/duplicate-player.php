@@ -1,5 +1,6 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 function h5vp_add_duplicate_button($actions, $post)
 {
@@ -38,10 +39,10 @@ function h5vp_dulicate_player()
     $newPost['post_name'] = $newPost['post_name'] . '-copy';
     $newPost['post_status'] = 'draft';
 
-    $newPost['post_date'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 0));
-    $newPost['post_date_gmt'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 1));
-    $newPost['post_modified'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 0));
-    $newPost['post_modified_gmt'] = gmdate('Y-m-d H:i:s', current_time('timestamp', 1));
+    $newPost['post_date'] = current_time('mysql', false);
+    $newPost['post_date_gmt'] = current_time('mysql', true);
+    $newPost['post_modified'] = current_time('mysql', false);
+    $newPost['post_modified_gmt'] = current_time('mysql', true);
 
     // Remove some of the keys
     unset($newPost['ID']);
@@ -54,11 +55,8 @@ function h5vp_dulicate_player()
     foreach ($custom_fields as $key => $value) {
         if (is_array($value) && count($value) > 0) {
             foreach ($value as $i => $v) {
-                $result = $wpdb->insert($wpdb->prefix . 'postmeta', array(
-                    'post_id' => $newPostId,
-                    'meta_key' => $key,
-                    'meta_value' => $v
-                ));
+                add_post_meta($newPostId, $key, maybe_unserialize($v));
+
             }
         }
     }
@@ -74,7 +72,7 @@ add_action('wp_ajax_h5vp_dulicate_player', 'h5vp_dulicate_player');
 
 
 function h5vp_duplicate_notice()
-{ 
+{
     $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
 
     if ($name) {
@@ -82,13 +80,12 @@ function h5vp_duplicate_notice()
         <p>' . esc_html($name) . '</p>
     </div>';
     }
-    $result = sanitize_text_field(wp_unslash($_GET['duplicate'] ?? false));
-    if ($result == 'success') {
-?>
+    if (sanitize_text_field(wp_unslash($_GET['duplicate'] ?? false)) == 'success') {
+        ?>
         <div class="notice notice-success is-dismissible">
             <p><?php esc_html_e('Duplicated Successfully', 'h5vp') ?></p>
         </div>
-<?php
+        <?php
     }
 }
 add_action('admin_notices', 'h5vp_duplicate_notice');

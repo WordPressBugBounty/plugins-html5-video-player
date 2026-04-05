@@ -2,14 +2,15 @@
 
 /*
  * Plugin Name: Html5 Video Player
- * Plugin URI:  https://bplugins.com/html5-video-player-pro/
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
- * Version:     2.9.1
+ * Plugin URI:  https://bplugins.com/html5-video-player-pro/
+ * Version:     2.10.1
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
+ * Requires PHP: 7.4
+ * Text Domain: h5vp
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html  
- * Text Domain: h5vp
  * 
  */
 if ( !defined( 'ABSPATH' ) ) {
@@ -30,7 +31,7 @@ if ( function_exists( 'h5vp_fs' ) ) {
     define( 'H5VP_PRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_FILE_BASENAME', plugin_basename( __FILE__ ) );
     define( 'H5VP_PRO_PLUGIN_DIR_BASENAME', plugin_basename( __DIR__ ) );
-    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'dev.local' ? time() : '2.9.1' ) );
+    define( 'H5VP_PRO_VER', ( isset( $_SERVER['HTTP_HOST'] ) && $_SERVER['HTTP_HOST'] === 'dev.local' ? time() : '2.10.1' ) );
     // Create a helper function for easy SDK access.
     function h5vp_fs() {
         global $h5vp_fs;
@@ -105,31 +106,3 @@ if ( function_exists( 'h5vp_fs' ) ) {
         new H5VP_Main();
     }
 }
-add_action( 'wp_footer', function () {
-    ?>
-
-    <style>
-        /* .plyr__progress input[type=range]::-ms-scrollbar-track {
-            box-shadow: none !important;
-        }
-
-        .plyr__progress input[type=range]::-webkit-scrollbar-track {
-            box-shadow: none !important;
-        } */
-
-        .plyr {
-            input[type=range]::-webkit-slider-runnable-track {
-                box-shadow: none;
-            }
-
-            input[type=range]::-moz-range-track {
-                box-shadow: none;
-            }
-
-            input[type=range]::-ms-track {
-                box-shadow: none;
-            }
-        }
-    </style>
-<?php 
-} );

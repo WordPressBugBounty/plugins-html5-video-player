@@ -1,7 +1,8 @@
 <?php
 
 namespace H5VP\Rest;
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 use H5VP\Model\Video;
 
 class VideoController extends \WP_REST_Controller
@@ -25,6 +26,7 @@ class VideoController extends \WP_REST_Controller
             $this->namespace . '/' . $this->version,
             $this->route,
             [
+
                 [
                     'methods' => \WP_REST_Server::READABLE,
                     'callback' => [$this, 'get_items'],
@@ -157,7 +159,7 @@ class VideoController extends \WP_REST_Controller
     public function prepare($request)
     {
         // return ['nothing' => 'true'];
-        $request =  $request->get_params();
+        $request = $request->get_params();
 
         return [
             'title' => isset($request['title']) ? sanitize_text_field($request['title']) : '',
@@ -170,7 +172,7 @@ class VideoController extends \WP_REST_Controller
     public function prepare_for_update($request)
     {
         // return ['nothing' => 'true'];
-        $request =  $request->get_params();
+        $request = $request->get_params();
 
         $args = [];
         foreach ($request as $key => $value) {
@@ -188,17 +190,18 @@ class VideoController extends \WP_REST_Controller
     {
         return $this->another_check($request);
     }
-
     public function another_check($request)
     {
-        return true;
-        if (! current_user_can('edit_posts')) {
-            return new \WP_Error('rest_forbidden', esc_html__('OMG you can not view private data.', 'h5vp'), array('status' => 401));
+        if (!current_user_can('edit_posts')) {
+            return new \WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission.', 'h5vp'),
+                ['status' => 403]
+            );
         }
-
-        // This is a black-listing approach. You could alternatively do this via white-listing, by returning false here and changing the permissions check.
         return true;
     }
+
 
     public function getTitle($data)
     {

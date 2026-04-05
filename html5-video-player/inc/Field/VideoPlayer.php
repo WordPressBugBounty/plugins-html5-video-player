@@ -117,7 +117,6 @@ class VideoPlayer
             'title' => 'General',
             'id' => 'noting-to-hide',
             'fields' => array(
-                
                 array(
                     'id' => 'h5vp_controls',
                     'type' => 'button_set',
@@ -141,6 +140,7 @@ class VideoPlayer
                         'fullscreen' => __('Full Screen', 'h5vp')
                     ),
                     'default' => array('play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'download', 'fullscreen'),
+                    'desc' => __('download controls will not work for youtube and vimeo', 'h5vp')
                 ),
                 // array(
                 //     'id' => 'h5vp_hide_loading_placeholder',

@@ -2,7 +2,8 @@
 
 namespace H5VP\Services;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 use H5VP\Helper\Functions;
 use H5VP\Helper\LocalizeScript;
@@ -63,19 +64,19 @@ class EnqueueAssets
         global $post;
         // improve the next line code quality
         $post_type = null;
-        if(function_exists('get_post_type')) {
-            $post_type = get_post_type() ? get_post_type() : $_GET['post_type'] ?? '';
+        if (function_exists('get_post_type')) {
+            $post_type = get_post_type() ? get_post_type() : sanitize_text_field(wp_unslash($_GET['post_type'] ?? ''));
         }
-        
-        $isInPages = in_array($screen, array( 'videoplayer_page_h5vp-support', 'videoplayer_page_html5vp_settings', 'videoplayer_page_html5vp_quick_player', 'videoplayer_page_free-plugins-from-bplugins', 'videoplayer_page_premium-plugins', 'plugins.php', 'videoplayer_page_analytics'));
+
+        $isInPages = in_array($screen, array('videoplayer_page_h5vp-support', 'videoplayer_page_html5vp_settings', 'videoplayer_page_html5vp_quick_player', 'videoplayer_page_free-plugins-from-bplugins', 'videoplayer_page_premium-plugins', 'plugins.php', 'videoplayer_page_analytics'));
         $isInPostType = in_array($post_type, array('videoplayer', 'h5vpplaylist'));
-        
+
         if ($isInPages || $isInPostType) {
-            
+
             wp_enqueue_script('h5vp-chart', H5VP_PRO_PLUGIN_DIR . 'admin/js/chart.js', array('jquery'), H5VP_PRO_VER, false);
             wp_enqueue_script('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.js', array('jquery', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
             wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
-            
+
             // aws s3 picker 
             if (!empty($post) && 'videoplayer' == $post->post_type && $screen == 'post-new.php' || $screen == 'post.php') {
                 wp_enqueue_style('h5vp-aws-picker', H5VP_PRO_PLUGIN_DIR . 'build/admin/aws-s3-picker.css');
@@ -87,7 +88,7 @@ class EnqueueAssets
 
         }
 
-        foreach([
+        foreach ([
             'html5-player-video-editor-script',
             'html5-player-parent-editor-script',
             'h5vp-admin'
@@ -100,7 +101,7 @@ class EnqueueAssets
                 'nonce' => wp_create_nonce('wp_ajax')
             ));
         }
-        
+
         if ($screen == 'videoplayer_page_free-plugins-from-bplugins') {
             wp_enqueue_script('plugin-install');
             wp_enqueue_script('updates');
@@ -109,7 +110,7 @@ class EnqueueAssets
         // analytics assets
         wp_register_script('h5vp-analytics', H5VP_PRO_PLUGIN_DIR . 'build/admin/analytics/index.js', array('react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
         wp_register_style('h5vp-analytics', H5VP_PRO_PLUGIN_DIR . 'build/admin/analytics/index.css', array(), H5VP_PRO_VER, 'all');
-        if($screen == 'videoplayer_page_analytics') {
+        if ($screen == 'videoplayer_page_analytics') {
             wp_enqueue_script('h5vp-analytics');
             wp_enqueue_style('h5vp-analytics');
             wp_localize_script('h5vp-analytics', 'h5vpAnalytics', array(
@@ -124,26 +125,31 @@ class EnqueueAssets
         $shadow = Functions::getOptionDeep('h5vp_quick', 'h5vp_hide_control_shadow_quick', 'show');
         $width = $width == 0 ? '100%' : $width . "px";
         ob_start();
-?>
+        ?>
         <style>
             #h5vpQuickPlayer {
-                width: <?php echo esc_html($width); ?>;
+                width:
+                    <?php echo esc_html($width); ?>
+                ;
                 max-width: 100%;
                 margin: 0 auto;
             }
 
             <?php if ($shadow === 'hide') {
                 echo '#h5vpQuickPlayer .plyr__controls {background: none;}';
-            } ?><?php if ($shadow === 'mobile') { ?>@media screen and (max-width: 640px) {
-                #h5vpQuickPlayer .plyr__controls {
-                    background: none;
+            } ?>
+            <?php if ($shadow === 'mobile') { ?>
+                @media screen and (max-width: 640px) {
+                    #h5vpQuickPlayer .plyr__controls {
+                        background: none;
+                    }
                 }
-            }
 
-            <?php
-                } ?><?php echo wp_kses_post(Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '')) ?>
+                <?php
+            } ?>
+            <?php echo wp_kses_post(Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '')) ?>
         </style>
-<?php
+        <?php
 
         echo wp_kses(Functions::trim(ob_get_clean()), ['style' => []]);
     }

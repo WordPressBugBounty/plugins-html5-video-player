@@ -1,121 +1,134 @@
 <?php
 
- if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH'))
+	exit;
 /*-------------------------------------------------------------------------------*/
 /*   AJAX Get Slider List
 /*-------------------------------------------------------------------------------*/
-function h5vp_pro_grab_slider_list_ajax() {
-	
-	if ( !isset( $_POST['grabslider'] ) ) {
+function h5vp_pro_grab_slider_list_ajax()
+{
+	check_ajax_referer('h5vp_ajax', 'nonce');
+
+	if (!current_user_can('edit_posts')) {
 		wp_die();
-		} 
-		else {
-			
-			$list = array();
-			
-			global $post;
-			
-			$args = array(
-  				'post_type' => 'videoplayer',
-  				'order' => 'ASC',
-				'posts_per_page' => -1,
-  				'post_status' => 'publish'
-		
-				);
-
-				$myposts = get_posts( $args );
-				foreach( $myposts as $post ) :	setup_postdata($post);
-					$list[$post->ID] = array('val' => $post->ID, 'title' => esc_html(esc_js(the_title(NULL, NULL, FALSE))) );
-				endforeach;
-				
-				}
-		
-			echo wp_json_encode($list); //Send to Option List ( Array )
-			wp_die();
-
-
 	}
+
+
+	$list = array();
+
+	global $post;
+
+	$args = array(
+		'post_type' => 'videoplayer',
+		'order' => 'ASC',
+		'posts_per_page' => -1,
+		'post_status' => 'publish'
+
+	);
+
+	$myposts = get_posts($args);
+	foreach ($myposts as $post):
+		setup_postdata($post);
+		$list[$post->ID] = array('val' => $post->ID, 'title' => esc_html(esc_js(the_title(NULL, NULL, FALSE))));
+	endforeach;
+
+
+
+	echo wp_json_encode($list); //Send to Option List ( Array )
+	wp_die();
+
+
+}
 
 add_action('wp_ajax_h5vp_pro_grab_slider_list_ajax', 'h5vp_pro_grab_slider_list_ajax');
 
 /*-------------------------------------------------------------------------------*/
 /*   Frontend Register JS & CSS
 /*-------------------------------------------------------------------------------*/
-function h5vp_pro_reg_script() {
-	wp_register_style( 'h5vp-tinymcecss', plugins_url( 'tinymce/tinymce.css' , dirname(__FILE__) ), false,H5VP_PRO_VER, 'all');
-	wp_register_script( 'h5vp-tinymcejs', plugins_url( 'tinymce/tinymce.js' , dirname(__FILE__) ), false, H5VP_PRO_VER );	
+function h5vp_pro_reg_script()
+{
+	wp_register_style('h5vp-tinymcecss', plugins_url('tinymce/tinymce.css', dirname(__FILE__)), false, H5VP_PRO_VER, 'all');
+	wp_register_script('h5vp-tinymcejs', plugins_url('tinymce/tinymce.js', dirname(__FILE__)), false, H5VP_PRO_VER);
+	wp_localize_script('h5vp-tinymcejs', 'h5vp_tinymce_vars', array(
+		'ajax_url' => admin_url('admin-ajax.php'),
+		'nonce' => wp_create_nonce('h5vp_ajax'),
+	));
 }
-add_action( 'admin_init', 'h5vp_pro_reg_script' );
+add_action('admin_init', 'h5vp_pro_reg_script');
 
-$request_uri = sanitize_url( wp_unslash($_SERVER['REQUEST_URI']), null );
+$request_uri = sanitize_url(wp_unslash($_SERVER['REQUEST_URI']), null);
 
 //-------------------------------------------------------------------------------------------------	
-if ( strstr( $request_uri, 'wp-admin/post-new.php' ) || strstr( $request_uri, 'wp-admin/post.php' ) ) {
-	
-// ADD STYLE & SCRIPT
-	add_action( 'admin_head', 'h5vp_pro_editor_add_init' );
-		function h5vp_pro_editor_add_init() {
-			
-			if ( get_post_type( get_the_ID() ) != 'videoplayer' ) {
-				
-				wp_enqueue_style( 'h5vp-tinymcecss' );
-				wp_enqueue_script( 'h5vp-tinymcejs' );
+if (strstr($request_uri, 'wp-admin/post-new.php') || strstr($request_uri, 'wp-admin/post.php')) {
+
+	// ADD STYLE & SCRIPT
+	add_action('admin_head', 'h5vp_pro_editor_add_init');
+	function h5vp_pro_editor_add_init()
+	{
+
+		if (get_post_type(get_the_ID()) != 'videoplayer') {
+
+			wp_enqueue_style('h5vp-tinymcecss');
+			wp_enqueue_script('h5vp-tinymcejs');
 
 		?>
-        <?php
-			}
-			
+		<?php
 		}
-	
-// ADD MEDIA BUTOON	
-	add_action( 'media_buttons', 'h5vp_shortcode_button', 1 );
-		function h5vp_shortcode_button($context) {
-			$img = H5VP_PRO_PLUGIN_DIR .'img/icn.png';
-			$container_id = 'h5vpmodal';
-			$title = 'Insert Html5 Video Player';
-			$context .= '
-			<a class="thickbox button" id="h5vp_shortcode_button" title="'.$title.'" style="outline: medium none !important; cursor: pointer;" >
-			<img src="'.$img.'" alt="" width="20" height="20" style="position:relative; top:-1px"/>Html5 video player</a>';
 
-			return $context;
-		}	
+	}
+
+	// ADD MEDIA BUTOON	
+	add_action('media_buttons', 'h5vp_shortcode_button', 1);
+	function h5vp_shortcode_button($context)
+	{
+		$img = H5VP_PRO_PLUGIN_DIR . 'img/icn.png';
+		$container_id = 'h5vpmodal';
+		$title = 'Insert Html5 Video Player';
+		$context .= '
+			<a class="thickbox button" id="h5vp_shortcode_button" title="' . $title . '" style="outline: medium none !important; cursor: pointer;" >
+			<img src="' . $img . '" alt="" width="20" height="20" style="position:relative; top:-1px"/>Html5 video player</a>';
+
+		return $context;
+	}
 }
 
 
 // GENERATE POPUP CONTENT
-add_action('admin_footer', 'h5vp_pro_popup_content');	
-function h5vp_pro_popup_content() {
-	$request_uri = sanitize_url( wp_unslash($_SERVER['REQUEST_URI']), null );
+add_action('admin_footer', 'h5vp_pro_popup_content');
+function h5vp_pro_popup_content()
+{
+	$request_uri = sanitize_url(wp_unslash($_SERVER['REQUEST_URI']), null);
 
-	if ( strstr( $request_uri, 'wp-admin/post-new.php' ) || strstr( $request_uri, 'wp-admin/post.php' ) ) {
+	if (strstr($request_uri, 'wp-admin/post-new.php') || strstr($request_uri, 'wp-admin/post.php')) {
 
-	if ( get_post_type( get_the_ID() ) != 'videoplayer' ) {
-	// START GENERATE POPUP CONTENT
+		if (get_post_type(get_the_ID()) != 'videoplayer') {
+			// START GENERATE POPUP CONTENT
 
-	?>
-	<div id="h5vpmodal" style="display:none;">
-	<div id="tinyform" style="width: 550px;">
-	<form method="post">
+			?>
+			<div id="h5vpmodal" style="display:none;">
+				<div id="tinyform" style="width: 550px;">
+					<form method="post">
 
-	<div class="h5vp_input" id="h5vptinymce_select_slider_div">
-	<label class="label_option" for="h5vptinymce_select_slider">Html5 Video Player</label>
-		<select class="h5vp_select" name="h5vptinymce_select_slider" id="h5vptinymce_select_slider">
-		<option id="selectslider" type="text" value="select">- Select Player -</option>
-	</select>
-	<div class="clearfix"></div>
-	</div>
+						<div class="h5vp_input" id="h5vptinymce_select_slider_div">
+							<label class="label_option" for="h5vptinymce_select_slider">Html5 Video Player</label>
+							<select class="h5vp_select" name="h5vptinymce_select_slider" id="h5vptinymce_select_slider">
+								<option id="selectslider" type="text" value="select">- Select Player -</option>
+							</select>
+							<div class="clearfix"></div>
+						</div>
 
-	<div class="h5vp_button">
-	<input type="button" value="Insert Shortcode" name="h5vp_insert_scrt" id="h5vp_insert_scrt" class="button-secondary" />	
-	<div class="clearfix"></div>
-	</div>
+						<div class="h5vp_button">
+							<input type="button" value="Insert Shortcode" name="h5vp_insert_scrt" id="h5vp_insert_scrt"
+								class="button-secondary" />
+							<div class="clearfix"></div>
+						</div>
 
-	</form>
-	</div>
-	</div>
-	<?php 
+					</form>
+				</div>
+			</div>
+			<?php
 		}
-  } //END
+	} //END
 }
 
 ?>

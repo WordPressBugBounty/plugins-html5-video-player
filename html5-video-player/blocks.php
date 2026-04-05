@@ -46,12 +46,13 @@ if (!class_exists('H5VP_Block')) {
             $localize_data = [
                 'siteUrl' => site_url(),
                 'userId' => get_current_user_id(),
-                'isPipe' => (bool) h5vp_fs()->can_use_premium_code(),
+                'isPipe' => (bool)h5vp_fs()->can_use_premium_code(),
                 'hls' => H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js',
                 'dash' => H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js',
+                'pauseOther' => (bool)\H5VP\Helper\Functions::getOptionDeep("h5vp_option", "h5vp_pause_other_player", false),
                 'nonce' => wp_create_nonce('wp_ajax'),
                 'plugin_url' => H5VP_PRO_PLUGIN_DIR,
-                'brandColor' => $get_option('h5vp_player_primary_color')
+                'brandColor' => $get_option('h5vp_player_primary_color', '#00b2ff')
             ];
 
             wp_localize_script('bplugins-plyrio', 'h5vpBlock', $localize_data);
@@ -66,31 +67,31 @@ if (!class_exists('H5VP_Block')) {
             $ttl = 6 * 60 * 60;
 
             $token = $this->h5vp_make_analytics_token([
-                'uid' => (int) $user_id,
-                'pid' => (int) $post_id,
-                'iat' => (int) $issued_at,
-                'ttl' => (int) $ttl,
+                'uid' => (int)$user_id,
+                'pid' => (int)$post_id,
+                'iat' => (int)$issued_at,
+                'ttl' => (int)$ttl,
             ]);
 
             wp_localize_script('bplugins-plyrio', 'H5VP_ANALYTICS', [
                 'endpoint' => rest_url('h5vp/v1/analytics'),
-                'nonce'    => wp_create_nonce('wp_rest'), // still used for normal fetch
-                'token'    => $token,                     // used for beacon
-                'postId'   => $post_id ?: null,
-                'userId'   => $user_id ?: null,
-                'iat'      => $issued_at,
-                'ttl'      => $ttl,
-                'enableBuilInAnalytics' => (bool) h5vp_fs()->can_use_premium_code() && $get_option('enable_analytics'),
-                '_enabledGA4' => (bool) h5vp_fs()->can_use_premium_code() && $get_option('enable_ga4'),
+                'nonce' => wp_create_nonce('wp_rest'), // still used for normal fetch
+                'token' => $token, // used for beacon
+                'postId' => $post_id ?: null,
+                'userId' => $user_id ?: null,
+                'iat' => $issued_at,
+                'ttl' => $ttl,
+                'enableBuilInAnalytics' => (bool)h5vp_fs()->can_use_premium_code() && $get_option('enable_analytics', true),
+                '_enabledGA4' => (bool)h5vp_fs()->can_use_premium_code() && $get_option('enable_ga4'),
                 'ga4_tracking_id' => $get_option('ga4_tracking_id', '')
             ]);
-            
+
         }
 
         public function watermark_data_ajax()
         {
 
-            if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce']?? '')), 'wp_ajax')) {
+            if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'] ?? '')), 'wp_ajax')) {
                 wp_send_json_error('invalid request');
             }
 
@@ -104,9 +105,12 @@ if (!class_exists('H5VP_Block')) {
             ]);
         }
 
-        function getWatermarkPosition($position) {}
+        function getWatermarkPosition($position)
+        {
+        }
 
-        function h5vp_make_analytics_token(array $data) {
+        function h5vp_make_analytics_token(array $data)
+        {
             // token payload + signature
             $payload = wp_json_encode($data);
             $sig = hash_hmac('sha256', $payload, wp_salt('auth'));
@@ -116,7 +120,7 @@ if (!class_exists('H5VP_Block')) {
         }
     }
 
-    
+
 
 
 

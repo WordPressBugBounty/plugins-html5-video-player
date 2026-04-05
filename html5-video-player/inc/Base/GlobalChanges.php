@@ -2,7 +2,8 @@
 
 namespace H5VP\Base;
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 class GlobalChanges
 {
@@ -109,9 +110,9 @@ class GlobalChanges
                 $block_categories,
                 [
                     [
-                        'slug'  => 'media',
+                        'slug' => 'media',
                         'title' => esc_html__('Media', 'h5vp'),
-                        'icon'  => '', // Slug of a WordPress Dashicon or custom SVG
+                        'icon' => '', // Slug of a WordPress Dashicon or custom SVG
                     ],
                 ]
             );
@@ -125,7 +126,6 @@ class GlobalChanges
     function h5vp_shortcode_button()
     {
         $img = H5VP_PRO_PLUGIN_DIR . 'img/icn.png';
-        $container_id = 'h5vpmodal';
         $title = 'Insert Html5 Video Player';
         $context = '
 		<a class="thickbox button" id="h5vp_shortcode_button" title="' . $title . '" style="outline: medium none !important; cursor: pointer;" >
