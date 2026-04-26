@@ -2,7 +2,8 @@
 
 namespace H5VP\PostType;
 
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 use H5VP\Helper\Functions as Utils;
 
@@ -88,7 +89,7 @@ class VideoPlayer
                 'rewrite' => false,
                 'show_in_rest' => true,
                 'supports' => array('title', 'editor'),
-                'template' =>  [['html5-player/parent'], ["html5-player/popup-trigger"]],
+                'template' => [['html5-player/parent'], ["html5-player/popup-trigger"]],
                 'template_lock' => 'all',
             )
         );
@@ -237,6 +238,13 @@ class VideoPlayer
      */
     function filter_post_data($post_id, $postarr)
     {
+        // Skip autosaves and revisions to prevent duplicates
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+        if (wp_is_post_revision($post_id)) {
+            return;
+        }
 
         $post_type = get_post_type($post_id);
         if ($post_type === 'videoplayer') {
@@ -259,7 +267,66 @@ class VideoPlayer
                     'src' => esc_url($source),
                     'title' => get_the_title($post_id),
                     'type' => $provider,
+                    'post_id' => $post_id,
                 ]);
+            }
+        } else {
+            // For any other post type, parse Gutenberg blocks and sync videos to custom DB
+            $this->syncBlockVideos($post_id, $postarr);
+        }
+    }
+
+    /**
+     * Parse post content for html5-player blocks and insert their videos
+     * into the custom h5vp_videos table if they don't already exist.
+     */
+    private function syncBlockVideos($post_id, $postarr)
+    {
+        $content = $postarr->post_content ?? '';
+        if (empty($content)) {
+            return;
+        }
+
+        $blocks = parse_blocks($content);
+        if (empty($blocks)) {
+            return;
+        }
+
+        $video_model = new \H5VP\Model\Video();
+        $this->extractVideoBlocks($blocks, $video_model, $post_id);
+    }
+
+    /**
+     * Recursively walk parsed blocks looking for html5-player/* blocks.
+     */
+    private function extractVideoBlocks($blocks, $video_model, $post_id)
+    {
+        $block_type_map = [
+            'html5-player/video' => 'library',
+            'html5-player/youtube' => 'youtube',
+            'html5-player/vimeo' => 'vimeo',
+        ];
+
+        foreach ($blocks as $block) {
+            if (!empty($block['blockName']) && isset($block_type_map[$block['blockName']])) {
+                $source = $block['attrs']['source'] ?? '';
+                if (!empty($source)) {
+                    $type = $block_type_map[$block['blockName']];
+                    // Use provider attribute if set (e.g. amazons3, self-hosted)
+                    $provider = $block['attrs']['provider'] ?? $type;
+
+                    $video_model->createIfNotExists([
+                        'src' => $source,
+                        'title' => get_the_title($post_id),
+                        'type' => $provider,
+                        'post_id' => $post_id,
+                    ]);
+                }
+            }
+
+            // Recurse into inner blocks (e.g. html5-player/parent wrapper)
+            if (!empty($block['innerBlocks'])) {
+                $this->extractVideoBlocks($block['innerBlocks'], $video_model, $post_id);
             }
         }
     }
@@ -281,7 +348,7 @@ class VideoPlayer
     function shortcode_area()
     {
 
-        if($this->post_type != get_post_type()){
+        if ($this->post_type != get_post_type()) {
             return;
         }
         global $post;
@@ -291,10 +358,18 @@ class VideoPlayer
         ?>
         <div class="h5vp_shortcode_area_after_title">
             <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'model-viewer'); ?></label>
-           <div class="shortcode_area">
-             <button class="button button-bplugins button-large h5vp_shortcode_copy_btn" data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php echo esc_html($shortcode); ?></button>
-             <svg class='h5vp_shortcode_copy_btn' data-type="icon" data-clipboard-text='<?php echo esc_attr($shortcode) ?>' width='22px' height='22px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'> <path d='M8 4V16C8 17.1046 8.89543 18 10 18L18 18C19.1046 18 20 17.1046 20 16V7.24162C20 6.7034 19.7831 6.18789 19.3982 5.81161L16.0829 2.56999C15.7092 2.2046 15.2074 2 14.6847 2H10C8.89543 2 8 2.89543 8 4Z' stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/> <path d='M16 18V20C16 21.1046 15.1046 22 14 22H6C4.89543 22 4 21.1046 4 20V9C4 7.89543 4.89543 7 6 7H8' stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/> </svg>
-           </div>
+            <div class="shortcode_area">
+                <button class="button button-bplugins button-large h5vp_shortcode_copy_btn"
+                    data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php echo esc_html($shortcode); ?></button>
+                <svg class='h5vp_shortcode_copy_btn' data-type="icon" data-clipboard-text='<?php echo esc_attr($shortcode) ?>'
+                    width='22px' height='22px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path
+                        d='M8 4V16C8 17.1046 8.89543 18 10 18L18 18C19.1046 18 20 17.1046 20 16V7.24162C20 6.7034 19.7831 6.18789 19.3982 5.81161L16.0829 2.56999C15.7092 2.2046 15.2074 2 14.6847 2H10C8.89543 2 8 2.89543 8 4Z'
+                        stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
+                    <path d='M16 18V20C16 21.1046 15.1046 22 14 22H6C4.89543 22 4 21.1046 4 20V9C4 7.89543 4.89543 7 6 7H8'
+                        stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' />
+                </svg>
+            </div>
         </div>
         <?php
     }

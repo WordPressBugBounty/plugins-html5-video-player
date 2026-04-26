@@ -32,6 +32,10 @@
     "clientId": {
       "type": "string"
     },
+    "skin": {
+      "type": "string",
+      "default": "default"
+    },
     "uniqueId": {
       "type": "string"
     },
@@ -175,6 +179,19 @@
         "sticky": {
           "enabled": false,
           "position": "top_right"
+        },
+        "emailCapture": {
+          "enabled": false,
+          "displayAt": 20,
+          "allowSkipping": false,
+          "heading": "Enter your email to watch this video",
+          "bottomText": "We respect your privacy. No spam ever.",
+          "buttonText": "Watch",
+          "buttonColor": "#222",
+          "buttonBackgroundColor": "#ffffffe3",
+          "roundCorner": "0",
+          "integration": "None",
+          "webhook": ""
         },
         "playWhenVisible": false,
         "disablePause": false,
@@ -498,13 +515,16 @@
       "preview": true
     }
   },
-  "viewStyle": "file:./../view.css",
+  "viewStyle": [
+    "bplugins-plyrio",
+    "h5vp-view"
+  ],
   "editorStyle": [
-    "file:../blocks.css",
+    "h5vp-blocks",
     "bplugins-plyrio"
   ],
   "editorScript": [
-    "file:../blocks.js",
+    "h5vp-blocks",
     "bplugins-plyrio",
     "wp-util",
     "wp-data",
@@ -512,10 +532,6 @@
   ],
   "render": "file:./../render.php",
   "viewScript": [
-    "react",
-    "react-dom",
-    "wp-util",
-    "bplugins-plyrio",
-    "file:./../view.js"
+    "h5vp-view"
   ]
 }

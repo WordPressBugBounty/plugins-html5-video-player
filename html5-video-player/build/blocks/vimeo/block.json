@@ -5,7 +5,7 @@
   "title": "Vimeo Player",
   "description": "Vimeo Video Player",
   "category": "media",
-  "version": "2.9.1",
+  "version": "2.10.1",
   "icon": "video-alt2",
   "keywords": [
     "Vimeo Player",
@@ -519,21 +519,20 @@
       "preview": true
     }
   },
-  "style": "file:./../view.css",
+  "style": [
+    "bplugins-plyrio",
+    "h5vp-view"
+  ],
   "editorScript": [
-    "file:../blocks.js",
+    "h5vp-blocks",
     "bplugins-plyrio"
   ],
   "editorStyle": [
-    "file:../blocks.css",
+    "h5vp-blocks",
     "bplugins-plyrio"
   ],
   "render": "file:./../render.php",
   "viewScript": [
-    "wp-util",
-    "react",
-    "react-dom",
-    "bplugins-plyrio",
-    "file:./../view.js"
+    "h5vp-view"
   ]
 }

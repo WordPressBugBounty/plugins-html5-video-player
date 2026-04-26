@@ -41,12 +41,14 @@ class Block
         return [
             'blockName' => "html5-player/$block_name",
             'attrs' => [
+                'is_classic' => true,
                 "provider" => $provider === 'library' ? 'self-hosted' : $provider,
                 "imported" => false,
                 "clientId" => "",
                 "uniqueId" => wp_unique_id('h5vp'),
                 "source" => $source,
                 "poster" => $this->get_post_meta($id, 'h5vp_video_thumbnails', ''),
+                "skin" => $this->get_post_meta($id, 'h5vp_player_skin', 'default'),
                 "options" => [
                     "controls" => $this->get_post_meta($id, 'h5vp_controls', ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']),
                     "settings" => ["captions", "quality", "speed", "loop"],
@@ -95,11 +97,11 @@ class Block
                 "features" => [
                     "popup" => [
                         "enabled" => $this->get_post_meta($id, 'h5vp_popup', false, true),
-                        "selector" => null,
-                        "hasBtn" => false,
-                        "type" => "poster",
-                        "btnText" => "Watch Video",
-                        "align" => "center",
+                        "selector" => $this->get_post_meta($id, 'h5vp_popup_selector', ''),
+                        "hasBtn" => $this->get_post_meta($id, 'h5vp_popup_has_btn', false, true),
+                        "type" => $this->get_post_meta($id, 'h5vp_popup_type', 'poster'),
+                        "btnText" => $this->get_post_meta($id, 'h5vp_popup_btn_text', 'Watch Video'),
+                        "align" => $this->get_post_meta($id, 'h5vp_popup_align', 'center'),
                         "btnStyle" => [
                             "color" => "#fff",
                             "backgroundColor" => "#006BA1",
@@ -140,10 +142,10 @@ class Block
                         "type" => "default"
                     ],
                     "watermark" => [
-                        "enabled" => false,
-                        "type" => "email",
-                        "text" => "",
-                        "color" => "#f00"
+                        "enabled" => $this->get_post_meta($id, 'h5vp_watermark_enabled', false, true),
+                        "type" => $this->get_post_meta($id, 'h5vp_watermark_type', 'email'),
+                        "text" => $this->get_post_meta($id, 'h5vp_watermark_text', ''),
+                        "color" => $this->get_post_meta($id, 'h5vp_watermark_color', '#f00'),
                     ],
                     "passwordProtected" => [
                         "enabled" => $this->get_post_meta($id, 'h5vp_password_protected', false, true),
@@ -156,6 +158,23 @@ class Block
                             "backgroundColor" => "#ffffffe3"
                         ]
                     ],
+                    "emailCapture" => [
+                        "isClassic" => true,
+                        "video_id" => $id,
+                        'enabled' => $this->get_post_meta($id, 'h5vp_email_capture_enabled', false, true),
+                        'displayAt' => $this->get_post_meta($id, 'h5vp_email_capture_display_at', 10),
+                        'heading' => $this->get_post_meta($id, 'h5vp_email_capture_heading', ''),
+                        'bottomText' => $this->get_post_meta($id, 'h5vp_email_capture_bottom_text', ''),
+                        'buttonText' => $this->get_post_meta($id, 'h5vp_email_capture_button_text', ''),
+                        'buttonColor' => [
+                            'color' => $this->get_post_meta($id, 'h5vp_email_capture_button_color', '#fff'),
+                            'bg' => $this->get_post_meta($id, 'h5vp_email_capture_button_bg', '#006BA1'),
+                        ],
+                        'integration' => $this->get_post_meta($id, 'h5vp_email_capture_integration', 'none'),
+                        'webhook' => $this->get_post_meta($id, 'h5vp_email_capture_webhook', ''),
+                        'allowSkipping' => $this->get_post_meta($id, 'h5vp_email_capture_allow_skipping', true, true),
+                        'roundCorner' => $this->get_post_meta($id, 'h5vp_email_capture_round_corner', true, true),
+                    ],
                     "sticky" => [
                         "enabled" => $this->get_post_meta($id, 'h5vp_sticky_mode', false, true),
                         "position" => "top_right"
@@ -166,6 +185,7 @@ class Block
                     "startTime" => $this->get_post_meta($id, 'h5vp_start_time', 0),
                     "hideLoadingPlaceholder" => false,
                     'customPlayButtonSelector' => $this->get_post_meta($id, 'h5vp_custom_play_button_css_selector', ''),
+                    "saveState" => $this->get_post_meta($id, 'h5vp_save_state', true, true)
                 ],
                 'onlyLoggedIn' => [
                     'whoCanSeeThisVideo' => $this->get_post_meta($id, 'whoo_can_see_this_video', 'everyone'),
@@ -211,7 +231,7 @@ class Block
                 "streamingType" => "hls",
                 "captionEnabled" => false,
                 "vastTag" => "",
-                "saveState" => true
+                "saveState" => $this->get_post_meta($id, 'h5vp_save_state', true, true)
             ],
             "innerBlocks" => [],
             "innerHTML" => "",
@@ -368,7 +388,7 @@ class Block
         $meta = get_post_meta($id, $key, true);
 
         if ($is_boolean) {
-            $meta = $meta == '1' ? true : false;
+            return $meta == '1' ? true : false;
         }
         if ($meta == '') {
             $meta = $default;

@@ -176,6 +176,11 @@ class Preset
         $this->verify_request();
 
         $id = sanitize_text_field(wp_unslash($_POST['id'] ?? ''));
+
+        if (empty($id)) {
+            wp_send_json_error('Invalid Request. status: pinf');
+        }
+
         global $wpdb;
         $wpdb->delete(
             $wpdb->prefix . 'h5vp_presets',
@@ -321,6 +326,50 @@ class Preset
         }
 
         return $defaults;
+    }
+
+    public function get_webhook_by_preset_id($id)
+    {
+        // get preset by id
+        $preset = $this->get_preset_by_id($id);
+        if (empty($preset)) {
+            return [];
+        }
+
+        $settings = json_decode($preset->settings, true);
+        $url = $settings['features']['emailCapture']['webhook']['url'] ?? '';
+        $get_option = h5vp_get_option('h5vp_option');
+        $webhooks = $get_option('h5vp_webhooks', []);
+        // find webhook by url
+        foreach ($webhooks as $webhook) {
+            if ($webhook['url'] === $url) {
+                return $webhook;
+            }
+        }
+        return [];
+    }
+    public function get_webhook_by_url($url)
+    {
+        $get_option = h5vp_get_option('h5vp_option');
+        $webhooks = $get_option('h5vp_webhooks', []);
+        // find webhook by url
+        foreach ($webhooks as $webhook) {
+            if ($webhook['url'] === $url) {
+                return $webhook;
+            }
+        }
+        return [];
+    }
+
+    public function get_email_capture_settings($id)
+    {
+        $preset = $this->get_preset_by_id($id);
+        if (empty($preset)) {
+            return [];
+        }
+
+        $settings = json_decode($preset->settings, true);
+        return $settings['features']['emailCapture'] ?? [];
     }
 
 }

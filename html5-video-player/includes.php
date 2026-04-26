@@ -1,5 +1,6 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH'))
+    exit;
 if (!class_exists('CSF') && file_exists(dirname(__FILE__) . "/vendor/codestar-framework/codestar-framework.php")) {
     require_once dirname(__FILE__) . "/vendor/codestar-framework/codestar-framework.php";
 }
@@ -9,7 +10,7 @@ $include_files = array(
     __DIR__ . "/blocks.php",
     __DIR__ . "/elementor-widget.php",
     __DIR__ . "/inc/functions.php",
-    __DIR__ . "/inc/Rest/VideoController.php",
+    // __DIR__ . "/inc/Rest/VideoController.php", // maybe didnot used anywhere
     __DIR__ . "/inc/Rest/Views.php",
     __DIR__ . "/inc/Model/ViewsModel.php",
     __DIR__ . "/inc/Model/VideoModel.php",

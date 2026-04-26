@@ -28,36 +28,41 @@ if (!class_exists('H5VP_Block')) {
 
         function enqueue_script()
         {
-            wp_register_script('html5-player-blocks', plugin_dir_url(__FILE__) . 'build/editor.js', array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'jquery', 'bplugins-plyrio'), H5VP_PRO_VER, true);
+            wp_register_script('html5-player-blocks', plugin_dir_url(__FILE__) . 'build/editor.js', ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'jquery', 'bplugins-plyrio'], H5VP_PRO_VER, true);
 
-            wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.8.3.polyfilled.js', array(), '3.8.3', false);
+            wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.8.3.polyfilled.js', [], '3.8.3', false);
+            wp_register_script('h5vp-view', plugin_dir_url(__FILE__) . 'build/blocks/view.js', ['react', 'react-dom', 'wp-util', 'bplugins-plyrio'], H5VP_PRO_VER, false);
+            wp_register_script('h5vp-blocks', plugin_dir_url(__FILE__) . 'build/blocks/blocks.js', [], H5VP_PRO_VER, false);
 
-            wp_register_script('h5vp-hls', H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js', array('bplugins-plyrio'), H5VP_PRO_VER, true);
-            wp_register_script('h5vp-dash', H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js', array('bplugins-plyrio'), H5VP_PRO_VER, true);
+            wp_register_script('h5vp-hls', H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js', ['bplugins-plyrio'], H5VP_PRO_VER, true);
+            wp_register_script('h5vp-dash', H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js', ['bplugins-plyrio'], H5VP_PRO_VER, true);
 
-            wp_register_style('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all');
-            wp_register_style('h5vp-editor', plugin_dir_url(__FILE__) . 'build/editor.css', array(), H5VP_PRO_VER, 'all');
+            wp_register_style('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/css/h5vp.css', [], H5VP_PRO_VER, 'all');
+            wp_register_style('h5vp-view', plugin_dir_url(__FILE__) . 'build/blocks/view.css', ['bplugins-plyrio'], H5VP_PRO_VER, 'all');
+            wp_register_style('h5vp-blocks', plugin_dir_url(__FILE__) . 'build/blocks/blocks.css', [], H5VP_PRO_VER, 'all');
+            wp_register_style('h5vp-editor', plugin_dir_url(__FILE__) . 'build/editor.css', [], H5VP_PRO_VER, 'all');
 
-            wp_register_style('html5-player-video-style', plugin_dir_url(__FILE__) . 'build/frontend.css', array('bplugins-plyrio'), H5VP_PRO_VER);
+            wp_register_style('html5-player-video-style', plugin_dir_url(__FILE__) . 'build/frontend.css', ['bplugins-plyrio'], H5VP_PRO_VER);
 
             $get_option = h5vp_get_option();
 
 
             $localize_data = [
-                'siteUrl' => site_url(),
-                'userId' => get_current_user_id(),
-                'isPipe' => (bool)h5vp_fs()->can_use_premium_code(),
-                'hls' => H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js',
-                'dash' => H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js',
-                'pauseOther' => (bool)\H5VP\Helper\Functions::getOptionDeep("h5vp_option", "h5vp_pause_other_player", false),
-                'nonce' => wp_create_nonce('wp_ajax'),
-                'plugin_url' => H5VP_PRO_PLUGIN_DIR,
-                'brandColor' => $get_option('h5vp_player_primary_color', '#00b2ff')
+                'siteUrl'     => site_url(),
+                'userId'      => get_current_user_id(),
+                'isPipe'      => (bool) h5vp_fs()->can_use_premium_code(),
+                'hls'         => H5VP_PRO_PLUGIN_DIR . 'public/js/hls.min.js',
+                'dash'        => H5VP_PRO_PLUGIN_DIR . 'public/js/dash.all.min.js',
+                'pauseOther'  => (bool) \H5VP\Helper\Functions::getOptionDeep("h5vp_option", "h5vp_pause_other_player", false),
+                'nonce'       => wp_create_nonce('wp_ajax'),
+                'plugin_url'  => H5VP_PRO_PLUGIN_DIR,
+                'brandColor'  => $get_option('h5vp_player_primary_color', '#00b2ff'),
+                'postId'      => is_singular() ? (int) get_the_ID() : 0,
             ];
 
-            wp_localize_script('bplugins-plyrio', 'h5vpBlock', $localize_data);
+            wp_localize_script('h5vp-blocks', 'h5vpBlock', $localize_data);
 
-            wp_localize_script('html5-player-video-view-script', 'h5vpBlock', $localize_data);
+            wp_localize_script('h5vp-view', 'h5vpBlock', $localize_data);
 
             $user_id = get_current_user_id();
             $post_id = is_singular() ? get_the_ID() : 0;
@@ -67,13 +72,13 @@ if (!class_exists('H5VP_Block')) {
             $ttl = 6 * 60 * 60;
 
             $token = $this->h5vp_make_analytics_token([
-                'uid' => (int)$user_id,
-                'pid' => (int)$post_id,
-                'iat' => (int)$issued_at,
-                'ttl' => (int)$ttl,
+                'uid' => (int) $user_id,
+                'pid' => (int) $post_id,
+                'iat' => (int) $issued_at,
+                'ttl' => (int) $ttl,
             ]);
 
-            wp_localize_script('bplugins-plyrio', 'H5VP_ANALYTICS', [
+            wp_localize_script('h5vp-view', 'H5VP_ANALYTICS', [
                 'endpoint' => rest_url('h5vp/v1/analytics'),
                 'nonce' => wp_create_nonce('wp_rest'), // still used for normal fetch
                 'token' => $token, // used for beacon
@@ -81,8 +86,8 @@ if (!class_exists('H5VP_Block')) {
                 'userId' => $user_id ?: null,
                 'iat' => $issued_at,
                 'ttl' => $ttl,
-                'enableBuilInAnalytics' => (bool)h5vp_fs()->can_use_premium_code() && $get_option('enable_analytics', true),
-                '_enabledGA4' => (bool)h5vp_fs()->can_use_premium_code() && $get_option('enable_ga4'),
+                'enableBuilInAnalytics' => (bool) h5vp_fs()->can_use_premium_code() && $get_option('enable_analytics', true),
+                '_enabledGA4' => (bool) h5vp_fs()->can_use_premium_code() && $get_option('enable_ga4'),
                 'ga4_tracking_id' => $get_option('ga4_tracking_id', '')
             ]);
 

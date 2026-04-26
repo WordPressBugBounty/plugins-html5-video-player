@@ -1,5 +1,6 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit; // Exit if accessed directly
 
 use H5VP\Base\AWS;
 
@@ -34,6 +35,7 @@ if (!function_exists(('h5vp_process_block_attributes'))) {
         if (isset($attributes['features']['passwordProtected']['enabled']) && $attributes['features']['passwordProtected']['enabled']) {
             unset($attributes['quality']);
             unset($attributes['qualities']);
+            $attributes['source'] = 'blank.mp4';
         }
 
         if (isset($attributes['styles'])) {
@@ -41,6 +43,19 @@ if (!function_exists(('h5vp_process_block_attributes'))) {
                 '--plyr-color-main' => $option('h5vp_player_primary_color', '#00b2ff')
             ];
         }
+
+        if (!h5vp_fs()->can_use_premium_code()) {
+            $attributes['skin'] = 'default';
+            unset($attributes['quality']);
+            unset($attributes['qualities']);
+
+        }
+
+        if (class_exists('\H5VP\Model\Video')) {
+            $videoInstance = new \H5VP\Model\Video();
+            $attributes['video_id'] = $videoInstance->get_id(['src' => $attributes['source']]);
+        }
+
 
         return $attributes;
     }
@@ -51,7 +66,7 @@ if (!function_exists('h5vp_extract_base_url')) {
     function h5vp_extract_base_url($url)
     {
         $parts = parse_url($url);
-        if(!isset($parts['scheme']) || !isset($parts['host'])) {
+        if (!isset($parts['scheme']) || !isset($parts['host'])) {
             return $url;
         }
 
@@ -63,6 +78,10 @@ if (!function_exists('h5vp_extract_base_url')) {
 
         if (!empty($parts['path'])) {
             $base_url .= $parts['path'];
+        }
+
+        if (!empty($parts['query'])) {
+            $base_url .= '?' . $parts['query'];
         }
 
         return $base_url;
@@ -83,14 +102,17 @@ if (!function_exists('h5vp_convert_duration_to_iso8601')) {
             $parts = array_reverse(explode(':', $duration));
             $seconds = isset($parts[0]) ? intval($parts[0]) : 0;
             $minutes = isset($parts[1]) ? intval($parts[1]) : 0;
-            $hours   = isset($parts[2]) ? intval($parts[2]) : 0;
+            $hours = isset($parts[2]) ? intval($parts[2]) : 0;
         }
 
         // Build ISO 8601 string
         $iso = 'PT';
-        if ($hours > 0) $iso .= $hours . 'H';
-        if ($minutes > 0) $iso .= $minutes . 'M';
-        if ($seconds > 0 || $iso === 'PT') $iso .= $seconds . 'S'; // Always include seconds
+        if ($hours > 0)
+            $iso .= $hours . 'H';
+        if ($minutes > 0)
+            $iso .= $minutes . 'M';
+        if ($seconds > 0 || $iso === 'PT')
+            $iso .= $seconds . 'S'; // Always include seconds
 
         return $iso;
     }

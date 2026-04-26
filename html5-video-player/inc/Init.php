@@ -19,8 +19,8 @@ class Init
             Services\EnqueueAssets::class,
             Services\Shortcodes::class,
             Field\VideoPlayer::class,
-            Field\Settings::class,
             Field\QuickPlayer::class,
+            Field\Settings::class,
             Field\PlaylistFieldPro::class,
             Model\Ajax::class,
             Model\Preset::class,
@@ -46,6 +46,7 @@ class Init
         self::instantiate(PostType\VideoPlayer::class)->register();
         if (h5vp_fs()->can_use_premium_code() && class_exists(PostType\H5VPPlaylistPro::class)) {
             self::instantiate(PostType\H5VPPlaylistPro::class)->register();
+            self::instantiate(PostType\CaptureEmail::class)->register();
         }
     }
 

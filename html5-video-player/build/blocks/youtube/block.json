@@ -520,21 +520,20 @@
     }
   },
   "editorScript": [
-    "file:../blocks.js",
+    "h5vp-blocks",
     "bplugins-plyrio",
     "wp-util"
   ],
   "editorStyle": [
-    "file:../blocks.css",
+    "h5vp-blocks",
     "bplugins-plyrio"
   ],
-  "viewStyle": "file:./../view.css",
+  "viewStyle": [
+    "bplugins-plyrio",
+    "h5vp-view"
+  ],
   "render": "file:./../render.php",
   "viewScript": [
-    "react",
-    "react-dom",
-    "wp-util",
-    "bplugins-plyrio",
-    "file:./../view.js"
+    "h5vp-view"
   ]
 }

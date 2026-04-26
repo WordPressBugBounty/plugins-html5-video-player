@@ -2,7 +2,9 @@
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 use H5VP\Helper\DefaultArgs;
-
+if (!isset($attributes['source']) || empty($attributes['source'])) {
+    return;
+}
 $classes = 'wp-block-html5-player-video html5_video_players';
 $attributes = h5vp_process_block_attributes($attributes);
 
@@ -33,35 +35,29 @@ if ($attributes['onlyLoggedIn']['whoCanSeeThisVideo'] == 'logged_out' && is_user
     return;
 }
 
-$video_id = '';
-if (class_exists('\H5VP\Model\Video')) {
-    $videoInstance = new \H5VP\Model\Video();
-    $video_id = $videoInstance->get_id(['src' => $attributes['source']]);
-    $attributes['video_id'] = $video_id;
-}
-
-
 $attributes['features']['saveState'] = $attributes['saveState'] ?? false;
 
 if (h5vp_fs()->is__premium_only() && isset($attributes['seo']['duration']) && !empty($attributes['seo']['duration'])) {
     add_action('wp_head', function () use ($attributes) {
         ?>
         <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "VideoObject",
-                "name": "<?php echo esc_html($attributes['seo']['name'] ?? get_the_title()); ?>",
-                "description": "<?php echo esc_html($attributes['seo']['description'] ?? get_the_excerpt()) ?>",
-                "thumbnailUrl": "<?php echo esc_url($attributes['poster'] ?? '') ?>",
-                "uploadDate": "<?php echo esc_html(get_the_date('c')) ?>",
-                "contentUrl": "<?php echo esc_url($attributes['source']) ?>",
-                "embedUrl": "<?php echo esc_url(get_permalink()); ?>",
-                "duration": "<?php echo esc_html(h5vp_convert_duration_to_iso8601($attributes['seo']['duration'])); ?>"
-            }
-        </script>
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "VideoObject",
+                        "name": "<?php echo esc_html($attributes['seo']['name'] ?? get_the_title()); ?>",
+                        "description": "<?php echo esc_html($attributes['seo']['description'] ?? get_the_excerpt()) ?>",
+                        "thumbnailUrl": "<?php echo esc_url($attributes['poster'] ?? '') ?>",
+                        "uploadDate": "<?php echo esc_html(get_the_date('c')) ?>",
+                        "contentUrl": "<?php echo esc_url($attributes['source']) ?>",
+                        "embedUrl": "<?php echo esc_url(get_permalink()); ?>",
+                        "duration": "<?php echo esc_html(h5vp_convert_duration_to_iso8601($attributes['seo']['duration'])); ?>"
+                    }
+                </script>
         <?php
     });
 }
+
+// don't remove this
 if (strpos($attributes['source'], '.m3u8') !== false) {
     wp_enqueue_script('h5vp-hls');
     $classes .= ' h5vp-hls-video';
@@ -77,10 +73,13 @@ if (strpos($attributes['source'], '.m3u8') !== false || strpos($attributes['sour
     $attributes['streaming'] = true;
 }
 
+
+// hide email-form for logged in users
 ?>
 
-<div data-video-id="<?php echo esc_attr($video_id); ?>" class='<?php echo esc_attr($classes) ?>' <?php echo
-          wp_kses_data(get_block_wrapper_attributes()); ?> data-nonce="
+<div data-video-id="<?php echo esc_attr($attributes['video_id'] ?? ''); ?>" class='<?php echo esc_attr($classes) ?>'
+    <?php echo
+        wp_kses_data(get_block_wrapper_attributes()); ?> data-nonce="
     <?php echo esc_attr(wp_create_nonce('wp_ajax')) ?>" data-attributes="
     <?php echo esc_attr(wp_json_encode($attributes)) ?>" data-preset="
     <?php echo esc_attr(wp_json_encode($preset)) ?>">

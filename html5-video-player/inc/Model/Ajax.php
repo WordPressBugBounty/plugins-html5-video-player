@@ -38,6 +38,10 @@ class Ajax
 
         // get editable roles
         add_action('wp_ajax_h5vp_get_editable_roles', [$this, 'get_editable_roles']);
+
+        // email capture hooks are now registered via \H5VP\Features\EmailCapture
+        (new \H5VP\Features\EmailCapture())->register();
+
     }
 
     public static function instance()
@@ -202,4 +206,7 @@ class Ajax
         }
         wp_send_json_success($user_roles);
     }
+
+
+
 }

@@ -4,7 +4,7 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 2.10.1
+Stable tag: 2.11.0
 Requires PHP: 7.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -259,6 +259,14 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 
 == Changelog ==
 
+= 2.11.0 - 26 Apr, 2026 =
+* New: Added 6 Skin (Default, Stacked, Modern, Floating Pill, Classic Minimal, Stacked Dual-Row, Modern Mobile Stack) (Pro)
+* New: Email Capture (Default, Mailchimp, MailerLite, ActiveCampaign, Webhook, FluentCRM) (Pro)
+* New: Save State option in Classic Shortcode Generator
+* Update: Added Popup options in Classic Shortcode Generator
+* Fixed: Watermark issue
+
+
 = 2.10.1 - 05 Apr, 2026 =
 * Improved: PHP Compatibility	
 * Fixed: Security Vulnerabilities	
@@ -482,8 +490,3 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 
 = 1.0 =
 * Initial Release
-
-== Upgrade Notice ==
-
-= 2.5.26 - 24 Jan, 2024 = 
-* Fixed: aws.png not found in backend
