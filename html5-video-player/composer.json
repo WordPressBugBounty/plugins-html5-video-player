@@ -1,5 +1,5 @@
 {
-  "name": "raju/html5-video-player-pro",
+  "name": "bplugins/html5-video-player",
   "autoload": {
     "psr-4": {
       "H5VP\\": "inc/"

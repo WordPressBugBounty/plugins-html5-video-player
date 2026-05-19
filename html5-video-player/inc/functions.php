@@ -2,7 +2,6 @@
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 
-use H5VP\Base\AWS;
 
 if (!function_exists('h5vp_get_option')) {
     function h5vp_get_option($key = 'h5vp_option')
@@ -24,18 +23,18 @@ if (!function_exists('h5vp_get_option')) {
 if (!function_exists(('h5vp_process_block_attributes'))) {
     function h5vp_process_block_attributes($attributes)
     {
-
-        $aws = new AWS();
         $option = h5vp_get_option('h5vp_option');
 
-        if ($aws->parseS3Url($attributes['source'])) {
-            $attributes['source'] = $aws->get_aws_s3_url($attributes['source']);
-        }
         $attributes['features']['passwordProtected']['password'] = null;
-        if (isset($attributes['features']['passwordProtected']['enabled']) && $attributes['features']['passwordProtected']['enabled']) {
-            unset($attributes['quality']);
-            unset($attributes['qualities']);
-            $attributes['source'] = 'blank.mp4';
+
+        // Block attributes can originate from shortcodes / imports. Force a safe
+        // URL scheme on source + poster so a javascript: URI can never reach
+        // view.js and become a stored-XSS vector.
+        if (!empty($attributes['source'])) {
+            $attributes['source'] = esc_url_raw((string) $attributes['source']);
+        }
+        if (!empty($attributes['poster'])) {
+            $attributes['poster'] = esc_url_raw((string) $attributes['poster']);
         }
 
         if (isset($attributes['styles'])) {
@@ -44,47 +43,16 @@ if (!function_exists(('h5vp_process_block_attributes'))) {
             ];
         }
 
-        if (!h5vp_fs()->can_use_premium_code()) {
-            $attributes['skin'] = 'default';
-            unset($attributes['quality']);
-            unset($attributes['qualities']);
-
-        }
+        $attributes['skin'] = 'default';
+        unset($attributes['quality']);
+        unset($attributes['qualities']);
 
         if (class_exists('\H5VP\Model\Video')) {
             $videoInstance = new \H5VP\Model\Video();
             $attributes['video_id'] = $videoInstance->get_id(['src' => $attributes['source']]);
         }
 
-
         return $attributes;
-    }
-}
-
-
-if (!function_exists('h5vp_extract_base_url')) {
-    function h5vp_extract_base_url($url)
-    {
-        $parts = parse_url($url);
-        if (!isset($parts['scheme']) || !isset($parts['host'])) {
-            return $url;
-        }
-
-        $base_url = $parts['scheme'] . '://' . $parts['host'];
-
-        if (!empty($parts['port'])) {
-            $base_url .= ':' . $parts['port'];
-        }
-
-        if (!empty($parts['path'])) {
-            $base_url .= $parts['path'];
-        }
-
-        if (!empty($parts['query'])) {
-            $base_url .= '?' . $parts['query'];
-        }
-
-        return $base_url;
     }
 }
 
@@ -132,17 +100,6 @@ if (!function_exists('h5vp__get_post_meta')) {
             }
             return $default;
         };
-    }
-}
-
-if (!function_exists('xorEncode')) {
-    function xorEncode($str, $key)
-    {
-        $out = '';
-        for ($i = 0; $i < strlen($str); $i++) {
-            $out .= chr(ord($str[$i]) ^ ord($key[$i % strlen($key)]));
-        }
-        return base64_encode($out);
     }
 }
 

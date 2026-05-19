@@ -5,8 +5,6 @@ namespace H5VP\Model;
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 
-use PPV\Base\Help;
-
 class Ajax
 {
 
@@ -15,7 +13,6 @@ class Ajax
     private $requestType;
     private $requestMethod;
     private $requestModel;
-    private $namespace = "H5VP\Model\\";
     private $model;
 
     public function __construct()
@@ -25,22 +22,7 @@ class Ajax
     public function register()
     {
         add_action('wp_ajax_h5vp_ajax_handler', [$this, 'prepareAjax']);
-        add_action('wp_ajax_nopriv_h5vp_ajax_handler', [$this, 'prepareAjax']);
 
-        // aws picker
-        add_action('wp_ajax_h5vp_aws_picker', [$this, 'h5vp_aws_picker']);
-
-        // from ajaxCall.php
-        add_action('wp_ajax_h5vp_export_data', [$this, 'h5vp_export_data']);
-        // add_action('wp_ajax_save_password', [$this, 'save_password']);
-
-        add_action('wp_ajax_h5vp_save_preferred_editor', [$this, 'h5vp_save_preferred_editor']);
-
-        // get editable roles
-        add_action('wp_ajax_h5vp_get_editable_roles', [$this, 'get_editable_roles']);
-
-        // email capture hooks are now registered via \H5VP\Features\EmailCapture
-        (new \H5VP\Features\EmailCapture())->register();
 
     }
 
@@ -63,19 +45,23 @@ class Ajax
     private function getAllowedActions(): array
     {
         return [
-            'Video' => ['get_id_response', 'check_password', 'save_password', 'create'],
-            'Preset' => ['get_presets', 'get_preset', 'save_preset', 'delete_preset'],
-            // Add other allowed combinations
+            'Video' => ['class' => \H5VP\Model\Video::class, 'methods' => ['create']],
         ];
     }
 
     public function prepareAjax()
     {
-        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'] ?? '')), 'wp_ajax')) {
+        if (!current_user_can('edit_posts')) {
             wp_send_json_error('403 Forbidden');
         }
 
-        $this->params = $_POST;
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'] ?? '')), 'h5vp_ajax_handler')) {
+            wp_send_json_error('403 Forbidden');
+        }
+
+        // Raw request data. Models are responsible for whitelisting/sanitizing
+        // every field before it reaches the DB layer.
+        $this->params = wp_unslash($_POST);
         $this->requestType = 'POST';
         $this->proceedRequest();
     }
@@ -84,9 +70,18 @@ class Ajax
     {
         $data = $this->params;
 
-        $this->requestModel = sanitize_text_field($this->isset($data, 'model', 'Model'));
-        $this->requestMethod = sanitize_text_field($this->isset($data, 'method', 'invalid'));
-        $this->model = $this->namespace . $this->requestModel;
+        $this->requestModel = sanitize_text_field($this->isset($data, 'model', ''));
+        $this->requestMethod = sanitize_text_field($this->isset($data, 'method', ''));
+
+        $allowedActions = $this->getAllowedActions();
+
+        if (!isset($allowedActions[$this->requestModel]) || !\in_array($this->requestMethod, $allowedActions[$this->requestModel]['methods'], true)) {
+            wp_send_json_error('Action not allowed!');
+        }
+
+        // The class name comes solely from the server-side allow-list — request
+        // data is only ever used as an array key, never to build a class name.
+        $this->model = $allowedActions[$this->requestModel]['class'];
 
         if (!class_exists($this->model)) {
             wp_send_json_error('Model does not exists!');
@@ -106,107 +101,5 @@ class Ajax
 
 
     }
-
-    public function invalid()
-    {
-        wp_send_json_error('invalid request!');
-    }
-
-
-    function user_has_role($user_id, $role_name)
-    {
-        $user_meta = get_userdata($user_id);
-        $user_roles = $user_meta->roles;
-        return in_array($role_name, $user_roles);
-    }
-
-
-    public function h5vp_export_data()
-    {
-        $nonce = sanitize_text_field(wp_unslash($_POST['nonce'] ?? ''));
-
-        if (!wp_verify_nonce($nonce, 'wp_ajax')) {
-            wp_send_json_error('invalid request');
-        }
-
-        $id = sanitize_text_field(wp_unslash($_POST['id'] ?? ''));
-        $output['id'] = $id;
-        if (!$id)
-            wp_die();
-
-        $is_administrator = $this->user_has_role(get_current_user_id(), 'administrator');
-
-        if (!$is_administrator) {
-            echo wp_json_encode('you are not capable to export data');
-            wp_die();
-        }
-
-        $post_type = get_post_type($id);
-
-        if (in_array($post_type, ['videoplayer', 'h5vpplaylist'])) {
-            $meta = get_post_meta($id);
-            $post = get_post($id);
-            unset($meta['_edit_last']);
-            unset($meta['_edit_lock']);
-            unset($meta['h5vp_total_views']);
-
-            foreach ($meta as $key => $value) {
-                $output[$key] = maybe_unserialize($value[0]);
-            }
-            $output['body'] = $post->post_content;
-            echo wp_json_encode($output);
-        }
-
-        wp_die();
-    }
-
-    function h5vp_aws_picker()
-    {
-        $aws = new \H5VP\Base\AWS();
-        wp_send_json_success($aws->get_s3_list_objects());
-    }
-
-    public function h5vp_save_preferred_editor()
-    {
-        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_security_code'] ?? '')), 'h5vp_security_key')) {
-            wp_send_json_error('invalid request');
-        }
-
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error('Invalid Authorization');
-        }
-
-        $editor = sanitize_text_field(wp_unslash($_POST['editor'] ?? ''));
-
-        $options = get_option('h5vp_option', []);
-        $options['h5vp_gutenberg_enable'] = $editor === 'gutenberg' ? '1' : '0';
-        update_option('h5vp_option', $options);
-
-        wp_send_json_success(['status' => 'success']);
-    }
-
-    public function get_editable_roles()
-    {
-        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_security_code'] ?? '')), 'wp_ajax')) {
-            wp_send_json_error('invalid request');
-        }
-
-        if (!current_user_can('edit_posts')) {
-            wp_send_json_error('Invalid Authorization');
-        }
-
-        global $wp_roles;
-        $roles = $wp_roles->roles;
-        $user_roles = array();
-        foreach ($roles as $role_key => $role) {
-            $user_roles[] = [
-                'label' => $role['name'],
-                'value' => $role_key
-            ];
-        }
-        wp_send_json_success($user_roles);
-    }
-
-
 
 }

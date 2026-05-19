@@ -1,0 +1,546 @@
+# Copyright (C) 2026 bPlugins
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: HTML5 Video Player – Embed and Play Videos in Custom Player 2.11.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/html5-video-player\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-05-19T04:39:09+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: html5-video-player\n"
+
+#. Plugin Name of the plugin
+#: html5-video-player.php
+msgid "HTML5 Video Player – Embed and Play Videos in Custom Player"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: html5-video-player.php
+msgid "https://bplugins.com/html5-video-player/"
+msgstr ""
+
+#. Description of the plugin
+#: html5-video-player.php
+msgid "You can easily integrate html5 Video player in your WordPress website using this plugin."
+msgstr ""
+
+#. Author of the plugin
+#: html5-video-player.php
+msgid "bPlugins"
+msgstr ""
+
+#. Author URI of the plugin
+#: html5-video-player.php
+msgid "http://bplugins.com"
+msgstr ""
+
+#: inc/admin.php:39
+#: inc/admin.php:40
+#: zip/html5-video-player/inc/admin.php:39
+#: zip/html5-video-player/inc/admin.php:40
+msgid "Demo & Help"
+msgstr ""
+
+#. translators: 1: removed shortcode, 2: replacement shortcode.
+#: inc/Base/AdminNotice.php:44
+#: zip/html5-video-player/inc/Base/AdminNotice.php:44
+msgid "HTML5 Video Player: the %1$s shortcode has been removed. Please use %2$s instead."
+msgstr ""
+
+#: inc/Base/GlobalChanges.php:46
+#: zip/html5-video-player/inc/Base/GlobalChanges.php:46
+msgid "Updated "
+msgstr ""
+
+#: inc/Base/GlobalChanges.php:71
+#: inc/Field/VideoPlayer.php:37
+#: zip/html5-video-player/inc/Base/GlobalChanges.php:71
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:37
+msgid "Media"
+msgstr ""
+
+#: inc/Base/GlobalChanges.php:88
+#: zip/html5-video-player/inc/Base/GlobalChanges.php:88
+msgid "Insert Html5 Video Player"
+msgstr ""
+
+#: inc/Base/GlobalChanges.php:90
+#: zip/html5-video-player/inc/Base/GlobalChanges.php:90
+msgid "Html5 video player"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:48
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:48
+msgid "HTML5 Video Player"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:123
+#: inc/Elementor/VideoPlayer.php:392
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:123
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:392
+msgid "Settings"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:131
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:131
+msgid "Video Source"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:135
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:135
+msgid "Library or CDN Source"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:139
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:139
+msgid "Select video source"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:146
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:146
+msgid "Select Video"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:149
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:149
+msgid "Paste Video URL"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:159
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:159
+msgid "video id or url"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:173
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:173
+msgid "Select Poster"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:176
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:176
+msgid "Paste Poster URL"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:183
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:183
+msgid "Width"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:208
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:208
+msgid "Autoplay"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:210
+#: inc/Elementor/VideoPlayer.php:223
+#: inc/Elementor/VideoPlayer.php:236
+#: inc/Elementor/VideoPlayer.php:250
+#: inc/Elementor/VideoPlayer.php:266
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:210
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:223
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:236
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:250
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:266
+msgid "Yes"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:211
+#: inc/Elementor/VideoPlayer.php:224
+#: inc/Elementor/VideoPlayer.php:237
+#: inc/Elementor/VideoPlayer.php:251
+#: inc/Elementor/VideoPlayer.php:267
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:211
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:224
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:237
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:251
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:267
+msgid "No"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:221
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:221
+msgid "Muted"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:234
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:234
+msgid "Repeat"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:248
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:248
+msgid "Reset On End"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:264
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:264
+msgid "Auto Hide Control"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:278
+#: inc/Field/VideoPlayer.php:100
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:278
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:100
+msgid "Controls"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:286
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:286
+msgid "Large Play"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:297
+#: inc/Field/VideoPlayer.php:104
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:297
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:104
+msgid "Restart"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:307
+#: inc/Field/VideoPlayer.php:105
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:307
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:105
+msgid "Rewind"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:318
+#: inc/Field/VideoPlayer.php:106
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:318
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:106
+msgid "Play"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:329
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:329
+msgid "Fast Forward"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:341
+#: inc/Field/VideoPlayer.php:108
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:341
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:108
+msgid "Progressbar"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:352
+#: inc/Field/VideoPlayer.php:110
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:352
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:110
+msgid "Current Time"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:362
+#: inc/Field/VideoPlayer.php:109
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:362
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:109
+msgid "Duration"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:372
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:372
+msgid "Mute"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:382
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:382
+msgid "Volume"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:404
+#: inc/Field/VideoPlayer.php:114
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:404
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:114
+msgid "PIP"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:414
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:414
+msgid "Air Play"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:424
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:424
+msgid "Full Screen"
+msgstr ""
+
+#: inc/Elementor/VideoPlayer.php:434
+#: zip/html5-video-player/inc/Elementor/VideoPlayer.php:434
+msgid "Downlaod"
+msgstr ""
+
+#: inc/Field/Settings.php:44
+#: zip/html5-video-player/inc/Field/Settings.php:44
+msgid "Shortcode/Player"
+msgstr ""
+
+#: inc/Field/Settings.php:50
+#: zip/html5-video-player/inc/Field/Settings.php:50
+msgid "When enabled, the Gutenberg editor will enable to generate shortcode"
+msgstr ""
+
+#: inc/Field/Settings.php:55
+#: zip/html5-video-player/inc/Field/Settings.php:55
+msgid "Disable [video id='id'] shortcode for this plugin"
+msgstr ""
+
+#: inc/Field/Settings.php:57
+#: zip/html5-video-player/inc/Field/Settings.php:57
+msgid "When enabled, the [video] shortcode will be disabled for this plugin to avoid conflicts."
+msgstr ""
+
+#: inc/Field/Settings.php:63
+#: zip/html5-video-player/inc/Field/Settings.php:63
+msgid "Play one player at a time"
+msgstr ""
+
+#: inc/Field/Settings.php:64
+#: zip/html5-video-player/inc/Field/Settings.php:64
+msgid "When enabled, starting playback on one video player will automatically pause any other playing video players on the same page."
+msgstr ""
+
+#: inc/Field/Settings.php:70
+#: zip/html5-video-player/inc/Field/Settings.php:70
+msgid "Brand Color"
+msgstr ""
+
+#: inc/Field/Settings.php:71
+#: zip/html5-video-player/inc/Field/Settings.php:71
+msgid "Set the primary color used for the video player interface."
+msgstr ""
+
+#: inc/Field/Settings.php:78
+#: zip/html5-video-player/inc/Field/Settings.php:78
+msgid "Delete data during uninstall"
+msgstr ""
+
+#: inc/Field/Settings.php:79
+#: zip/html5-video-player/inc/Field/Settings.php:79
+msgid "When enabled, the plugin will delete all its data when uninstalled."
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:103
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:103
+msgid "Play Large"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:107
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:107
+msgid "Fast Forwards"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:111
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:111
+msgid "Mute Button"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:112
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:112
+msgid "Volume Control"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:113
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:113
+msgid "Setting Button"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:115
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:115
+msgid "Airplay"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:116
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:116
+msgid "Download Button"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:117
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:117
+msgid "Fullscreen"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:120
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:120
+msgid "download,pip controls will not work for youtube and vimeo"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:126
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:126
+msgid "Automatically replay the video from the beginning after it ends."
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:137
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:137
+msgid "Start the video with sound turned off by default."
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:144
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:144
+msgid "Video should be muted or have user interaction if you want to play in autoplay"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:153
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:153
+msgid "Hide video controls automatically after 2s of no mouse or focus movement"
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:160
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:160
+msgid "Select the width-to-height ratio used to display the video."
+msgstr ""
+
+#: inc/Field/VideoPlayer.php:167
+#: zip/html5-video-player/inc/Field/VideoPlayer.php:167
+msgid "Select the speed options."
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:62
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:62
+msgid "Html5 Video Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:63
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:63
+msgid "Video Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:64
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:64
+msgid "Add New Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:65
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:65
+msgid "Add New"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:66
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:66
+msgid "Edit Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:67
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:67
+msgid "New Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:68
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:68
+msgid "View Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:69
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:69
+msgid "All Players"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:70
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:70
+msgid "Search Player"
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:71
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:71
+msgid "Sorry, we couldn't find the Player you are looking for."
+msgstr ""
+
+#: inc/PostType/VideoPlayer.php:322
+#: zip/html5-video-player/inc/PostType/VideoPlayer.php:322
+msgid "Copy and paste this shortcode into your posts, pages and widget"
+msgstr ""
+
+#: build/blocks/parent/block.json
+#: zip/html5-video-player/build/blocks/parent/block.json
+msgctxt "block title"
+msgid "HTML5 Video Player Parent"
+msgstr ""
+
+#: build/blocks/parent/block.json
+#: build/blocks/video/block.json
+#: zip/html5-video-player/build/blocks/parent/block.json
+#: zip/html5-video-player/build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "HTML5 Video Player"
+msgstr ""
+
+#: build/blocks/parent/block.json
+#: build/blocks/video/block.json
+#: build/blocks/vimeo/block.json
+#: build/blocks/youtube/block.json
+#: zip/html5-video-player/build/blocks/parent/block.json
+#: zip/html5-video-player/build/blocks/video/block.json
+#: zip/html5-video-player/build/blocks/vimeo/block.json
+#: zip/html5-video-player/build/blocks/youtube/block.json
+msgctxt "block keyword"
+msgid "Media Player"
+msgstr ""
+
+#: build/blocks/video/block.json
+#: zip/html5-video-player/build/blocks/video/block.json
+msgctxt "block title"
+msgid "HTML5 Video Player"
+msgstr ""
+
+#: build/blocks/video/block.json
+#: zip/html5-video-player/build/blocks/video/block.json
+msgctxt "block description"
+msgid "Embed Video anywhere in your website "
+msgstr ""
+
+#: build/blocks/video/block.json
+#: zip/html5-video-player/build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "Video"
+msgstr ""
+
+#: build/blocks/vimeo/block.json
+#: zip/html5-video-player/build/blocks/vimeo/block.json
+msgctxt "block title"
+msgid "Vimeo Player"
+msgstr ""
+
+#: build/blocks/vimeo/block.json
+#: zip/html5-video-player/build/blocks/vimeo/block.json
+msgctxt "block description"
+msgid "Vimeo Video Player"
+msgstr ""
+
+#: build/blocks/vimeo/block.json
+#: zip/html5-video-player/build/blocks/vimeo/block.json
+msgctxt "block keyword"
+msgid "Vimeo Player"
+msgstr ""
+
+#: build/blocks/vimeo/block.json
+#: zip/html5-video-player/build/blocks/vimeo/block.json
+msgctxt "block keyword"
+msgid "Vimeo"
+msgstr ""
+
+#: build/blocks/youtube/block.json
+#: zip/html5-video-player/build/blocks/youtube/block.json
+msgctxt "block title"
+msgid "Youtube Player"
+msgstr ""
+
+#: build/blocks/youtube/block.json
+#: zip/html5-video-player/build/blocks/youtube/block.json
+msgctxt "block description"
+msgid "Youtube Video Player"
+msgstr ""
+
+#: build/blocks/youtube/block.json
+#: zip/html5-video-player/build/blocks/youtube/block.json
+msgctxt "block keyword"
+msgid "Youtube Player"
+msgstr ""
+
+#: build/blocks/youtube/block.json
+#: zip/html5-video-player/build/blocks/youtube/block.json
+msgctxt "block keyword"
+msgid "Youtube"
+msgstr ""

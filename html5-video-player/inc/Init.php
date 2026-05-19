@@ -11,58 +11,43 @@ class Init
     public static function get_services()
     {
         return [
-            Database\Init::class,
-            Base\ExtendMime::class,
-            Base\Menu::class,
             Base\GlobalChanges::class,
-            Base\Analytics::class,
+            Base\AdminNotice::class,
             Services\EnqueueAssets::class,
             Services\Shortcodes::class,
             Field\VideoPlayer::class,
             Field\QuickPlayer::class,
             Field\Settings::class,
-            Field\PlaylistFieldPro::class,
             Model\Ajax::class,
-            Model\Preset::class,
-                // Model\Analytics::class,
-            Rest\Analytics::class,
-            Rest\Generic::class,
-            Base\Notice::class
         ];
     }
 
     public static function register_services()
     {
         foreach (self::get_services() as $class) {
-            $services = self::instantiate($class);
-            if (method_exists($services, 'register')) {
-                $services->register();
+            $service = self::instantiate($class);
+            if ($service && method_exists($service, 'register')) {
+                $service->register();
             }
         }
     }
 
     public static function register_post_type()
     {
-        self::instantiate(PostType\VideoPlayer::class)->register();
-        if (h5vp_fs()->can_use_premium_code() && class_exists(PostType\H5VPPlaylistPro::class)) {
-            self::instantiate(PostType\H5VPPlaylistPro::class)->register();
-            self::instantiate(PostType\CaptureEmail::class)->register();
+        $postType = self::instantiate(PostType\VideoPlayer::class);
+        if ($postType && method_exists($postType, 'register')) {
+            $postType->register();
         }
     }
 
     private static function instantiate($class)
     {
-        if (strpos($class, 'Pro') !== false && !h5vp_fs()->can_use_premium_code()) {
-            return new \stdClass();
+        if (!class_exists($class)) {
+            // wp_trigger_error() only emits when WP_DEBUG is on and sanitizes
+            // the message itself, so this stays silent on production sites.
+            wp_trigger_error(__METHOD__, "service class {$class} is missing", E_USER_WARNING);
+            return null;
         }
-
-        if (class_exists($class . "Pro") && h5vp_fs()->can_use_premium_code()) {
-            $class = $class . "Pro";
-        }
-
-        if (class_exists($class)) {
-            return new $class();
-        }
-        return new \stdClass();
+        return new $class();
     }
 }

@@ -5,8 +5,6 @@ namespace H5VP\Services;
 if (!defined('ABSPATH'))
     exit; // Exit if accessed directly
 
-use H5VP\Helper\Functions;
-use H5VP\Helper\LocalizeScript;
 
 class EnqueueAssets
 {
@@ -14,9 +12,7 @@ class EnqueueAssets
 
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
-        add_action('wp_head', [$this, 'quickPlayerStyle']);
     }
 
     public static function instance()
@@ -27,130 +23,39 @@ class EnqueueAssets
         return self::$_instance;
     }
 
-    public function enqueueAssets()
+
+    public function enqueueAdminAssets($hook_suffix)
     {
-        //plyrio
-        wp_register_script('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/js/plyr-v3.8.3.polyfilled.js', array(), '3.8.3', false);
-        wp_register_script('html5-player-video-view-script', H5VP_PRO_PLUGIN_DIR . 'build/frontend.js', array('jquery', 'bplugins-plyrio', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, false);
+        // Resolve the post type from the current screen. This avoids reading
+        // the raw $_GET['post_type'] query var (and the nonce-verification
+        // warning that comes with it) and works for edit.php / post-new.php /
+        // post.php alike.
+        $screen = get_current_screen();
+        $post_type = ($screen && $screen->post_type) ? $screen->post_type : get_post_type();
 
-        wp_register_script('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'build/frontend-playlist.js', array('react', 'react-dom', 'wp-util', 'bplugins-plyrio'), H5VP_PRO_VER, false);
+        $isInPages = in_array($hook_suffix, array(
+            'videoplayer_page_h5vp-support',
+            'videoplayer_page_html5vp_settings',
+            'videoplayer_page_html5vp_quick_player',
+            'videoplayer_page_free-plugins-from-bplugins',
+            'videoplayer_page_premium-plugins',
+            'videoplayer_page_analytics',
+        ), true);
+        $isInPostType = in_array($hook_suffix, array('post.php', 'post-new.php', 'edit.php'), true)
+            && 'videoplayer' === $post_type;
 
-        wp_register_style('bplugins-plyrio', H5VP_PRO_PLUGIN_DIR . 'public/css/h5vp.css', array(), H5VP_PRO_VER, 'all');
-        wp_register_style('html5-player-video-style', H5VP_PRO_PLUGIN_DIR . 'build/frontend.css', array('bplugins-plyrio'), H5VP_PRO_VER, 'all');
-        wp_register_style('html5-player-playlist', H5VP_PRO_PLUGIN_DIR . 'build/frontend-playlist.css', array('bplugins-plyrio'), H5VP_PRO_VER, 'all');
+        if (!$isInPages && !$isInPostType) {
+            return;
+        }
 
-        //owl-carousel
-        wp_register_script('bplugins-owl-carousel', H5VP_PRO_PLUGIN_DIR . 'public/js/owl.carousel.min.js', null, H5VP_PRO_VER, false);
-        wp_register_style('bplugins-owl-carousel', H5VP_PRO_PLUGIN_DIR . 'public/css/owl.carousel.min.css', null, H5VP_PRO_VER, 'all');
+        wp_enqueue_script('h5vp-admin', H5VP_PLUGIN_DIR . 'build/admin.js', array('jquery', 'react', 'react-dom', 'wp-util'), H5VP_VER, true);
+        wp_enqueue_style('h5vp-admin', H5VP_PLUGIN_DIR . 'build/admin.css', array(), H5VP_VER);
 
-        wp_localize_script('html5-player-video-view-script', 'hpublic', array(
-            'siteUrl' => site_url(),
-            'userId' => get_current_user_id(),
-            'pauseOther' => (bool) Functions::getOptionDeep("h5vp_option", "h5vp_pause_other_player", false),
-            'speed' => Functions::getOptionDeep("h5vp_option", "h5vp_speed", false),
-            'dir' => H5VP_PRO_PLUGIN_DIR,
+        wp_localize_script('h5vp-admin', 'h5vpAdmin', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'website' => site_url(),
+            'email' => get_option('admin_email'),
+            'nonce' => wp_create_nonce('h5vp_admin'),
         ));
-
-
-        //localize quick player settings
-        wp_localize_script('html5-player-video-view-script', 'h5vpData', LocalizeScript::quickPlayer());
-
-        //Localize H5VP_Video Translated Word
-        wp_localize_script('html5-player-video-view-script', 'h5vpI18n', LocalizeScript::translatedText());
-    }
-
-    public function enqueueAdminAssets($screen)
-    {
-        global $post;
-        // improve the next line code quality
-        $post_type = null;
-        if (function_exists('get_post_type')) {
-            $post_type = get_post_type() ? get_post_type() : sanitize_text_field(wp_unslash($_GET['post_type'] ?? ''));
-        }
-
-        $isInPages = in_array($screen, array('videoplayer_page_h5vp-support', 'videoplayer_page_html5vp_settings', 'videoplayer_page_html5vp_quick_player', 'videoplayer_page_free-plugins-from-bplugins', 'videoplayer_page_premium-plugins', 'plugins.php', 'videoplayer_page_analytics'));
-        $isInPostType = in_array($post_type, array('videoplayer', 'h5vpplaylist'));
-
-        if ($isInPages || $isInPostType) {
-
-            wp_enqueue_script('h5vp-chart', H5VP_PRO_PLUGIN_DIR . 'admin/js/chart.js', array('jquery'), H5VP_PRO_VER, false);
-            wp_enqueue_script('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.js', array('jquery', 'react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
-            wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
-
-            // aws s3 picker 
-            if (!empty($post) && 'videoplayer' == $post->post_type && $screen == 'post-new.php' || $screen == 'post.php') {
-                wp_enqueue_style('h5vp-aws-picker', H5VP_PRO_PLUGIN_DIR . 'build/admin/aws-s3-picker.css');
-                wp_enqueue_script('h5vp-aws-picker', H5VP_PRO_PLUGIN_DIR . 'build/admin/aws-s3-picker.js', array('jquery'), H5VP_PRO_VER, true);
-                wp_localize_script('h5vp-aws-picker', 'ajax', [
-                    'ajax_url' => admin_url('admin-ajax.php')
-                ]);
-            }
-
-        }
-
-        foreach ([
-            'html5-player-video-editor-script',
-            'html5-player-parent-editor-script',
-            'h5vp-admin'
-        ] as $script) {
-            wp_localize_script($script, 'h5vpAdmin', array(
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'website' => site_url(),
-                'email' => get_option('admin_email'),
-                'isPipe' => h5vp_fs()->can_use_premium_code(),
-                'nonce' => wp_create_nonce('wp_ajax')
-            ));
-        }
-
-        if ($screen == 'videoplayer_page_free-plugins-from-bplugins') {
-            wp_enqueue_script('plugin-install');
-            wp_enqueue_script('updates');
-        }
-
-        // analytics assets
-        wp_register_script('h5vp-analytics', H5VP_PRO_PLUGIN_DIR . 'build/admin/analytics/index.js', array('react', 'react-dom', 'wp-util'), H5VP_PRO_VER, true);
-        wp_register_style('h5vp-analytics', H5VP_PRO_PLUGIN_DIR . 'build/admin/analytics/index.css', array(), H5VP_PRO_VER, 'all');
-        if ($screen == 'videoplayer_page_analytics') {
-            wp_enqueue_script('h5vp-analytics');
-            wp_enqueue_style('h5vp-analytics');
-            wp_localize_script('h5vp-analytics', 'h5vpAnalytics', array(
-                'nonce' => wp_create_nonce('wp_ajax')
-            ));
-        }
-    }
-
-    public function quickPlayerStyle()
-    {
-        $width = Functions::getOptionDeep('h5vp_quick', 'h5vp_player_width_quick', 0);
-        $shadow = Functions::getOptionDeep('h5vp_quick', 'h5vp_hide_control_shadow_quick', 'show');
-        $width = $width == 0 ? '100%' : $width . "px";
-        ob_start();
-        ?>
-        <style>
-            #h5vpQuickPlayer {
-                width:
-                    <?php echo esc_html($width); ?>
-                ;
-                max-width: 100%;
-                margin: 0 auto;
-            }
-
-            <?php if ($shadow === 'hide') {
-                echo '#h5vpQuickPlayer .plyr__controls {background: none;}';
-            } ?>
-            <?php if ($shadow === 'mobile') { ?>
-                @media screen and (max-width: 640px) {
-                    #h5vpQuickPlayer .plyr__controls {
-                        background: none;
-                    }
-                }
-
-                <?php
-            } ?>
-            <?php echo wp_kses_post(Functions::getOptionDeep('h5vp_option', 'h5vp_custom_style', '')) ?>
-        </style>
-        <?php
-
-        echo wp_kses(Functions::trim(ob_get_clean()), ['style' => []]);
     }
 }

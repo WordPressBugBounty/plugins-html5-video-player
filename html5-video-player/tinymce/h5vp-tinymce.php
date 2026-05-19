@@ -29,10 +29,8 @@ function h5vp_pro_grab_slider_list_ajax()
 	$myposts = get_posts($args);
 	foreach ($myposts as $post):
 		setup_postdata($post);
-		$list[$post->ID] = array('val' => $post->ID, 'title' => esc_html(esc_js(the_title(NULL, NULL, FALSE))));
+		$list[$post->ID] = array('val' => $post->ID, 'title' => esc_html($post->post_title));
 	endforeach;
-
-
 
 	echo wp_json_encode($list); //Send to Option List ( Array )
 	wp_die();
@@ -47,8 +45,8 @@ add_action('wp_ajax_h5vp_pro_grab_slider_list_ajax', 'h5vp_pro_grab_slider_list_
 /*-------------------------------------------------------------------------------*/
 function h5vp_pro_reg_script()
 {
-	wp_register_style('h5vp-tinymcecss', plugins_url('tinymce/tinymce.css', dirname(__FILE__)), false, H5VP_PRO_VER, 'all');
-	wp_register_script('h5vp-tinymcejs', plugins_url('tinymce/tinymce.js', dirname(__FILE__)), false, H5VP_PRO_VER);
+	wp_register_style('h5vp-tinymcecss', plugins_url('tinymce/tinymce.css', dirname(__FILE__)), false, H5VP_VER, 'all');
+	wp_register_script('h5vp-tinymcejs', plugins_url('tinymce/tinymce.js', dirname(__FILE__)), false, H5VP_VER, true);
 	wp_localize_script('h5vp-tinymcejs', 'h5vp_tinymce_vars', array(
 		'ajax_url' => admin_url('admin-ajax.php'),
 		'nonce' => wp_create_nonce('h5vp_ajax'),
@@ -56,79 +54,53 @@ function h5vp_pro_reg_script()
 }
 add_action('admin_init', 'h5vp_pro_reg_script');
 
-$request_uri = sanitize_url(wp_unslash($_SERVER['REQUEST_URI']), null);
-
-//-------------------------------------------------------------------------------------------------	
-if (strstr($request_uri, 'wp-admin/post-new.php') || strstr($request_uri, 'wp-admin/post.php')) {
-
-	// ADD STYLE & SCRIPT
-	add_action('admin_head', 'h5vp_pro_editor_add_init');
-	function h5vp_pro_editor_add_init()
-	{
-
-		if (get_post_type(get_the_ID()) != 'videoplayer') {
-
-			wp_enqueue_style('h5vp-tinymcecss');
-			wp_enqueue_script('h5vp-tinymcejs');
-
-		?>
-		<?php
-		}
-
+/*-------------------------------------------------------------------------------*/
+/*   Editor Assets — classic post editor only, for non-videoplayer post types.
+/*   Uses the current screen instead of matching against $_SERVER['REQUEST_URI'].
+/*-------------------------------------------------------------------------------*/
+function h5vp_pro_editor_assets()
+{
+	$screen = get_current_screen();
+	if (!$screen || 'post' !== $screen->base) {
+		return;
+	}
+	if ('videoplayer' === $screen->post_type) {
+		return;
 	}
 
-	// ADD MEDIA BUTOON	
-	add_action('media_buttons', 'h5vp_shortcode_button', 1);
-	function h5vp_shortcode_button($context)
-	{
-		$img = H5VP_PRO_PLUGIN_DIR . 'img/icn.png';
-		$container_id = 'h5vpmodal';
-		$title = 'Insert Html5 Video Player';
-		$context .= '
-			<a class="thickbox button" id="h5vp_shortcode_button" title="' . $title . '" style="outline: medium none !important; cursor: pointer;" >
-			<img src="' . $img . '" alt="" width="20" height="20" style="position:relative; top:-1px"/>Html5 video player</a>';
+	wp_enqueue_style('h5vp-tinymcecss');
+	wp_enqueue_script('h5vp-tinymcejs');
 
-		return $context;
-	}
+	add_action('admin_footer', 'h5vp_pro_popup_content');
 }
+add_action('current_screen', 'h5vp_pro_editor_assets');
 
-
-// GENERATE POPUP CONTENT
-add_action('admin_footer', 'h5vp_pro_popup_content');
+/*-------------------------------------------------------------------------------*/
+/*   Popup Content — registered to admin_footer only by h5vp_pro_editor_assets()
+/*-------------------------------------------------------------------------------*/
 function h5vp_pro_popup_content()
 {
-	$request_uri = sanitize_url(wp_unslash($_SERVER['REQUEST_URI']), null);
+	?>
+	<div id="h5vpmodal" style="display:none;">
+		<div id="tinyform" style="width: 550px;">
+			<form method="post">
 
-	if (strstr($request_uri, 'wp-admin/post-new.php') || strstr($request_uri, 'wp-admin/post.php')) {
-
-		if (get_post_type(get_the_ID()) != 'videoplayer') {
-			// START GENERATE POPUP CONTENT
-
-			?>
-			<div id="h5vpmodal" style="display:none;">
-				<div id="tinyform" style="width: 550px;">
-					<form method="post">
-
-						<div class="h5vp_input" id="h5vptinymce_select_slider_div">
-							<label class="label_option" for="h5vptinymce_select_slider">Html5 Video Player</label>
-							<select class="h5vp_select" name="h5vptinymce_select_slider" id="h5vptinymce_select_slider">
-								<option id="selectslider" type="text" value="select">- Select Player -</option>
-							</select>
-							<div class="clearfix"></div>
-						</div>
-
-						<div class="h5vp_button">
-							<input type="button" value="Insert Shortcode" name="h5vp_insert_scrt" id="h5vp_insert_scrt"
-								class="button-secondary" />
-							<div class="clearfix"></div>
-						</div>
-
-					</form>
+				<div class="h5vp_input" id="h5vptinymce_select_slider_div">
+					<label class="label_option" for="h5vptinymce_select_slider">Html5 Video Player</label>
+					<select class="h5vp_select" name="h5vptinymce_select_slider" id="h5vptinymce_select_slider">
+						<option id="selectslider" type="text" value="select">- Select Player -</option>
+					</select>
+					<div class="clearfix"></div>
 				</div>
-			</div>
-			<?php
-		}
-	} //END
-}
 
-?>
+				<div class="h5vp_button">
+					<input type="button" value="Insert Shortcode" name="h5vp_insert_scrt" id="h5vp_insert_scrt"
+						class="button-secondary" />
+					<div class="clearfix"></div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	<?php
+}

@@ -16,7 +16,6 @@ class QuickPlayer
     public function register_fields()
     {
         if (class_exists('\CSF')) {
-            // wp_enqueue_style('h5vp-admin', H5VP_PRO_PLUGIN_DIR . 'build/admin.css', array(), H5VP_PRO_VER);
 
             // Create options
             \CSF::createOptions($this->prefix, array(
@@ -31,8 +30,6 @@ class QuickPlayer
                 'framework_class' => 'h5vp_quick_player',
                 'framework_title' => 'HTML5 Quick Video Player Preset',
                 'show_bar_menu' => false,
-                // 'menu_position' => 3
-                // 'menu_capability' => 'edit_posts'
             ));
 
             $this->quickPlayer();
@@ -44,33 +41,23 @@ class QuickPlayer
         \CSF::createSection($this->prefix, array(
             'title' => 'Quick Player',
             'fields' => array(
-                    array(
+                array(
                     'type' => 'heading',
                     'title' => ' ',
                     'content' => '<div style="display:flex;justify-content:end;gap:5px"><a href="https://bplugins.com/docs/html5-video-player/how-to-use/#quick-player" target="_blank" class="button button-primary" rel="noopener noreferrer"> Full Documentation</a></div>',
                 ),
-                    array(
+                array(
                     'title' => 'Shortcode',
                     'type' => 'content',
                     'content' => '<code>[video_player file=yourvideo poster=poster.jpeg source=library]</code> <p>Use this shortcode to show video in your website quickly. change the source to youtube/vimeo to show youtube/vimeo video</p>',
                 ),
-                    array(
-                    'id' => 'h5vp_all_video_quick',
-                    'title' => 'Apply Html5 Video Player for all previous videos',
-                    'desc' => 'Normal Shortcode/Elementor/Gutenberg HTML5 Video Player will not work if you enable this option',
-                    'type' => 'switcher',
-                    'text_off' => 'No',
-                    'class' => 'bplugins-meta-readonly',
-                    'text_on' => 'Yes'
-                ),
-
-                    array(
+                array(
                     'id' => 'h5vp_reset_on_end_quick',
                     'title' => 'Reset On End',
                     'type' => 'switcher',
                     'default' => '1',
                 ),
-                    array(
+                array(
                     'id' => 'h5vp_player_width_quick',
                     'title' => 'Player Width',
                     'type' => 'spinner',
@@ -79,76 +66,43 @@ class QuickPlayer
                     'max' => '5000',
                     'desc' => 'set the player width. Height will be calculate base on the value. Left blank for Responsive player',
                 ),
-                    array(
-                    'id' => 'h5vp_seek_time_quick',
-                    'title' => 'Seek Time',
-                    'type' => 'number',
-                    'desc' => 'The time, in seconds, to seek when a user hits fast forward or rewind. Default value is 10 Sec.',
-                    'default' => '10',
-                ),
-                    array(
+                array(
                     'id' => 'h5vp_auto_hide_control_quick',
                     'title' => 'Auto Hide Control',
                     'type' => 'switcher',
                     'desc' => 'On if you want the controls (such as a play/pause button etc) hide automaticaly.',
                     'default' => true
                 ),
-                    array(
-                    'id' => 'h5vp_preload_quick',
-                    'title' => 'Preload',
-                    'type' => 'radio',
-                    'class' => 'bplugins-meta-readonly',
-                    'options' => array(
-                        'auto' => 'Auto - Browser should load the entire file when the page loads.',
-                        'metadata' => 'Metadata - Browser should load only meatadata when the page loads.',
-                        'none' => 'None - Browser should NOT load the file when the page loads.',
-                    ),
-                    'desc' => 'Specify how the video file should be loaded when the page loads.',
-                    'default' => 'metadata',
-                ),
-                    array(
-                    'id' => 'controls',
-                    'type' => 'button_set',
-                    'class' => 'bplugins-meta-readonly',
-                    'title' => 'Control buttons and Components',
-                    'multiple' => true,
-                    'options' => array(
-                        'play-large' => 'Play Large',
-                        'restart' => 'Restart',
-                        'rewind' => 'Rewind',
-                        'play' => 'Play',
-                        'fast-forward' => 'Fast Forwards',
-                        'progress' => 'Progressbar',
-                        'duration' => 'Duration',
-                        'current-time' => 'Current Time',
-                        'mute' => 'Mute Button',
-                        'volume' => 'Volume Control',
-                        'settings' => 'Setting Button',
-                        'pip' => 'PIP',
-                        'airplay' => 'Airplay',
-                        'download' => 'Download Button',
-                        'fullscreen' => 'Fullscreen',
-                    ),
-                    'default' => array(
-                        'play-large',
-                        'play',
-                        'progress',
-                        'duration',
-                        'current-time',
-                        'mute',
-                        'volume',
-                        'settings',
-                        'fullscreen'
-                    ),
-                    'help' => 'Click on the item to turn ON/OFF',
-                ),
-                    array(
-                    'id' => 'h5vp_hide_youtube_ui',
-                    'title' => 'Hide Youtube UI (Experimental, check it\'s working or not for you)',
-                    'type' => 'switcher',
-                    'class' => 'bplugins-meta-readonly',
-                    'default' => 0
-                ),
+                array(
+                    'type' => 'content',
+                    'content' => '
+                    <div class="h5vp-pro-notice-box">
+                        <h4 class="h5vp-pro-notice-title">🚀 Get More with Premium Version</h4>
+                        <p class="h5vp-pro-notice-desc">The following features are available in the Premium Version:</p>
+                        <ul class="h5vp-pro-notice-list">
+                            <li><strong>Apply Html5 Video Player for all previous videos</strong></li>
+                            <li><strong>Subtitles support:</strong> Add multiple subtitle/caption tracks.</li>
+                            <li><strong>Video Quality switcher:</strong> Let viewers switch between multiple video qualities.</li>
+                            <li><strong>Page Load Optimizer:</strong> Improve page speed by optimizing video loading.</li>
+                            <li><strong>Custom Download URL:</strong> Set a custom URL for the download button.</li>
+                            <li><strong>Autoplay when visible on screen:</strong> Start playback when the player scrolls into view.</li>
+                            <li><strong>Disable Pause:</strong> Prevent viewers from pausing the video.</li>
+                            <li><strong>Allow Inline Playback on iOS:</strong> Play videos inline on iOS devices.</li>
+                            <li><strong>Show Thumbnail on Pause:</strong> Display a thumbnail when the video is paused.</li>
+                            <li><strong>Sticky on Scroll:</strong> Keep the player visible while scrolling.</li>
+                            <li><strong>Google VAST Tag URL:</strong> Show video ads via Google VAST tags.</li>
+                            <li><strong>Chapters:</strong> Add chapter markers to navigate the video.</li>
+                            <li><strong>Display Overlay before or after playback:</strong> Show a custom overlay before or after the video.</li>
+                            <li><strong>Enable End Screen:</strong> Show an end screen when the video finishes.</li>
+                            <li><strong>Password Protected:</strong> Restrict video access with a password.</li>
+                            <li><strong>Enable Popup Player:</strong> Play video in a popup/modal window.</li>
+                            <li><strong>Watermark Support:</strong> Add a watermark to your video.</li>
+                            <li><strong>Additional ID/CSS Class:</strong> Add custom ID and CSS classes for styling.</li>
+                        </ul>
+                        <a href="https://bplugins.com/products/html5-video-player/pricing/" target="_blank" class="h5vp-pro-notice-button">Get Premium Version</a>
+                    </div>
+                ',
+                )
             ),
         ));
     }

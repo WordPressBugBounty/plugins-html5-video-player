@@ -2,9 +2,9 @@
 Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
-Requires at least: 5.8
+Requires at least: 6.5
 Tested up to: 6.9
-Stable tag: 2.11.0
+Stable tag: 2.11.1
 Requires PHP: 7.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -235,11 +235,34 @@ This plugin is compatible with most plugins. But, unfortunately, we cannot check
 If you find a conflict between our plugin and a third-party plugin, please let us know and we will definitely release an update of our plugin to fix the problem.
 
 = What PHP version is required? =
-- The free version requires PHP **7.1** or higher.
+- The free version requires PHP **7.4** or higher.
 - The Pro version (with advanced features and Freemius integration) requires PHP **8.1** or higher.
 
 = Where do I report security bugs found in this plugin? =
-Please report security bugs found in the source code of the Flash & HTML5 Video plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fb205-6f66-453b-bdaa-c7c587b83810). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+Please report security bugs found in the source code of the HTML5 Video Player – Embed and Play Videos in Custom Player plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/9e5fb205-6f66-453b-bdaa-c7c587b83810). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
+== Source Code ==
+
+You can find the source code, report bugs, and contribute to the development of this plugin on our GitHub repository: 
+[**HTML5 Video Player on GitHub**](https://github.com/bPlugins/html5-video-player-wp)
+
+== Third-Party Libraries ==
+
+This plugin bundles the following third-party library:
+
+**Plyr**
+- Version: 3.8.4
+- Purpose: Provides the customizable HTML5, YouTube, and Vimeo media player interface used to render videos.
+- License: MIT
+- Website: https://plyr.io
+- Source code: https://github.com/sampotts/plyr
+- Bundled file: public/js/plyr-v3.8.4.polyfilled.js
+
+= bpl-tools =
+* Source / GitHub: https://github.com/bPlugins/bpl-tools
+* License: GPL-2.0-or-later – https://www.gnu.org/licenses/gpl-2.0.html
+* Purpose: Shared utility library providing admin dashboard components and common Gutenberg editor controls.
+* External Services: The library may connect to bPlugins, WordPress.org, and Freemius services for product data and checkout functionality. See full details: https://github.com/bPlugins/bpl-tools#external-requests--why-they-are-made
 
 == Screenshots ==
 
@@ -258,6 +281,11 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.11.1 - 18 May, 2026 =
+* Removed: Locked premium-only fields 
+* Improved: Security hardening for video data storage and AJAX request handling
+* Improved: Code cleanup — removed unused code
 
 = 2.11.0 - 26 Apr, 2026 =
 * New: Added 6 Skin (Default, Stacked, Modern, Floating Pill, Classic Minimal, Stacked Dual-Row, Modern Mobile Stack) (Pro)
@@ -490,3 +518,8 @@ Please report security bugs found in the source code of the Flash & HTML5 Video 
 
 = 1.0 =
 * Initial Release
+
+== Upgrade Notice ==
+
+= 2.11.1 =
+The [video] shortcode has been removed. If you embedded players using [video], switch to the [video_player] shortcode or the HTML5 Video Player block. Existing [video_player] shortcodes and Gutenberg blocks are unaffected.

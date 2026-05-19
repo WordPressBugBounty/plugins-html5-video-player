@@ -21,19 +21,13 @@ class VideoPlayer
     public function register()
     {
         add_action('init', [$this, 'init']);
-        // add_filter('allowed_block_types', [$this, 'allowedTypes'], 10, 2);
-        // add_filter('enter_title_here', [$this, 'videoTitle']);
         add_action('edit_form_after_title', [$this, 'shortcode_area']);
 
         // // post type ui
         add_filter("manage_{$this->post_type}_posts_columns", [$this, 'postTypeColumns'], 1);
         add_action("manage_{$this->post_type}_posts_custom_column", [$this, 'postTypeContent'], 10, 2);
 
-        // // filter by tags
-        // add_action('restrict_manage_posts', [$this, 'tagFilter']);
-        // add_action('parse_query', [$this, 'tagQuery']);
 
-        // // force gutenberg here
 
         add_filter('pre_get_posts', [$this, 'limitAccess']);
         add_action('use_block_editor_for_post', [$this, 'forceGutenberg'], 10, 2);
@@ -65,31 +59,28 @@ class VideoPlayer
             $this->post_type,
             array(
                 'labels' => array(
-                    'name' => __('Html5 Video Player', 'h5vp'),
-                    'singular_name' => __('Video Player', 'h5vp'),
-                    'add_new' => __('Add New Player', 'h5vp'),
-                    'add_new_item' => __(' &#8627; Add New', 'h5vp'),
-                    'edit_item' => __('Edit Player', 'h5vp'),
-                    'new_item' => __('New Player', 'h5vp'),
-                    'view_item' => __('View Player', 'h5vp'),
-                    'all_items' => __('All Players', 'h5vp'),
-                    'search_items' => __('Search Player', 'h5vp'),
-                    'not_found' => __('Sorry, we couldn\'t find the Player you are looking for.', 'h5vp'),
+                    'name' => __('Html5 Video Player', 'html5-video-player'),
+                    'singular_name' => __('Video Player', 'html5-video-player'),
+                    'add_new' => __('Add New Player', 'html5-video-player'),
+                    'add_new_item' => __('Add New', 'html5-video-player'),
+                    'edit_item' => __('Edit Player', 'html5-video-player'),
+                    'new_item' => __('New Player', 'html5-video-player'),
+                    'view_item' => __('View Player', 'html5-video-player'),
+                    'all_items' => __('All Players', 'html5-video-player'),
+                    'search_items' => __('Search Player', 'html5-video-player'),
+                    'not_found' => __('Sorry, we couldn\'t find the Player you are looking for.', 'html5-video-player'),
                 ),
                 'public' => false,
                 'show_ui' => true,
-                // 'publicly_queryable' => true,
-                // 'exclude_from_search' => true,
-                // 'show_in_menu' => 'html5-video-player',
                 'menu_position' => 14,
-                'menu_icon' => H5VP_PRO_PLUGIN_DIR . 'admin/img/logo.svg',
+                'menu_icon' => H5VP_PLUGIN_DIR . 'admin/img/logo.svg',
                 'has_archive' => false,
                 'hierarchical' => false,
                 'capability_type' => 'page',
                 'rewrite' => false,
                 'show_in_rest' => true,
                 'supports' => array('title', 'editor'),
-                'template' => [['html5-player/parent'], ["html5-player/popup-trigger"]],
+                'template' => [['html5-player/parent']],
                 'template_lock' => 'all',
             )
         );
@@ -97,11 +88,10 @@ class VideoPlayer
 
     function remove_metabox($metaboxs)
     {
-        global $post;
         $screen = get_current_screen();
 
         if ($screen->post_type === $this->post_type) {
-            return false;
+            return [];
         }
         return $metaboxs;
     }
@@ -210,15 +200,6 @@ class VideoPlayer
         }
     }
 
-    public function videoTitle($title)
-    {
-        $screen = get_current_screen();
-        if ($this->post_type == $screen->post_type) {
-            $title = __('Enter a title...', 'h5vp');
-        }
-        return $title;
-    }
-
     public function allowedTypes($allowed_block_types, $post)
     {
         if ($post->post_type !== $this->post_type) {
@@ -248,13 +229,6 @@ class VideoPlayer
 
         $post_type = get_post_type($post_id);
         if ($post_type === 'videoplayer') {
-            $password = get_post_meta($post_id, 'h5vp_protected_password', true);
-            update_option("propagans_$post_id", [
-                'pass' => md5($password),
-                'quality' => Utils::sanitize_array(get_post_meta($post_id, 'h5vp_quality_playerio', true)),
-                'source' => esc_url(get_post_meta($post_id, 'h5vp_video_link', true)),
-            ]);
-
             $provider = get_post_meta($post_id, 'h5vp_video_source', true);
             $source = get_post_meta($post_id, 'h5vp_video_link', true);
             if (in_array($provider, ['youtube', 'vimeo'])) {
@@ -283,7 +257,9 @@ class VideoPlayer
     private function syncBlockVideos($post_id, $postarr)
     {
         $content = $postarr->post_content ?? '';
-        if (empty($content)) {
+        // Bail before the (potentially expensive) recursive block walk unless
+        // the content actually contains an html5-player block.
+        if (empty($content) || strpos($content, 'wp:html5-player/') === false) {
             return;
         }
 
@@ -331,20 +307,6 @@ class VideoPlayer
         }
     }
 
-    /**
-     * get _h5vp_ meta
-     */
-    public static function get_h5vp_meta($array, $key, $default = false)
-    {
-        if (isset($array[$key])) {
-            return $array[$key];
-        }
-        return $default;
-    }
-
-
-
-
     function shortcode_area()
     {
 
@@ -357,7 +319,7 @@ class VideoPlayer
         $shortcode = "[html5_video id='" . esc_attr($id) . "']";
         ?>
         <div class="h5vp_shortcode_area_after_title">
-            <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'model-viewer'); ?></label>
+            <label><?php esc_html_e('Copy and paste this shortcode into your posts, pages and widget', 'html5-video-player'); ?></label>
             <div class="shortcode_area">
                 <button class="button button-bplugins button-large h5vp_shortcode_copy_btn"
                     data-clipboard-text="<?php echo esc_attr($shortcode) ?>"><?php echo esc_html($shortcode); ?></button>

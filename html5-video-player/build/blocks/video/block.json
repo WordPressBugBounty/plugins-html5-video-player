@@ -12,7 +12,7 @@
     "Media Player",
     "Video"
   ],
-  "textdomain": "h5vp",
+  "textdomain": "html5-video-player",
   "attributes": {
     "provider": {
       "type": "string",
@@ -98,8 +98,7 @@
             1.25,
             1.5,
             1.75,
-            2,
-            4
+            2
           ]
         },
         "loop": {
@@ -120,133 +119,6 @@
         "preload": "metadata"
       }
     },
-    "features": {
-      "type": "object",
-      "default": {
-        "popup": {
-          "enabled": false,
-          "selector": null,
-          "hasBtn": false,
-          "type": "button",
-          "btnText": "Watch Video",
-          "align": "center",
-          "btnStyle": {},
-          "isTrigger": false
-        },
-        "overlay": {
-          "enabled": false,
-          "items": [
-            {
-              "color": "#fff",
-              "backgroundColor": "#333",
-              "fontSize": "16px",
-              "link": "",
-              "logo": "",
-              "text": "Simple Text",
-              "position": "top_right",
-              "type": "text",
-              "opacity": 1
-            }
-          ]
-        },
-        "endScreen": {
-          "enabled": false,
-          "text": "Simple Text",
-          "btnText": "Visit",
-          "btnLink": "",
-          "btnStyle": {}
-        },
-        "thumbInPause": {
-          "enabled": false,
-          "type": "default"
-        },
-        "watermark": {
-          "enabled": false,
-          "type": "email",
-          "text": "",
-          "color": "#f00"
-        },
-        "passwordProtected": {
-          "enabled": false,
-          "errorMessage": "Password didn't matched",
-          "heading": "Please Entire the password to access the video",
-          "button": {
-            "text": "Access",
-            "color": "#222",
-            "backgroundColor": "#ffffffe3"
-          }
-        },
-        "sticky": {
-          "enabled": false,
-          "position": "top_right"
-        },
-        "emailCapture": {
-          "enabled": false,
-          "displayAt": 20,
-          "allowSkipping": false,
-          "heading": "Enter your email to watch this video",
-          "bottomText": "We respect your privacy. No spam ever.",
-          "buttonText": "Watch",
-          "buttonColor": "#222",
-          "buttonBackgroundColor": "#ffffffe3",
-          "roundCorner": "0",
-          "integration": "None",
-          "webhook": ""
-        },
-        "playWhenVisible": false,
-        "disablePause": false,
-        "hideYoutubeUI": false,
-        "startTime": null,
-        "hideLoadingPlaceholder": false
-      }
-    },
-    "onlyLoggedIn": {
-      "type": "object",
-      "default": {
-        "whoCanSeeThisVideo": "everyone",
-        "allowedRoles": [],
-        "message": "This video is only for registered users. Please login to watch the video."
-      }
-    },
-    "seo": {
-      "type": "object",
-      "default": {
-        "title": "",
-        "description": "",
-        "duration": ""
-      }
-    },
-    "quality": {
-      "type": "array",
-      "default": []
-    },
-    "subtitle": {
-      "type": "array",
-      "default": [
-        {
-          "label": "English/en",
-          "caption_file": ""
-        }
-      ]
-    },
-    "thumbInPause": {
-      "type": "boolean",
-      "default": false
-    },
-    "hideYoutubeUI": {
-      "type": "boolean",
-      "default": false
-    },
-    "additionalCSS": {
-      "type": "string"
-    },
-    "additionalID": {
-      "type": "string"
-    },
-    "autoplayWhenVisible": {
-      "type": "boolean",
-      "default": false
-    },
     "styles": {
       "type": "object",
       "default": {
@@ -257,28 +129,9 @@
         }
       }
     },
-    "CSS": {
-      "type": "string",
-      "default": ""
-    },
     "ratio": {
       "type": "string",
       "default": null
-    },
-    "isCDURL": {
-      "type": "boolean",
-      "default": false
-    },
-    "CDURL": {
-      "type": "string"
-    },
-    "posterTime": {
-      "type": "number",
-      "default": 20
-    },
-    "chapters": {
-      "type": "array",
-      "default": []
     },
     "controls": {
       "type": "object",
@@ -331,47 +184,9 @@
       "type": "boolean",
       "default": false
     },
-    "sticky": {
-      "type": "boolean",
-      "default": false
-    },
-    "stickyPosition": {
-      "type": "string",
-      "default": "top-right"
-    },
-    "popup": {
-      "type": "boolean",
-      "default": false
-    },
-    "popupType": {
-      "type": "string",
-      "default": "button"
-    },
     "playsinline": {
       "type": "boolean",
       "default": false
-    },
-    "popupBtnStyle": {
-      "type": "object",
-      "default": {}
-    },
-    "popupBtnText": {
-      "type": "string",
-      "default": "Watch Video"
-    },
-    "popupBtnExists": {
-      "type": "boolean"
-    },
-    "popupBtnClass": {
-      "type": "string"
-    },
-    "disablePause": {
-      "type": "boolean",
-      "default": false
-    },
-    "thumbStyle": {
-      "type": "string",
-      "default": "default"
     },
     "resetOnEnd": {
       "type": "boolean",
@@ -380,129 +195,6 @@
     "autoHideControl": {
       "type": "boolean",
       "default": true
-    },
-    "protected": {
-      "type": "boolean",
-      "default": false
-    },
-    "password": {
-      "type": "string"
-    },
-    "protectedText": {
-      "type": "string",
-      "default": "Please enter password to wath the video"
-    },
-    "seekTime": {
-      "type": "number",
-      "default": 10
-    },
-    "startTime": {
-      "type": "number",
-      "default": 0
-    },
-    "preload": {
-      "type": "string",
-      "default": "metadata"
-    },
-    "overlay": {
-      "type": "boolean",
-      "default": false
-    },
-    "overlayType": {
-      "type": "string",
-      "default": "text"
-    },
-    "overlayText": {
-      "type": "string",
-      "default": "Simple Text"
-    },
-    "overlayPosition": {
-      "type": "string",
-      "default": "top_right"
-    },
-    "overlayBackground": {
-      "type": "string",
-      "default": "#333"
-    },
-    "overlayOpacity": {
-      "type": "number",
-      "default": 0.8
-    },
-    "overlayLogo": {
-      "type": "string"
-    },
-    "overlayLink": {
-      "type": "string"
-    },
-    "overlayTextColor": {
-      "type": "string",
-      "default": "#ffffff"
-    },
-    "overlayFontSize": {
-      "type": "object",
-      "default": {
-        "number": 20,
-        "unit": "px"
-      }
-    },
-    "overlayTextHoverColor": {
-      "type": "string",
-      "default": "#ffffff"
-    },
-    "endScreen": {
-      "type": "object",
-      "default": {
-        "enabled": false,
-        "text": "Simple Text",
-        "btnText": "Click Here",
-        "btnLink": "",
-        "btnStyle": {}
-      }
-    },
-    "endscreen": {
-      "type": "boolean",
-      "default": false
-    },
-    "endscreenText": {
-      "type": "string",
-      "default": "Endscreen text"
-    },
-    "endscreenTextLink": {
-      "type": "string",
-      "default": "#"
-    },
-    "streaming": {
-      "type": "boolean",
-      "default": false
-    },
-    "streamingType": {
-      "type": "string",
-      "default": "hls"
-    },
-    "speed": {
-      "type": "object",
-      "default": {
-        "1": true,
-        "2": true,
-        "3": true,
-        "0.5": true,
-        "0.75": true,
-        "1.25": true,
-        "1.5": true,
-        "1.75": true,
-        "2.5": true
-      }
-    },
-    "captionEnabled": {
-      "type": "boolean",
-      "default": false
-    },
-    "vastTag": {
-      "type": "string"
-    },
-    "saveState": {
-      "type": "boolean",
-      "default": false
     }
   },
   "supports": {

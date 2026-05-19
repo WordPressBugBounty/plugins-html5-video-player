@@ -9,19 +9,6 @@ use H5VP\Helper\Functions as Utils;
 
 class Video
 {
-    protected static $table_name = '';
-
-    public function verifyUser($capability = 'edit_posts')
-    {
-        if (!current_user_can($capability)) {
-            return wp_send_json_error('403 Forbidden');
-        }
-    }
-
-    public function test()
-    {
-        wp_send_json_success('working fine');
-    }
 
     /**
      * Insert a video into the custom DB if it does not already exist.
@@ -74,27 +61,35 @@ class Video
         // then fall back to external_id only. For library videos, check by src.
         $existing = null;
         if ($external_id && $args['post_id']) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
             $existing = $wpdb->get_row($wpdb->prepare(
-                "SELECT id FROM $table_name WHERE external_id=%s AND post_id=%d",
+                "SELECT id FROM %i WHERE external_id=%s AND post_id=%d",
+                $table_name,
                 $external_id,
                 $args['post_id']
             ));
             // Fall back to external_id-only (might exist without post_id)
             if (!$existing) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
                 $existing = $wpdb->get_row($wpdb->prepare(
-                    "SELECT id FROM $table_name WHERE external_id=%s AND (post_id IS NULL OR post_id=%d)",
+                    "SELECT id FROM %i WHERE external_id=%s AND (post_id IS NULL OR post_id=%d)",
+                    $table_name,
                     $external_id,
                     $args['post_id']
                 ));
             }
         } elseif ($external_id) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
             $existing = $wpdb->get_row($wpdb->prepare(
-                "SELECT id FROM $table_name WHERE external_id=%s",
+                "SELECT id FROM %i WHERE external_id=%s",
+                $table_name,
                 $external_id
             ));
         } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
             $existing = $wpdb->get_row($wpdb->prepare(
-                "SELECT id FROM $table_name WHERE src=%s",
+                "SELECT id FROM %i WHERE src=%s",
+                $table_name,
                 $args['src']
             ));
         }
@@ -102,7 +97,9 @@ class Video
         if ($existing) {
             // Update post_id if provided
             if ($args['post_id']) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; no WP API.
                 $wpdb->update($table_name, ['post_id' => $args['post_id']], ['id' => $existing->id]);
+                $this->flushLookupCache();
             }
             return (int) $existing->id;
         }
@@ -116,17 +113,53 @@ class Video
             }
         }
 
-        $wpdb->insert($table_name, $args);
+        // Build an explicit, whitelisted column map so request data can never
+        // introduce arbitrary column names into the INSERT statement.
+        $columns = [
+            'title' => sanitize_text_field($args['title']),
+            'src' => $args['src'],
+            'type' => sanitize_key($args['type']),
+            'user_id' => absint($args['user_id']),
+            'created_at' => $args['created_at'],
+        ];
+        $formats = ['%s', '%s', '%s', '%d', '%s'];
+
+        if (!empty($args['post_id'])) {
+            $columns['post_id'] = absint($args['post_id']);
+            $formats[] = '%d';
+        }
+        if (!empty($args['external_id'])) {
+            $columns['external_id'] = sanitize_text_field($args['external_id']);
+            $formats[] = '%s';
+        }
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; no WP API.
+        $wpdb->insert($table_name, $columns, $formats);
+        $this->flushLookupCache();
         return $wpdb->insert_id ?: null;
     }
 
     /**
-     * Fetch YouTube video title using wp_remote_get.
+     * Fetch a YouTube video title via the public oEmbed endpoint.
+     * Uses oEmbed so no API key needs to be shipped with the plugin.
      */
     private function fetchYouTubeTitle($video_id, $fallback = '')
     {
-        $apikey = 'AIzaSyA6pMW1ZJBii9VewZj_cWZPjMTdfmKyVKE';
-        $url = 'https://www.googleapis.com/youtube/v3/videos?id=' . $video_id . '&key=' . $apikey . '&part=snippet';
+        // Serve the title from a transient so we make at most one outbound
+        // HTTP request per video id per day, instead of one on every save.
+        $cache_key = 'h5vp_yt_' . md5($video_id);
+        $cached = get_transient($cache_key);
+        if (false !== $cached) {
+            return $cached;
+        }
+
+        $url = add_query_arg(
+            [
+                'url' => 'https://www.youtube.com/watch?v=' . rawurlencode($video_id),
+                'format' => 'json',
+            ],
+            'https://www.youtube.com/oembed'
+        );
         $response = wp_remote_get($url, ['timeout' => 5]);
         if (is_wp_error($response)) {
             return $fallback;
@@ -136,15 +169,25 @@ class Video
             return $fallback;
         }
         $info = json_decode($body, true);
-        return $info['items'][0]['snippet']['title'] ?? $fallback;
+        $title = isset($info['title']) ? sanitize_text_field($info['title']) : $fallback;
+        set_transient($cache_key, $title, DAY_IN_SECONDS);
+        return $title;
     }
 
     /**
-     * Fetch Vimeo video title using wp_remote_get.
+     * Fetch a Vimeo video title using wp_remote_get.
      */
     private function fetchVimeoTitle($video_id, $fallback = '')
     {
-        $url = 'https://vimeo.com/api/v2/video/' . $video_id . '.json';
+        // Serve the title from a transient so we make at most one outbound
+        // HTTP request per video id per day, instead of one on every save.
+        $cache_key = 'h5vp_vimeo_' . md5($video_id);
+        $cached = get_transient($cache_key);
+        if (false !== $cached) {
+            return $cached;
+        }
+
+        $url = 'https://vimeo.com/api/v2/video/' . rawurlencode($video_id) . '.json';
         $response = wp_remote_get($url, ['timeout' => 5]);
         if (is_wp_error($response)) {
             return $fallback;
@@ -154,7 +197,9 @@ class Video
             return $fallback;
         }
         $info = json_decode($body, true);
-        return $info[0]['title'] ?? $fallback;
+        $title = isset($info[0]['title']) ? sanitize_text_field($info[0]['title']) : $fallback;
+        set_transient($cache_key, $title, DAY_IN_SECONDS);
+        return $title;
     }
 
     public function create($args)
@@ -170,197 +215,131 @@ class Video
             'created_at' => wp_date("Y-m-d H:i:s", current_time("U")),
         ]);
 
-        if (strlen($args['src']) < 13) {
-            if ($args['type'] == 'youtube') {
-                $args['src'] = 'https://www.youtube.com/watch?v=' . $args['src'];
-            } else if ($args['type'] == 'vimeo') {
-                $args['src'] = 'https://vimeo.com/' . $args['src'];
+        // Sanitize every field up front. Request data must never flow into the
+        // DB layer unfiltered, and array keys must never become column names.
+        $type = sanitize_key($args['type']);
+        $src = esc_url_raw($args['src']);
+        $title = sanitize_text_field($args['title']);
+        $post_id = $args['post_id'] !== null ? absint($args['post_id']) : null;
+        $user_id = absint($args['user_id']);
+
+        // Per-resource authorization. A supplied post_id must reference a
+        // videoplayer post the current user can edit. Without this an
+        // edit_posts user could attach video rows to arbitrary posts via the
+        // AJAX Video::create endpoint.
+        if ($post_id) {
+            if (get_post_type($post_id) !== 'videoplayer' || !current_user_can('edit_post', $post_id)) {
+                return null;
+            }
+        }
+
+        if (strlen($src) < 13) {
+            if ($type == 'youtube') {
+                $src = 'https://www.youtube.com/watch?v=' . $src;
+            } else if ($type == 'vimeo') {
+                $src = 'https://vimeo.com/' . $src;
             }
         }
 
         // Check if a video already exists in the DB.
         $video = null;
-        if ($args['post_id']) {
-            $post_date = get_the_date('Y-m-d', $args['post_id']);
-            if ($post_date >= '2026-04-25') {
+        if ($post_id) {
+            $post_date = get_the_date('Y-m-d', $post_id);
+            if ($post_date && $post_date >= '2026-04-25') {
                 // New videoplayer posts: check uniqueness by post_id only.
-                $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE post_id=%d", $args['post_id']));
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
+                $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM %i WHERE post_id=%d", $table_name, $post_id));
             } else {
                 // Old videoplayer posts: check uniqueness by post_id and src.
-                $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE post_id=%d AND src=%s", $args['post_id'], $args['src']));
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
+                $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM %i WHERE post_id=%d AND src=%s", $table_name, $post_id, $src));
             }
         } else {
             // Other post types: check uniqueness by src.
-            $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE src=%s", $args['src']));
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; read-before-write check, caching would risk duplicate rows.
+            $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM %i WHERE src=%s", $table_name, $src));
         }
 
         if ($video) {
-            $wpdb->update($table_name, [
-                'src' => $args['src'],
-                'title' => $args['title'],
-                'type' => $args['type'],
-            ], ['id' => $video->id]);
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; no WP API.
+            $wpdb->update(
+                $table_name,
+                ['src' => $src, 'title' => $title, 'type' => $type],
+                ['id' => $video->id],
+                ['%s', '%s', '%s'],
+                ['%d']
+            );
+            $this->flushLookupCache();
             return $video->id;
         }
 
-        if ($args['type'] == 'youtube') {
-            $videoid = '';
-            if (preg_match("/watch\?v=(\w+)/i", $args['src'], $match)) {
-                $videoid = $match[1];
-                $apikey = 'AIzaSyA6pMW1ZJBii9VewZj_cWZPjMTdfmKyVKE';
-                $json = file_get_contents('https://www.googleapis.com/youtube/v3/videos?id=' . $videoid . '&key=' . $apikey . '&part=snippet');
-                $info = json_decode($json, true);
-                $args['title'] = $info['items'][0]['snippet']['title'] ?? $args['title'];
-                $args['external_id'] = $videoid;
-            }
+        // Resolve the external id + title for YouTube / Vimeo sources.
+        $external_id = null;
+        if ($type == 'youtube' && preg_match("/watch\?v=([\w-]+)/i", $src, $match)) {
+            $external_id = $match[1];
+            $title = $this->fetchYouTubeTitle($external_id, $title);
+        } elseif ($type == 'vimeo' && preg_match("/vimeo\.com\/([\w-]+)/i", $src, $match)) {
+            $external_id = $match[1];
+            $title = $this->fetchVimeoTitle($external_id, $title);
         }
 
-        if ($args['type'] == 'vimeo') {
-            $videoid = '';
-            // http://vimeo.com/api/v2/video/50961789.json
-            if (preg_match("/vimeo.com\/(\w+)/i", $args['src'], $match)) {
-                $videoid = $match[1];
-                $json = file_get_contents('http://vimeo.com/api/v2/video/' . $videoid . '.json');
-                $info = json_decode($json, true);
-                $args['title'] = $info[0]['title'] ?? $args['title'];
-                $args['external_id'] = $videoid;
-            }
+        // Build an explicit, whitelisted column map so request data can never
+        // introduce arbitrary column names into the INSERT statement.
+        $columns = [
+            'title' => $title,
+            'src' => $src,
+            'type' => $type,
+            'user_id' => $user_id,
+            'created_at' => $args['created_at'],
+        ];
+        $formats = ['%s', '%s', '%s', '%d', '%s'];
+
+        if ($post_id) {
+            $columns['post_id'] = $post_id;
+            $formats[] = '%d';
+        }
+        if ($external_id) {
+            $columns['external_id'] = $external_id;
+            $formats[] = '%s';
         }
 
-        // Remove null post_id so $wpdb->insert doesn't try to insert an invalid value
-        if ($args['post_id'] === null) {
-            unset($args['post_id']);
-        }
-
-        $wpdb->insert($table_name, $args);
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; no WP API.
+        $wpdb->insert($table_name, $columns, $formats);
+        $this->flushLookupCache();
         return $wpdb->insert_id;
-    }
-
-    public function get_id_response($args)
-    {
-        $id = $this->get_id($args);
-        if ($id) {
-            wp_send_json_success($id);
-        }
-        wp_send_json_error('Video not found');
     }
 
     public function get_id($args)
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'h5vp_videos';
-        $args['src'] = esc_url($args['src']);
-        $video = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE src=%s", $args['src']));
-        if ($video) {
-            return $video->id;
+        $src = esc_url($args['src']);
+
+        // Serve the src -> id lookup from the object cache. The key embeds the
+        // group's "last changed" marker, so any insert/update transparently
+        // invalidates every cached lookup (see flushLookupCache()).
+        $last_changed = wp_cache_get_last_changed('h5vp_videos');
+        $cache_key = 'h5vp_video_id:' . md5($src) . ':' . $last_changed;
+        $cached = wp_cache_get($cache_key, 'h5vp_videos');
+        if (false !== $cached) {
+            return $cached ?: null;
         }
-        return null;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; no WP API.
+        $video = $wpdb->get_row($wpdb->prepare("SELECT id FROM %i WHERE src=%s", $table_name, $src));
+        $id = $video ? (int) $video->id : 0;
+        wp_cache_set($cache_key, $id, 'h5vp_videos');
+
+        return $id ?: null;
     }
 
-    public function update($args = [], $where = [])
+    /**
+     * Bump the object-cache "last changed" marker for the videos table so any
+     * previously cached lookup (e.g. get_id()) is treated as stale. Called
+     * after every insert/update so cached reads can never return stale rows.
+     */
+    private function flushLookupCache()
     {
-        $this->verifyUser();
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'h5vp_videos';
-        return $wpdb->update($table_name, $args, $where);
-    }
-
-    public function get_top_videos($video_ids)
-    {
-        global $wpdb;
-        $this->verifyUser();
-
-        if (empty($video_ids)) {
-            return [];
-        }
-
-        // Ensure $video_ids is an array of integers
-        if (is_string($video_ids)) {
-            $video_ids = array_map('absint', explode(',', $video_ids));
-        } else {
-            $video_ids = array_map('absint', (array) $video_ids);
-        }
-        $video_ids = array_filter($video_ids);
-        if (empty($video_ids)) {
-            return [];
-        }
-
-
-        $table_name = $wpdb->prefix . 'h5vp_videos';
-        $placeholders = implode(',', array_fill(0, count($video_ids), '%d'));
-        return $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT title, id, src FROM $table_name WHERE id IN ($placeholders)",
-                ...$video_ids
-            )
-        );
-    }
-
-    public function get_all_video_id()
-    {
-        if (!current_user_can('edit_posts')) {
-            return wp_send_json_error('403 Forbidden');
-        }
-        global $wpdb;
-
-        $table_name = $wpdb->prefix . 'h5vp_videos';
-        $videos = $wpdb->get_results("SELECT id FROM $table_name");
-        return array_map(function ($object) {
-            return $object->id;
-        }, $videos);
-        return $videos;
-    }
-
-    function check_password()
-    {
-        try {
-            $key = sanitize_text_field(wp_unslash($_POST['key'] ?? ''));
-            $password = sanitize_text_field(wp_unslash($_POST['password'] ?? ''));
-
-            $data = get_option($key);
-
-            if ($password && md5($password) === $data['pass']) {
-                wp_send_json_success($data);
-            } else {
-                wp_send_json_success(false);
-            }
-        } catch (\Throwable $th) {
-            wp_send_json_error($th->getMessage());
-        }
-    }
-
-
-    function save_password()
-    {
-        $nonce = sanitize_text_field(wp_unslash($_POST['nonce'] ?? ''));
-        if (!wp_verify_nonce($nonce, 'wp_ajax')) {
-            wp_send_json_error('invalid request');
-        }
-
-        if (!current_user_can('manage_options')) {
-            return false;
-        }
-
-        $key = sanitize_text_field(wp_unslash($_POST['key'] ?? ''));
-
-        if (strpos($key, 'h5vp_') === false) {
-            wp_send_json_error('403 Forbiddensdfsdf');
-        }
-
-        $data = [
-            'key' => $key,
-            'quality' => Utils::sanitize_array(wp_unslash($_POST['quality'] ?? [])),
-            'pass' => md5(sanitize_text_field(wp_unslash($_POST['password'] ?? ''))),
-            'source' => esc_url(wp_unslash($_POST['source'] ?? '')),
-        ];
-
-        try {
-            //code...
-            update_option($key, $data);
-            wp_send_json_success('success');
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-        wp_send_json_error([$key => $data]);
+        wp_cache_set('last_changed', microtime(), 'h5vp_videos');
     }
 }

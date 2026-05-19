@@ -23,11 +23,11 @@ if (!class_exists('H5VPAdmin')) {
 		function adminEnqueueScripts($hook)
 		{
 			if (strpos($hook, 'html5-video-player') !== false) {
-				wp_enqueue_style('h5ap-admin-style', H5VP_PRO_PLUGIN_DIR . 'build/dashboard.css', [], H5VP_PRO_VER);
+				wp_enqueue_style('h5vp-admin-style', H5VP_PLUGIN_DIR . 'build/dashboard.css', [], H5VP_VER);
 
-				wp_enqueue_script('h5ap-admin-script', H5VP_PRO_PLUGIN_DIR . 'build/dashboard.js', ['react', 'react-dom', 'wp-components', 'wp-i18n', 'wp-api', 'wp-util', 'lodash', 'wp-media-utils', 'wp-data', 'wp-core-data', 'wp-api-request'], H5VP_PRO_VER, true);
-				wp_localize_script('h5ap-admin-script', 'h5apDashboard', [
-					'dir' => H5VP_PRO_PLUGIN_DIR,
+				wp_enqueue_script('h5vp-admin-script', H5VP_PLUGIN_DIR . 'build/dashboard.js', ['react', 'react-dom', 'wp-components', 'wp-i18n', 'wp-api', 'wp-util', 'lodash', 'wp-media-utils', 'wp-data', 'wp-core-data', 'wp-api-request'], H5VP_VER, true);
+				wp_localize_script('h5vp-admin-script', 'h5vpDashboard', [
+					'dir' => H5VP_PLUGIN_DIR,
 				]);
 			}
 		}
@@ -36,8 +36,8 @@ if (!class_exists('H5VPAdmin')) {
 		{
 			add_submenu_page(
 				'edit.php?post_type=videoplayer',
-				__('Demo & Help', 'h5vp'),
-				'<span style="color: #f18500;">' . __('Demo & Help', 'h5vp') . '</span>',
+				__('Demo & Help', 'html5-video-player'),
+				'<span style="color: #f18500;">' . __('Demo & Help', 'html5-video-player') . '</span>',
 				'manage_options',
 				'html5-video-player',
 				[$this, 'dashboardPage'],
@@ -47,20 +47,13 @@ if (!class_exists('H5VPAdmin')) {
 
 		function dashboardPage()
 		{ ?>
-			<div id='h5vpAdminDashboard' data-info=<?php echo esc_attr(wp_json_encode([
-				'version' => H5VP_PRO_VER,
-				'isPremium' => h5vp_fs()->can_use_premium_code(),
-				'hasPro' => file_exists(H5VP_PRO_PLUGIN_PATH . 'inc/Base/LicenseActivation.php'),
-				'nonce' => wp_create_nonce('apbCreatePage'),
-				'licenseActiveNonce' => wp_create_nonce('bPlLicenseActivation')
-			])); ?>>
+			<div id='h5vpAdminDashboard' data-info="<?php echo esc_attr(wp_json_encode([
+				'version' => H5VP_VER,
+				'nonce' => wp_create_nonce('h5vp_dashboard')
+			])); ?>">
 			</div>
 		<?php }
 
-		function upgradePage()
-		{ ?>
-			<div id='h5vpAdminUpgrade'>Coming soon...</div>
-		<?php }
 	}
 	H5VPAdmin::getInstance();
 }

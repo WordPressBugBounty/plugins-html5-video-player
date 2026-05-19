@@ -12,51 +12,23 @@ class GlobalChanges
     {
         if (is_admin()) {
             add_filter('post_row_actions', [$this, 'removeRowAction'], 10, 2);
-            add_action('admin_head-post.php', [$this, 'hideAction']);
-            add_action('admin_head-post-new.php', [$this, 'hideAction']);
             add_filter('gettext', [$this, 'changePublishText'], 10, 2);
             add_filter('post_updated_messages', [$this, 'changeUpdateMessage']);
 
-            add_action('admin_init', [$this, 'wpLoaded'], 1);
-
-            if (version_compare($GLOBALS['wp_version'], '5.8-alpha-1', '<')) {
-                add_filter('block_categories', [$this, 'wpdocs_add_new_block_category'], 10, 2);
-            } else {
-                add_filter('block_categories_all', [$this, 'wpdocs_add_new_block_category'], 10, 2);
-            }
+            add_filter('block_categories_all', [$this, 'wpdocs_add_new_block_category'], 10, 2);
 
             add_action('media_buttons', [$this, 'h5vp_shortcode_button'], 1);
         }
     }
 
-    public function wpLoaded()
-    {
-        add_filter('admin_footer_text', [$this, 'footerText']);
-    }
-
     public function removeRowAction($row)
     {
         global $post;
-        if ($post->post_type == 'videoplayer' or $post->post_type == 'videoplayer_quick') {
+        if ($post->post_type == 'videoplayer' || $post->post_type == 'videoplayer_quick') {
             unset($row['view']);
             unset($row['inline hide-if-no-js']);
         }
         return $row;
-    }
-
-    public function hideAction()
-    {
-        global $post;
-        if ($post->post_type == 'videoplayer' || $post->post_type == 'h5vpplaylist') {
-            echo '
-                <style type="text/css">
-                    #misc-publishing-actions,
-                    #minor-publishing-actions{
-                        display:none;
-                    }
-                </style>
-                ';
-        }
     }
 
     public function changePublishText($translation, $text)
@@ -71,23 +43,8 @@ class GlobalChanges
 
     public function changeUpdateMessage($messages)
     {
-        $messages['videoplayer'][1] = __('Updated ', 'h5vp');
+        $messages['videoplayer'][1] = __('Updated ', 'html5-video-player');
         return $messages;
-    }
-
-    public function footerText($text)
-    {
-        $screen = get_current_screen();
-        $page = '';
-        if (isset($screen->base)) {
-            $page = $screen->base;
-        }
-        if ('videoplayer' == get_post_type() || 'h5vpplaylist' == get_post_type() || $page == 'videoplayer_page_html5vp_quick_player') {
-            $url = 'https://wordpress.org/support/plugin/html5-video-player/reviews/?filter=5#new-post';
-            /* translators: 1: number of messages */
-            $text = sprintf(__(' If you like <strong>Html5 Video Player</strong> please leave us a <a href="%s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating. Your Review is very important to us as it helps us to grow more. ', 'h5vp'), $url);
-        }
-        return $text;
     }
 
 
@@ -111,7 +68,7 @@ class GlobalChanges
                 [
                     [
                         'slug' => 'media',
-                        'title' => esc_html__('Media', 'h5vp'),
+                        'title' => esc_html__('Media', 'html5-video-player'),
                         'icon' => '', // Slug of a WordPress Dashicon or custom SVG
                     ],
                 ]
@@ -125,13 +82,13 @@ class GlobalChanges
 
     function h5vp_shortcode_button()
     {
-        $img = H5VP_PRO_PLUGIN_DIR . 'img/icn.png';
-        $title = 'Insert Html5 Video Player';
-        $context = '
-		<a class="thickbox button" id="h5vp_shortcode_button" title="' . $title . '" style="outline: medium none !important; cursor: pointer;" >
-		<img src="' . $img . '" alt="" width="20" height="20" style="position:relative; top:-1px"/>Html5 video player</a>
-		<a class="thickbox button" id="h5vp_add_video_button" title="' . $title . '" style="outline: medium none !important; cursor: pointer;" >
-		<img src="' . $img . '" alt="" width="20" height="20" style="position:relative; top:-1px"/>Add Video</a>';
+        $img = H5VP_PLUGIN_DIR . 'img/icn.png';
+        $context = sprintf(
+            '<a class="thickbox button" id="h5vp_shortcode_button" title="%s"><img src="%s" alt="" width="20" height="20"> %s</a>',
+            esc_attr__('Insert Html5 Video Player', 'html5-video-player'),
+            esc_url($img),
+            esc_html__('Html5 video player', 'html5-video-player')
+        );
         echo wp_kses_post($context);
     }
 }

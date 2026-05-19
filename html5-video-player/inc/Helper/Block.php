@@ -23,16 +23,6 @@ class Block
         $block_name = in_array($provider, ['amazons3', 'self-hosted', 'library']) ? 'video' : $provider;
         $width = $this->get_post_meta($id, 'h5vp_player_width_playerio') ? $this->get_post_meta($id, 'h5vp_player_width_playerio') . 'px' : '100%';
         $source = $this->get_post_meta($id, 'h5vp_video_link');
-        $option = h5vp_get_option('h5vp_option', []);
-
-        $chapters = $this->get_post_meta($id, 'h5vp_chapters', []);
-
-        if (count($chapters) > 0) {
-            foreach ($chapters as $key => $chapter) {
-                $chapters[$key]['label'] = $chapter['name'];
-                $chapters[$key]['time'] = (int) $chapter['time'];
-            }
-        }
 
         if (in_array($provider, ['vimeo', 'youtube'])) {
             $source = $this->get_post_meta($id, 'h5vp_video_link_youtube_vimeo', '');
@@ -48,14 +38,14 @@ class Block
                 "uniqueId" => wp_unique_id('h5vp'),
                 "source" => $source,
                 "poster" => $this->get_post_meta($id, 'h5vp_video_thumbnails', ''),
-                "skin" => $this->get_post_meta($id, 'h5vp_player_skin', 'default'),
+                "skin" => 'default',
                 "options" => [
                     "controls" => $this->get_post_meta($id, 'h5vp_controls', ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']),
                     "settings" => ["captions", "quality", "speed", "loop"],
                     "loadSprite" => true,
                     "autoplay" => $this->get_post_meta($id, 'h5vp_auto_play_playerio', false, true),
                     "playsinline" => true,
-                    "seekTime" => (int) $this->get_post_meta($id, 'h5vp_seek_time_playerio', 10),
+                    "seekTime" => 10,
                     "volume" => 1,
                     "muted" => $this->get_post_meta($id, 'h5vp_muted_playerio', false, true),
                     "hideControls" => $this->get_post_meta($id, 'h5vp_auto_hide_control_playerio', false, true),
@@ -64,174 +54,39 @@ class Block
                         "controls" => true,
                         "seek" => true
                     ],
-                    "captions" => [
-                        "active" => $this->get_post_meta($id, 'h5vp_enable_caption', false, true),
-                        "language" => "auto",
-                        "update" => true
-                    ],
                     "ratio" => $this->get_post_meta($id, 'h5vp_ratio', null),
                     "storage" => [
                         "enabled" => true,
                         "key" => "plyr"
                     ],
-                    "speed" => [
-                        "options" => explode(',', $option('h5vp_speed', '0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 4'))
-                    ],
                     "loop" => [
                         "active" => $this->get_post_meta($id, 'h5vp_repeat_playerio', false) === 'loop',
                     ],
-                    "ads" => [
-                        "enabled" => true,
-                        "tagUrl" => $this->get_post_meta($id, 'h5vp_ad_tagUrl'),
-                    ],
-                    "urls" => [
-                        "enabled" => $this->get_post_meta($id, 'isCDURL', false, true),
-                        "download" => $this->get_post_meta($id, 'CDURL', null),
-                    ],
-                    "markers" => [
-                        "enabled" => count($chapters) > 0,
-                        "points" => $chapters,
-                    ],
                     "preload" => $this->get_post_meta($id, 'h5vp_preload_playerio', 'metadata'),
+                    "speed" => [
+                        "options" => explode(',', $this->get_post_meta($id, 'h5vp_speed', '0.5,0.75,1,1.25,1.5,1.75,2,4'))
+                    ]
                 ],
-                "features" => [
-                    "popup" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_popup', false, true),
-                        "selector" => $this->get_post_meta($id, 'h5vp_popup_selector', ''),
-                        "hasBtn" => $this->get_post_meta($id, 'h5vp_popup_has_btn', false, true),
-                        "type" => $this->get_post_meta($id, 'h5vp_popup_type', 'poster'),
-                        "btnText" => $this->get_post_meta($id, 'h5vp_popup_btn_text', 'Watch Video'),
-                        "align" => $this->get_post_meta($id, 'h5vp_popup_align', 'center'),
-                        "btnStyle" => [
-                            "color" => "#fff",
-                            "backgroundColor" => "#006BA1",
-                            "fontSize" => "16px",
-                            "padding" => [
-                                "top" => "10px",
-                                "right" => "20px",
-                                "bottom" => "10px",
-                                "left" => "20px"
-                            ]
-                        ]
-                    ],
-                    "overlay" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_enable_overlay', false, true),
-                        "items" => [
-                            [
-                                "color" => $this->get_post_meta($id, 'h5vp_overlay_text_color', '#ffffff'), // -,
-                                "backgroundColor" => $this->get_post_meta($id, 'h5vp_overlay_background', '#333'),
-                                "fontSize" => "16px",
-                                "link" => $this->get_post_meta($id, 'h5vp_overlay_url', ''),
-                                "logo" => $this->get_post_meta($id, 'h5vp_overlay_logo', [])['url'] ?? null, // image url or base64 image pat
-                                "text" => $this->get_post_meta($id, 'h5vp_overlay_text', ''),
-                                "position" => $this->get_post_meta($id, 'overlay_position', 'top_right'),
-                                "type" => $this->get_post_meta($id, 'h5vp_overlay_type', '0', true) ? 'text' : 'logo',
-                                "opacity" => $this->get_post_meta($id, 'overlay_opacity', 0.7),
-                            ]
-                        ]
-                    ],
-                    "endScreen" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_endscreen_enable', false, true),
-                        "text" => $this->get_post_meta($id, 'h5vp_endscreen_text', 'End Screen Text'),
-                        "btnText" => $this->get_post_meta($id, 'endscreen_btn_text', 'Visit'),
-                        "btnLink" => $this->get_post_meta($id, 'endscreen_btn_link', ''),
-                        "btnStyle" => []
-                    ],
-                    "thumbInPause" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_poster_when_pause', false, true),
-                        "type" => "default"
-                    ],
-                    "watermark" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_watermark_enabled', false, true),
-                        "type" => $this->get_post_meta($id, 'h5vp_watermark_type', 'email'),
-                        "text" => $this->get_post_meta($id, 'h5vp_watermark_text', ''),
-                        "color" => $this->get_post_meta($id, 'h5vp_watermark_color', '#f00'),
-                    ],
-                    "passwordProtected" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_password_protected', false, true),
-                        "errorMessage" => "Password didn't matched",
-                        "heading" => $this->get_post_meta($id, 'h5vp_protected_password_text', "Please Entire the password to access the video"),
-                        'key' => "propagans_$id",
-                        "button" => [
-                            "text" => "Access",
-                            "color" => "#222",
-                            "backgroundColor" => "#ffffffe3"
-                        ]
-                    ],
-                    "emailCapture" => [
-                        "isClassic" => true,
-                        "video_id" => $id,
-                        'enabled' => $this->get_post_meta($id, 'h5vp_email_capture_enabled', false, true),
-                        'displayAt' => $this->get_post_meta($id, 'h5vp_email_capture_display_at', 10),
-                        'heading' => $this->get_post_meta($id, 'h5vp_email_capture_heading', ''),
-                        'bottomText' => $this->get_post_meta($id, 'h5vp_email_capture_bottom_text', ''),
-                        'buttonText' => $this->get_post_meta($id, 'h5vp_email_capture_button_text', ''),
-                        'buttonColor' => [
-                            'color' => $this->get_post_meta($id, 'h5vp_email_capture_button_color', '#fff'),
-                            'bg' => $this->get_post_meta($id, 'h5vp_email_capture_button_bg', '#006BA1'),
-                        ],
-                        'integration' => $this->get_post_meta($id, 'h5vp_email_capture_integration', 'none'),
-                        'webhook' => $this->get_post_meta($id, 'h5vp_email_capture_webhook', ''),
-                        'allowSkipping' => $this->get_post_meta($id, 'h5vp_email_capture_allow_skipping', true, true),
-                        'roundCorner' => $this->get_post_meta($id, 'h5vp_email_capture_round_corner', true, true),
-                    ],
-                    "sticky" => [
-                        "enabled" => $this->get_post_meta($id, 'h5vp_sticky_mode', false, true),
-                        "position" => "top_right"
-                    ],
-                    "playWhenVisible" => false,
-                    "disablePause" => $this->get_post_meta($id, 'h5vp_disable_pause', false, true),
-                    "hideYoutubeUI" => $this->get_post_meta($id, 'hideYoutubeUI', false, true),
-                    "startTime" => $this->get_post_meta($id, 'h5vp_start_time', 0),
-                    "hideLoadingPlaceholder" => false,
-                    'customPlayButtonSelector' => $this->get_post_meta($id, 'h5vp_custom_play_button_css_selector', ''),
-                    "saveState" => $this->get_post_meta($id, 'h5vp_save_state', true, true)
-                ],
-                'onlyLoggedIn' => [
-                    'whoCanSeeThisVideo' => $this->get_post_meta($id, 'whoo_can_see_this_video', 'everyone'),
-                    'allowedRoles' => $this->get_post_meta($id, 'h5vp_allowed_user_roles', []),
-                    'message' => $this->get_post_meta($id, 'h5vp_loggedin_user_text', 'This video is only for registered users. Please login to view the video.')
-                ],
-                'seo' => [
-                    'name' => $this->get_post_meta($id, 'h5vp_seo_name', ''),
-                    'description' => $this->get_post_meta($id, 'h5vp_seo_description', ''),
-                    'duration' => $this->get_post_meta($id, 'h5vp_seo_duration', 0),
-                ],
-                "quality" => $this->get_post_meta($id, 'h5vp_quality_playerio'),
-                "subtitle" => $this->get_post_meta($id, 'h5vp_subtitle_playerio'),
-                "thumbInPause" => false,
-                "hideYoutubeUI" => $this->get_post_meta($id, 'hideYoutubeUI', false, true),
-                "additionalCSS" => "",
-                "additionalID" => "",
-                "autoplayWhenVisible" => false,
+                "features" => [],
+
                 "styles" => [
                     "plyr_wrapper" => [
                         "width" => $width,
-                        "borderRadius" => "0px",
+                        "borderRadius" => $this->get_post_meta($id, 'h5vp_round_corner', '0') . 'px',
                         "overflow" => "hidden"
                     ]
                 ],
-                "CSS" => "",
+
                 "ratio" => null,
-                "isCDURL" => false,
-                "CDURL" => "",
-                "posterTime" => 20,
+
                 "brandColor" => "#00B3FF",
                 "radius" => [
-                    "number" => 0,
+                    "number" => 20,
                     "unit" => "px"
                 ],
-                "protected" => false,
-                "password" => "",
-                "protectedText" => "Please enter password to wath the video",
-                "seekTime" => 10,
-                "startTime" => 0,
+
                 "preload" => $this->get_post_meta($id, 'h5vp_preload_playerio', 'metadata'),
-                "streaming" => false,
-                "streamingType" => "hls",
-                "captionEnabled" => false,
-                "vastTag" => "",
-                "saveState" => $this->get_post_meta($id, 'h5vp_save_state', true, true)
+
             ],
             "innerBlocks" => [],
             "innerHTML" => "",
@@ -243,23 +98,33 @@ class Block
     {
 
         $quick = h5vp_get_option('h5vp_quick');
-        $option = h5vp_get_option('h5vp_option');
         $get_attr = $this->get_attr($attrs);
 
-        $hideYoutubeUI = $get_attr('hide_youtube_ui', $quick('h5vp_hide_youtube_ui', '0'), true);
         $block_name = $get_attr('source', 'library') == 'library' ? 'video' : $get_attr('source', 'library');
-        $width = $get_attr('width', $quick('h5vp_player_width_quick') . 'px');
+        // A shortcode-supplied width flows into an inline CSS value; constrain
+        // it to a number with an explicit unit, falling back to a responsive
+        // 100% when it is unset or malformed.
+        $width = $get_attr('width', $quick('h5vp_player_width_quick'));
+        if (is_string($width) && preg_match('/^\d+(\.\d+)?(px|%|em|rem|vw)$/', $width)) {
+            // already a valid CSS length — keep as-is
+        } elseif (is_numeric($width)) {
+            $width = (int) $width . 'px';
+        } else {
+            $width = '100%';
+        }
 
         $code_controls = isset($attrs['controls']) ? explode(',', $get_attr('controls', '')) : null;
-        $final_controls = [];
+        $controls = [];
 
         if (is_array($code_controls)) {
             foreach ($code_controls as $control) {
-                array_push($final_controls, trim($control));
+                array_push($controls, trim($control));
             }
         }
 
-        $controls = $final_controls ? $final_controls : Functions::getOptionDeep('h5vp_quick', 'controls', ['play-large', 'play', 'progress', 'duration', 'current-time', 'mute', 'volume', 'settings', 'fullscreen']);
+        if (count($controls) == 0) {
+            $controls = ['play-large', 'play', 'progress', 'duration', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'];
+        }
 
         return [
             'blockName' => "html5-player/$block_name",
@@ -270,106 +135,22 @@ class Block
                 "poster" => $get_attr('poster'),
                 "options" => [
                     "controls" => $controls,
-                    "settings" => ["captions", "quality", "speed", "loop"],
                     "loadSprite" => true,
                     "autoplay" => $get_attr('autoplay', 'false', true),
                     "playsinline" => $get_attr('playsinline', 'true', true),
-                    "seekTime" => (int) $get_attr('seek_time', $quick('h5vp_seek_time_quick', 10)),
-                    "volume" => 1,
                     "muted" => (bool) $get_attr('muted', $quick('h5vp_muted_quick', '0'), true),
                     "hideControls" => $get_attr('hide_controls', $quick('h5vp_auto_hide_control_quick', '1'), true),
                     "resetOnEnd" => $get_attr('reset_on_end', $quick('h5vp_reset_on_end_quick', '1'), true),
-                    "tooltips" => [
-                        "controls" => true,
-                        "seek" => true
-                    ],
-                    "captions" => [
-                        "active" => false,
-                        "language" => "auto",
-                        "update" => true
-                    ],
                     "ratio" => $attrs['aspect_ratio'] ?? null, // here is the isssue
-                    "storage" => [
-                        "enabled" => true,
-                        "key" => "plyr"
-                    ],
-                    "speed" => [
-                        "options" => explode(',', $option('h5vp_speed', '0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 4'))
-                    ],
                     "loop" => [
                         "active" => $get_attr('repeat', $quick('h5vp_repeat_quick', '0'), true),
                     ],
-                    "ads" => [
-                        "enabled" => false,
-                        "tagUrl" => '',
-                    ],
                     "preload" => $get_attr('preload', $quick('h5vp_preload_quick', 'metadata')),
-                    'markers' => [
-                        'enabled' => false,
-                        'points' => []
-                    ],
-                    'urls' => [
-                        'enabled' => false,
-                    ],
                 ],
-                "features" => [
-                    "popup" => [
-                        "enabled" => $get_attr('popup', false, true),
-                        "type" => $get_attr('popup_type', 'button'),
-                        "btnText" => $get_attr('popup_btn_text', 'Watch Video'),
-                        "btnStyle" => [
-                            "color" => $get_attr('popup_btn_color', '#fff'),
-                            "backgroundColor" => $get_attr('popup_btn_bg_color', '#f00'),
-                            "padding" => [
-                                "top" => '7px',
-                                "right" => '10px',
-                                "bottom" => '7px',
-                                "left" => '10px',
-                            ]
-                        ]
-                    ],
-                    "overlay" => [
-                        "enabled" => false,
-                        "items" => []
-                    ],
-                    "endScreen" => [
-                        "enabled" => false
-                    ],
-                    "thumbInPause" => [
-                        "enabled" => $get_attr('thumb_in_pause', false, true),
-                        "type" => "default"
-                    ],
-                    "watermark" => [
-                        "enabled" => $get_attr('watermark', false, true),
-                        "type" => $get_attr('watermark_type', 'email'),
-                        "text" => $get_attr('watermark_text', 'watermark text'),
-                        "color" => $get_attr('watermark_color', '#f00')
-                    ],
-                    "passwordProtected" => [
-                        "enabled" => false,
-                    ],
-                    "sticky" => [
-                        "enabled" => $get_attr('sticky', false, true),
-                        "position" => $get_attr('sticky_position', 'top_right')
-                    ],
-                    "playWhenVisible" => $get_attr('play_when_visible', false, true),
-                    "disablePause" => $get_attr('disable_pause', false, true),
-                    "hideYoutubeUI" => $hideYoutubeUI,
-                    "startTime" => $get_attr('start_time'),
-                    "hideLoadingPlaceholder" => $get_attr('hide_loading_placeholder', false, true),
-                ],
-                'onlyLoggedIn' => [
-                    'whoCanSeeThisVideo' => $get_attr('who_can_see_this_video', 'everyone'),
-                    'allowedRoles' => explode(',', $get_attr('allowed_roles', '')),
-                    'message' => $get_attr('logged_out_user_text', 'This video is only for registered users. Please login to view the video.')
-                ],
-                "hideYoutubeUI" => $hideYoutubeUI,
-                "additionalCSS" => "",
-                "additionalID" => $get_attr('additional_id', ''),
-                "autoplayWhenVisible" => false,
+                "features" => [],
                 "styles" => [
                     "plyr_wrapper" => [
-                        'width' => $width ? $width : '100%',
+                        'width' => $width,
                         "borderRadius" => "0px",
                         "overflow" => "hidden"
                     ]
@@ -399,7 +180,7 @@ class Block
     function get_attr($attrs)
     {
         return function ($key, $default = false, $is_boolean = false) use ($attrs) {
-            $value = $attrs[$key] ?? $default;
+            $value = isset($attrs[$key]) && !empty($attrs[$key]) ? $attrs[$key] : $default;
             if ($is_boolean) {
                 // $value can be true or 1 or false or 0
                 $value = $value === 'true' || $value === '1' ? true : false;
