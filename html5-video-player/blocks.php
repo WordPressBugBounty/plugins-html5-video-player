@@ -27,7 +27,7 @@ if (!class_exists('H5VP_Block')) {
         {
             wp_register_script('html5-player-blocks', plugin_dir_url(__FILE__) . 'build/editor.js', ['wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'jquery', 'bplugins-plyrio'], H5VP_VER, true);
 
-            wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.8.4.polyfilled.js', [], '3.8.3', false);
+            wp_register_script('bplugins-plyrio', plugin_dir_url(__FILE__) . 'public/js/plyr-v3.8.4.polyfilled.js', [], '3.8.4', false);
             wp_register_script('h5vp-view', plugin_dir_url(__FILE__) . 'build/blocks/view.js', ['react', 'react-dom', 'wp-util', 'bplugins-plyrio'], H5VP_VER, false);
             wp_register_script('h5vp-blocks', plugin_dir_url(__FILE__) . 'build/blocks/blocks.js', [], H5VP_VER, false);
 

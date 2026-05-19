@@ -4,7 +4,7 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 6.5
 Tested up to: 6.9
-Stable tag: 2.11.1
+Stable tag: 2.11.2
 Requires PHP: 7.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -281,6 +281,10 @@ This plugin bundles the following third-party library:
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.11.2 - 20 May, 2026 =
+* Fixed: Player does not showing
+* Fixed: Block encounter error
 
 = 2.11.1 - 18 May, 2026 =
 * Removed: Locked premium-only fields 
