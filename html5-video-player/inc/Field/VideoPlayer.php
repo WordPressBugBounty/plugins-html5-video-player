@@ -56,7 +56,7 @@ class VideoPlayer
                     'library' => 'video',
                     'button_title' => 'Add Video',
                     'desc' => 'Youtube video url or ID',
-                    'dependency' => array(array('h5vp_video_source', 'not-any', 'library,amazons3,google', 'all')),
+                    'dependency' => array(array('h5vp_video_source', 'not-any', 'library', 'all')),
                     'attributes' => array('style' => 'width: 100%;')
                 ),
                 array(
@@ -81,8 +81,6 @@ class VideoPlayer
                     'attributes' => array('class' => 'h5vp_video_thumbnails'),
                     'desc' => 'specifies an image to be shown while the video is downloading or until the user hits the play button',
                 ),
-                // pro feature list
-
             ]
         ));
     }

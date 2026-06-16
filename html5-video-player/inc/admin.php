@@ -49,6 +49,7 @@ if (!class_exists('H5VPAdmin')) {
 		{ ?>
 			<div id='h5vpAdminDashboard' data-info="<?php echo esc_attr(wp_json_encode([
 				'version' => H5VP_VER,
+				'adminUrl' => admin_url(),
 				'nonce' => wp_create_nonce('h5vp_dashboard')
 			])); ?>">
 			</div>

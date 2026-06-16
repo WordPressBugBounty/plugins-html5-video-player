@@ -3,8 +3,8 @@ Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 6.5
-Tested up to: 6.9
-Stable tag: 2.11.2
+Tested up to: 7.0
+Stable tag: 2.11.3
 Requires PHP: 7.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,7 +30,7 @@ The plugin supports video embedding using shortcodes or Gutenberg blocks, making
 
 - **No-Code Embedding**: Use shortcodes to quickly add videos anywhere on your site.
 
-- **Cross-Browser Compatibility**: Works perfectly on Chrome, Firefox, Safari, IE7–IE9, and more.
+- **Cross-Browser Compatibility**: Works perfectly on Chrome, Firefox, Safari, and more.
 
 - **iOS & Mobile Friendly**: Plays video files on all major devices without extra plugins.
 
@@ -250,6 +250,13 @@ You can find the source code, report bugs, and contribute to the development of 
 
 This plugin bundles the following third-party library:
 
+= Codestar Framework =
+
+* **Source:** [http://codestarframework.com/](http://codestarframework.com/)
+* **GitHub:** [https://github.com/Codestar/codestar-framework](https://github.com/Codestar/codestar-framework)
+* **License:** GPLv2 or later – [https://github.com/Codestar/codestar-framework/blob/master/LICENSE](https://github.com/Codestar/codestar-framework/blob/master/LICENSE.md)
+* **Purpose:** Provides the options framework for the plugin's settings and shortcode generator.
+
 **Plyr**
 - Version: 3.8.4
 - Purpose: Provides the customizable HTML5, YouTube, and Vimeo media player interface used to render videos.
@@ -281,6 +288,12 @@ This plugin bundles the following third-party library:
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.11.3 - 16 June, 2026 =
+* Improved: Updated admin dashboard design
+* Improved: Removed unused code, dead asset registrations, and leftover images
+* Improved: Code quality and general maintenance
+* Fixed: Custom poster not showing for Vimeo player
 
 = 2.11.2 - 20 May, 2026 =
 * Fixed: Player does not showing
