@@ -4,7 +4,7 @@ Tags: HTML5 video player, mp4 player, plyr, video, video player
 Donate link: https://www.buymeacoffee.com/abuhayat
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 2.11.3
+Stable tag: 2.11.4
 Requires PHP: 7.4
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -288,6 +288,9 @@ This plugin bundles the following third-party library:
 13. Gutenberg Block Settings
 
 == Changelog ==
+
+= 2.11.4 - 11 July, 2026 =
+* Update: Freemius WordPress SDK
 
 = 2.11.3 - 16 June, 2026 =
 * Improved: Updated admin dashboard design
