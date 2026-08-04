@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "host": "3d-viewer-premium",
+  "generated_at": "2026-06-28T00:00:00Z",
+  "extensions": [
+    {
+      "id": "measure-tool",
+      "name": "Measure Tool",
+      "version": "1.2.0",
+      "short_description": "Measure distances in the 3D scene.",
+      "icon_url": "https://cdn.example.com/measure/icon.png",
+      "homepage_url": "https://example.com/addons/measure-tool",
+      "requires_parent": "3.2.0",
+      "requires_plugins": [],
+      "is_paid": true,
+      "price_label": "$29/yr",
+      "plugin_file": "bp-measure-tool/bp-measure-tool.php",
+      "download_url": "",
+      "freemius": {
+        "plugin_id": "12345",
+        "public_key": "pk_0123456789abcdef0123456789abc",
+        "plan_id": "67890"
+      }
+    },
+    {
+      "id": "annotations",
+      "name": "Annotations",
+      "version": "1.0.0",
+      "short_description": "Pin labelled notes onto a model.",
+      "icon_url": "https://cdn.example.com/annotations/icon.png",
+      "homepage_url": "https://example.com/addons/annotations",
+      "requires_parent": "3.0.0",
+      "requires_plugins": [],
+      "is_paid": false,
+      "price_label": "",
+      "plugin_file": "bp-annotations/bp-annotations.php",
+      "download_url": "https://cdn.example.com/annotations/annotations-1.0.0.zip"
+    }
+  ],
+  "modules": [
+    {
+      "id": "hotspots",
+      "name": "Hotspots",
+      "version": "1.0.0",
+      "description": "Add clickable hotspots to a model.",
+      "icon_url": "https://cdn.example.com/hotspots/icon.png",
+      "homepage_url": "https://example.com/modules/hotspots",
+      "requires_host": "3.0.0",
+      "requires_plugins": [],
+      "is_paid": true,
+      "premium_host_only": false,
+      "price_label": "$19/yr",
+      "download_url": "https://bplugins.com/modules/hotspots-1.0.0.zip"
+    }
+  ]
+}

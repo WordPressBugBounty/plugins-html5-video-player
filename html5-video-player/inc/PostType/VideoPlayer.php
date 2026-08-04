@@ -90,7 +90,7 @@ class VideoPlayer
     {
         $screen = get_current_screen();
 
-        if ($screen->post_type === $this->post_type) {
+        if ($screen && isset($screen->post_type) && $screen->post_type === $this->post_type) {
             return [];
         }
         return $metaboxs;

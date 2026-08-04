@@ -64,7 +64,7 @@ class Block
                     ],
                     "preload" => $this->get_post_meta($id, 'h5vp_preload_playerio', 'metadata'),
                     "speed" => [
-                        "options" => explode(',', $this->get_post_meta($id, 'h5vp_speed', '0.5,0.75,1,1.25,1.5,1.75,2,4'))
+                        "options" => explode(',', (string) $this->get_post_meta($id, 'h5vp_speed', '0.5,0.75,1,1.25,1.5,1.75,2,4'))
                     ]
                 ],
                 "features" => [],

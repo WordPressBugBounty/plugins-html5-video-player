@@ -13,12 +13,14 @@ class Init
         return [
             Base\GlobalChanges::class,
             Base\AdminNotice::class,
+            Base\OnboardingNotice::class,
             Services\EnqueueAssets::class,
             Services\Shortcodes::class,
             Field\VideoPlayer::class,
             Field\QuickPlayer::class,
             Field\Settings::class,
             Model\Ajax::class,
+            Model\Onboarding::class,
         ];
     }
 

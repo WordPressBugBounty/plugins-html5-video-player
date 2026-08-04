@@ -3,7 +3,7 @@
  * Plugin Name: HTML5 Video Player – Embed and Play Videos in Custom Player
  * Description: You can easily integrate html5 Video player in your WordPress website using this plugin.
  * Plugin URI:  https://bplugins.com/html5-video-player/
- * Version:     2.11.4
+ * Version:     2.12.0
  * Author:      bPlugins
  * Author URI:  http://bplugins.com
  * Requires at least: 6.5
@@ -33,7 +33,7 @@ if (function_exists('h5vp_fs')) {
     define('H5VP_PLUGIN_PATH', plugin_dir_path(__FILE__));
     define('H5VP_PLUGIN_FILE_BASENAME', plugin_basename(__FILE__));
     define('H5VP_PLUGIN_DIR_BASENAME', plugin_basename(__DIR__));
-    define('H5VP_VER', defined('WP_DEBUG') && WP_DEBUG === true ? time() : '2.11.4');
+    define('H5VP_VER', defined('WP_DEBUG') && WP_DEBUG === true ? time() : '2.12.0');
 
     // Create a helper function for easy SDK access.
     function h5vp_fs()
@@ -52,7 +52,7 @@ if (function_exists('h5vp_fs')) {
                     'support' => false,
                     'affiliation' => false,
                     'contact' => false,
-                    'first-path' => 'edit.php?post_type=videoplayer&page=html5-video-player',
+                    'first-path' => 'edit.php?post_type=videoplayer&page=h5vp-setup',
                 ),
             ));
         }
@@ -98,8 +98,36 @@ if (function_exists('h5vp_fs')) {
     register_activation_hook(__FILE__, ['H5VP\\Database\\Init', 'install']);
     add_action('admin_init', ['H5VP\\Database\\Init', 'maybe_upgrade']);
 
+
     /*-------------------------------------------------------------------------------*/
     /* TinyMce
     /*-------------------------------------------------------------------------------*/
     require_once 'tinymce/h5vp-tinymce.php';
+
+    $bpem_bootstrap = H5VP_PLUGIN_PATH . 'vendor/bp-extension-manager/bootstrap.php';
+    if (file_exists($bpem_bootstrap)) {
+        require_once $bpem_bootstrap;
+    }
+
+
+    add_action('bpem_loaded', function () {
+        if (class_exists('\\BPEM\\Manager')) {
+            \BPEM\Manager::boot(array(
+                'slug' => 'html5-video-player',           // unique; namespaces everything
+                'name' => 'HTML5 Video Player',
+                'version' => (string) H5VP_VER,
+                'menu_parent' => 'edit.php?post_type=videoplayer',
+                'freemius' => function_exists('h5vp_fs') ? h5vp_fs() : null,
+                'max_plan_id' => 'max',
+                'catalog_file' => __DIR__ . '/public/extensions.php',
+                'menu_badge' => true,
+                'menu_badge_persist' => true,
+                'enable_freemius_checkout' => true,
+                'enable_extensions' => false
+
+            ));
+        }
+    });
+
+
 }

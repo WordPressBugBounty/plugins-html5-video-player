@@ -24,7 +24,7 @@ class GlobalChanges
     public function removeRowAction($row)
     {
         global $post;
-        if ($post->post_type == 'videoplayer' || $post->post_type == 'videoplayer_quick') {
+        if ($post && isset($post->post_type) && ($post->post_type == 'videoplayer' || $post->post_type == 'videoplayer_quick')) {
             unset($row['view']);
             unset($row['inline hide-if-no-js']);
         }

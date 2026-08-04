@@ -2,16 +2,16 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: HTML5 Video Player – Embed and Play Videos in Custom Player 2.11.4\n"
+"Project-Id-Version: HTML5 Video Player – Embed and Play Videos in Custom Player 2.12.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/html5-video-player\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-11T04:05:16+00:00\n"
+"POT-Creation-Date: 2026-08-03T11:37:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: html5-video-player\n"
 
 #. Plugin Name of the plugin
@@ -39,16 +39,23 @@ msgstr ""
 msgid "http://bplugins.com"
 msgstr ""
 
-#: inc/admin.php:39
-#: inc/admin.php:40
+#: inc/admin.php:86
+#: inc/admin.php:87
 #: zip/html5-video-player/inc/admin.php:39
 #: zip/html5-video-player/inc/admin.php:40
 msgid "Demo & Help"
 msgstr ""
 
+#: inc/admin.php:99
+#: inc/admin.php:100
+#: inc/admin.php:114
+msgid "Guided Setup"
+msgstr ""
+
 #. translators: 1: removed shortcode, 2: replacement shortcode.
 #: inc/Base/AdminNotice.php:44
 #: zip/html5-video-player/inc/Base/AdminNotice.php:44
+#, php-format
 msgid "HTML5 Video Player: the %1$s shortcode has been removed. Please use %2$s instead."
 msgstr ""
 
@@ -74,6 +81,14 @@ msgstr ""
 #: inc/Base/GlobalChanges.php:90
 #: zip/html5-video-player/inc/Base/GlobalChanges.php:90
 msgid "Html5 video player"
+msgstr ""
+
+#: inc/Base/OnboardingNotice.php:61
+msgid "New to HTML5 Video Player? Take the 1-minute guided setup — it walks you through adding your first video and setting your player defaults."
+msgstr ""
+
+#: inc/Base/OnboardingNotice.php:63
+msgid "Start Guided Setup"
 msgstr ""
 
 #: inc/Elementor/VideoPlayer.php:48
@@ -282,47 +297,41 @@ msgstr ""
 msgid "Shortcode/Player"
 msgstr ""
 
+#: inc/Field/Settings.php:48
+#: build/onboarding.js:1
+msgid "Use the block editor for new players"
+msgstr ""
+
 #: inc/Field/Settings.php:50
-#: zip/html5-video-player/inc/Field/Settings.php:50
-msgid "When enabled, the Gutenberg editor will enable to generate shortcode"
+msgid "When enabled, Add New Player opens in the Gutenberg block editor instead of the classic screen. Which editor a player uses is recorded when it is created, so changing this only affects players you add from now on."
 msgstr ""
 
-#: inc/Field/Settings.php:55
-#: zip/html5-video-player/inc/Field/Settings.php:55
-msgid "Disable [video id='id'] shortcode for this plugin"
-msgstr ""
-
-#: inc/Field/Settings.php:57
-#: zip/html5-video-player/inc/Field/Settings.php:57
-msgid "When enabled, the [video] shortcode will be disabled for this plugin to avoid conflicts."
-msgstr ""
-
-#: inc/Field/Settings.php:63
+#: inc/Field/Settings.php:56
 #: zip/html5-video-player/inc/Field/Settings.php:63
 msgid "Play one player at a time"
 msgstr ""
 
-#: inc/Field/Settings.php:64
+#: inc/Field/Settings.php:57
 #: zip/html5-video-player/inc/Field/Settings.php:64
 msgid "When enabled, starting playback on one video player will automatically pause any other playing video players on the same page."
 msgstr ""
 
-#: inc/Field/Settings.php:70
+#: inc/Field/Settings.php:63
 #: zip/html5-video-player/inc/Field/Settings.php:70
 msgid "Brand Color"
 msgstr ""
 
-#: inc/Field/Settings.php:71
+#: inc/Field/Settings.php:64
 #: zip/html5-video-player/inc/Field/Settings.php:71
 msgid "Set the primary color used for the video player interface."
 msgstr ""
 
-#: inc/Field/Settings.php:78
+#: inc/Field/Settings.php:71
 #: zip/html5-video-player/inc/Field/Settings.php:78
 msgid "Delete data during uninstall"
 msgstr ""
 
-#: inc/Field/Settings.php:79
+#: inc/Field/Settings.php:72
 #: zip/html5-video-player/inc/Field/Settings.php:79
 msgid "When enabled, the plugin will delete all its data when uninstalled."
 msgstr ""
@@ -463,6 +472,18 @@ msgstr ""
 #: inc/PostType/VideoPlayer.php:322
 #: zip/html5-video-player/inc/PostType/VideoPlayer.php:322
 msgid "Copy and paste this shortcode into your posts, pages and widget"
+msgstr ""
+
+#: zip/html5-video-player/inc/Field/Settings.php:50
+msgid "When enabled, the Gutenberg editor will enable to generate shortcode"
+msgstr ""
+
+#: zip/html5-video-player/inc/Field/Settings.php:55
+msgid "Disable [video id='id'] shortcode for this plugin"
+msgstr ""
+
+#: zip/html5-video-player/inc/Field/Settings.php:57
+msgid "When enabled, the [video] shortcode will be disabled for this plugin to avoid conflicts."
 msgstr ""
 
 #: build/blocks/blocks.js:1
@@ -733,6 +754,262 @@ msgstr ""
 #: build/blocks/blocks.js:1
 #: zip/html5-video-player/build/blocks/blocks.js:1
 msgid "Add custom preset availabel in premium version"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Adding a video with Gutenberg:"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Open any post or page and type <strong>/Video Player</strong> to insert the block"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Add a <strong>Video File</strong>, <strong>YouTube</strong>, or <strong>Vimeo</strong> child block for your source"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Set autoplay, mute, loop, poster image, and colors in the block sidebar"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Adding a video with Elementor:"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Edit a page with Elementor and search for <strong>HTML5 Video Player</strong>"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Drag the widget into your layout, then pick a player or paste a video URL"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Use the Style tab for spacing, background, and responsive visibility"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Adding a video with a shortcode:"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Go to <strong>Video Player &rsaquo; Add New Player</strong> and add your video source"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Publish it, then copy the generated <code>[html5_video id=\"12\"]</code> shortcode"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Paste that shortcode into any post, page, widget, or template file"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Not sure yet? These are the three quickest routes:"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Type <strong>/Video Player</strong> in the block editor to insert the player block"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Or go to <strong>Video Player &rsaquo; Add New Player</strong> and copy its shortcode"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Welcome to HTML5 Video Player"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Let’s get your first video on the page. It takes about a minute, and everything you set here can be changed later."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "HTML5 Video Player — short tutorial"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Embed MP4, WebM, and OGG files, or a YouTube or Vimeo link"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Match the player to your brand with skins and color customization"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Add players with Gutenberg blocks, the Elementor widget, or a shortcode"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Responsive, mobile-friendly, and SEO-optimized out of the box"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Let's Get Started"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Set your player defaults"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Starting points for every new player. You can change all of them later under Video Player › Settings."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Skip"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Brand color"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Accent color for the progress bar and controls"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Play one video at a time"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Starting a player pauses any other playing on the same page"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Opens Add New Player in Gutenberg instead of the classic screen"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Block editor for new players"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "With this on, <strong>Video Player &rsaquo; Add New Player</strong> opens in the Gutenberg block editor. You build the player from blocks — a Video File, YouTube, or Vimeo source — and set its options in the block sidebar."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "With it off, new players open in the classic screen instead. Either way the player still gets a shortcode you can paste anywhere."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Which editor a player uses is recorded when that player is created, so changing this later only affects players you add from then on — existing ones keep opening in the editor they were built with."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "What's included with HTML5 Video Player"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Everything marked Included works right now on the free version. Pro unlocks the rest whenever you need it."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "MP4, WebM & OGG, plus YouTube and Vimeo"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Included"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Embed a self-hosted file or paste a link — no re-encoding, no third-party account."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Skins & Color Customization"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Match the player to your brand, and set autoplay, loop, and mute per video."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Gutenberg, Elementor & Shortcodes"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Insert a player with a block, the Elementor widget, or a shortcode anywhere."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Responsive, Mobile & SEO Ready"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Adapts to any screen, works across every major browser, and outputs video schema."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Multiple Subtitles & Quality Switcher"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Pro"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Multilingual captions, plus YouTube-style resolution and playback speed control."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Chapters, Watermark & Password Protection"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Timestamp markers, your logo over the video, and gated private content."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "And much more"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Sticky on scroll, popup player, VAST ads, end screens, external hosting, and download control."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Last step — how will you add videos?"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Pick how you usually build pages and the steps below will match. You can still use any of the other methods later."
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Preferred method"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Shortcode"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Paste [html5_video id=\"...\"] into any post or widget"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Gutenberg"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Insert the Video Player block in the editor"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Elementor"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Drag the HTML5 Video Player widget into a section"
+msgstr ""
+
+#: build/onboarding.js:1
+msgid "Visit <strong>Video Player &rsaquo; Demo & Help</strong> any time for live demos"
 msgstr ""
 
 #: build/blocks/parent/block.json

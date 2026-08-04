@@ -22,7 +22,7 @@ class Functions
         }
 
         if ($boolean) {
-            return (boolean) $result;
+            return (bool) $result;
         }
         return $result;
     }

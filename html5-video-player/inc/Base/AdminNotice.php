@@ -80,7 +80,9 @@ class AdminNotice
         ?>
         <script>
             (function () {
-                var notice = document.querySelector('[data-h5vp-notice]');
+                // Scoped to this notice's own action — more than one H5VP
+                // notice can be on screen at once.
+                var notice = document.querySelector('[data-h5vp-notice="<?php echo esc_js(self::DISMISS_ACTION); ?>"]');
                 if (!notice) {
                     return;
                 }
