@@ -66,7 +66,7 @@ class Settings
                 ],
                 // delete data during uninstall
                 [
-                    'id' => 'h5vp_delete_data_during_uninstall',
+                    'id' => 'h5vp_remove_data_on_uninstall',
                     'type' => 'switcher',
                     'title' => __('Delete data during uninstall', 'html5-video-player'),
                     'desc' => __("When enabled, the plugin will delete all its data when uninstalled.", "html5-video-player"),

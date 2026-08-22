@@ -67,7 +67,7 @@ class VideoPlayer
                     'library' => 'video',
                     'button_title' => 'Add Video',
                     'attributes' => array('class' => 'h5vp_video_link', 'id' => 'h5vp_google_document_url'),
-                    'desc' => 'select an mp4 or ogg video file. or paste a external video file link. if you use multiple quality. this source/video should be 720',
+                    'desc' => __('Select an MP4, WebM, MOV, OGG video file, or paste an external video or HLS (.m3u8) stream URL.', 'html5-video-player'),
                     'dependency' => array('h5vp_video_source', 'any', 'library', 'all'),
                 ),
                 array(
@@ -81,12 +81,37 @@ class VideoPlayer
                     'attributes' => array('class' => 'h5vp_video_thumbnails'),
                     'desc' => 'specifies an image to be shown while the video is downloading or until the user hits the play button',
                 ),
+                array(
+                    'id' => 'h5vp_caption_label',
+                    'type' => 'text',
+                    'title' => __('Subtitle Label', 'html5-video-player'),
+                    'placeholder' => 'English/en',
+                    'default' => 'English/en',
+                    'desc' => __('Enter label and language code (e.g. English/en).', 'html5-video-player'),
+                    'dependency' => array('h5vp_video_source', 'any', 'library', 'all'),
+                ),
+                array(
+                    'id' => 'h5vp_caption_file',
+                    'type' => 'upload',
+                    'title' => __('Subtitle File (.vtt)', 'html5-video-player'),
+                    'settings' => array(
+                        'upload_type' => 'text/vtt',
+                        'button_title' => __('Upload .vtt File', 'html5-video-player'),
+                        'frame_title' => __('Select .vtt Caption File', 'html5-video-player'),
+                    ),
+                    'desc' => __('Upload a .vtt caption file or paste an external .vtt URL.', 'html5-video-player'),
+                    'dependency' => array('h5vp_video_source', 'any', 'library', 'all'),
+                ),
             ]
         ));
     }
 
     public function controls($prefix)
     {
+        // Global player defaults, so a value set on the Settings screen (and any
+        // value carried over from the premium version) is used as the default.
+        $preset = h5vp_get_option('h5vp_option');
+
         // Create a section
         \CSF::createSection($prefix, array(
             'title' => 'General',
@@ -108,13 +133,14 @@ class VideoPlayer
                         'current-time' => __('Current Time', 'html5-video-player'),
                         'mute' => __('Mute Button', 'html5-video-player'),
                         'volume' => __('Volume Control', 'html5-video-player'),
+                        'captions' => __('Captions', 'html5-video-player'),
                         'settings' => __('Setting Button', 'html5-video-player'),
                         'pip' => __('PIP', 'html5-video-player'),
                         'airplay' => __('Airplay', 'html5-video-player'),
                         'download' => __('Download Button', 'html5-video-player'),
                         'fullscreen' => __('Fullscreen', 'html5-video-player')
                     ),
-                    'default' => array('play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'pip', 'download', 'fullscreen'),
+                    'default' => array('play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'download', 'fullscreen'),
                     'desc' => __('download,pip controls will not work for youtube and vimeo', 'html5-video-player')
                 ),
                 array(
@@ -152,6 +178,28 @@ class VideoPlayer
                     'default' => '1',
                 ),
                 array(
+                    'id' => 'h5vp_playsinline_playerio',
+                    'type' => 'switcher',
+                    'title' => 'Allow Inline Playback on iOS',
+                    'desc' => __("Allow inline playback on iOS. Note this has no effect on iPadOS.", "html5-video-player"),
+                    'default' => $preset('h5vp_op_playsinline_playerio', '1'),
+                ),
+                array(
+                    'id' => 'h5vp_preload_playerio',
+                    'type' => 'radio',
+                    'title' => 'Preload',
+                    'options' => array(
+                        'auto' => 'Auto - Browser should load the entire file when the page loads.',
+                        'metadata' => 'Metadata - Browser should load only meatadata when the page loads.',
+                        'none' => 'None - Browser should NOT load the file when the page loads.',
+                    ),
+                    'desc' => __("Control how much of the video is loaded before playback. Options affect loading speed and bandwidth usage.", "html5-video-player"),
+                    'default' => $preset('h5vp_op_preload_playerio', 'metadata'),
+                    // preload is a <video> attribute, so it has no effect on the
+                    // YouTube/Vimeo iframe embeds.
+                    'dependency' => array('h5vp_video_source', 'any', 'library', 'all'),
+                ),
+                array(
                     'id' => 'h5vp_ratio',
                     'type' => 'text',
                     'title' => 'Ratio',
@@ -185,6 +233,19 @@ class VideoPlayer
                     'min' => '200',
                     'step' => '50',
                     'desc' => 'set the player width. Height will be calculate base on the value. Left blank for Responsive player',
+                    'default' => '',
+                ),
+                array(
+                    'id' => 'h5vp_align_playerio',
+                    'type' => 'button_set',
+                    'title' => __('Alignment', 'html5-video-player'),
+                    'options' => array(
+                        '' => __('Default', 'html5-video-player'),
+                        'left' => __('Left', 'html5-video-player'),
+                        'center' => __('Center', 'html5-video-player'),
+                        'right' => __('Right', 'html5-video-player'),
+                    ),
+                    'desc' => __("Position the player inside its container. Only visible once the player width is narrower than the container — a full width player has nowhere to move.", "html5-video-player"),
                     'default' => '',
                 ),
                 array(

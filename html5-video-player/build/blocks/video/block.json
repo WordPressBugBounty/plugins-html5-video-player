@@ -47,6 +47,10 @@
       "type": "string",
       "default": ""
     },
+    "subtitle": {
+      "type": "array",
+      "default": []
+    },
     "options": {
       "type": "object",
       "default": {
@@ -195,12 +199,21 @@
     "autoHideControl": {
       "type": "boolean",
       "default": true
+    },
+    "preload": {
+      "type": "string",
+      "default": "metadata"
     }
   },
   "supports": {
     "html": false,
     "lock": false,
-    "reusable": false
+    "reusable": false,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ]
   },
   "example": {
     "attributes": {

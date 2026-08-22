@@ -28,7 +28,19 @@ class Block
             $source = $this->get_post_meta($id, 'h5vp_video_link_youtube_vimeo', '');
         }
 
-        return [
+        $align = h5vp_sanitize_align($this->get_post_meta($id, 'h5vp_align_playerio', ''));
+
+        $subtitles = [];
+        $caption_file = $this->get_post_meta($id, 'h5vp_caption_file');
+        if (!empty($caption_file)) {
+            $caption_label = $this->get_post_meta($id, 'h5vp_caption_label', 'English/en');
+            $subtitles[] = [
+                'label' => !empty($caption_label) ? (string) $caption_label : 'English/en',
+                'caption_file' => esc_url_raw((string) $caption_file),
+            ];
+        }
+
+        $block = [
             'blockName' => "html5-player/$block_name",
             'attrs' => [
                 'is_classic' => true,
@@ -38,13 +50,16 @@ class Block
                 "uniqueId" => wp_unique_id('h5vp'),
                 "source" => $source,
                 "poster" => $this->get_post_meta($id, 'h5vp_video_thumbnails', ''),
+                "subtitle" => $subtitles,
                 "skin" => 'default',
                 "options" => [
                     "controls" => $this->get_post_meta($id, 'h5vp_controls', ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']),
                     "settings" => ["captions", "quality", "speed", "loop"],
                     "loadSprite" => true,
                     "autoplay" => $this->get_post_meta($id, 'h5vp_auto_play_playerio', false, true),
-                    "playsinline" => true,
+                    // Unset meta ('' from players saved before the field existed)
+                    // must stay true — the previous behavior was hardcoded true.
+                    "playsinline" => $this->get_post_meta($id, 'h5vp_playsinline_playerio', '1') == '1',
                     "seekTime" => 10,
                     "volume" => 1,
                     "muted" => $this->get_post_meta($id, 'h5vp_muted_playerio', false, true),
@@ -92,6 +107,15 @@ class Block
             "innerHTML" => "",
             "innerContent" => [],
         ];
+
+        // Core's alignment support keys off array_key_exists(), not empty(), so
+        // handing it an empty string would render a bare "align" class. Players
+        // saved before this field existed resolve to '' and must stay untouched.
+        if ($align !== '') {
+            $block['attrs']['align'] = $align;
+        }
+
+        return $block;
     }
 
     public function video_player_to_gutenberg_block($attrs)
@@ -123,21 +147,36 @@ class Block
         }
 
         if (count($controls) == 0) {
-            $controls = ['play-large', 'play', 'progress', 'duration', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'];
+            $controls = ['play-large', 'play', 'progress', 'duration', 'current-time', 'mute', 'volume', 'captions', 'settings', 'fullscreen'];
         }
 
-        return [
+        $align = h5vp_sanitize_align(
+            isset($attrs['align']) ? $attrs['align'] : $quick('h5vp_align_quick', '')
+        );
+
+        $shortcode_subtitles = [];
+        $caption_file = $get_attr('caption', $get_attr('subtitle', ''));
+        if (!empty($caption_file)) {
+            $caption_label = $get_attr('caption_label', $get_attr('subtitle_label', 'English/en'));
+            $shortcode_subtitles[] = [
+                'label' => $caption_label ?: 'English/en',
+                'caption_file' => esc_url_raw((string) $caption_file),
+            ];
+        }
+
+        $block = [
             'blockName' => "html5-player/$block_name",
             'attrs' => [
                 "provider" => $get_attr('source'),
                 "uniqueId" => wp_unique_id('h5vp'),
                 "source" => $get_attr('file', $get_attr('src', $get_attr('mp4'))),
                 "poster" => $get_attr('poster'),
+                "subtitle" => $shortcode_subtitles,
                 "options" => [
                     "controls" => $controls,
                     "loadSprite" => true,
                     "autoplay" => $get_attr('autoplay', 'false', true),
-                    "playsinline" => $get_attr('playsinline', 'true', true),
+                    "playsinline" => $get_attr('playsinline', $quick('h5vp_playsinline_quick', '1'), true),
                     "muted" => (bool) $get_attr('muted', $quick('h5vp_muted_quick', '0'), true),
                     "hideControls" => $get_attr('hide_controls', $quick('h5vp_auto_hide_control_quick', '1'), true),
                     "resetOnEnd" => $get_attr('reset_on_end', $quick('h5vp_reset_on_end_quick', '1'), true),
@@ -162,6 +201,13 @@ class Block
             "innerHTML" => "",
             "innerContent" => [],
         ];
+
+        // See classic_to_gutenberg_block(): only set the key once it has a value.
+        if ($align !== '') {
+            $block['attrs']['align'] = $align;
+        }
+
+        return $block;
     }
 
     function get_post_meta($id, $key, $default = null, $is_boolean = false)

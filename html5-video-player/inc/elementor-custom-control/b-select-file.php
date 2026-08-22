@@ -1,4 +1,5 @@
 <?php
+
 namespace H5VP\Elementor;
 
 if (!defined('ABSPATH')) {
@@ -6,20 +7,30 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * The Pro build of this plugin ships its own H5VP\Elementor\H5VPSelectFile.
+ * Both files are pulled in with require_once against different paths, so PHP
+ * would hit a fatal "cannot redeclare" if the two ever loaded in one request.
+ */
+if (class_exists(__NAMESPACE__ . '\H5VPSelectFile')) {
+	return;
+}
+
+/**
  * FileSelect control.
  *
- * A control for selecting any type of files.
+ * A control for selecting any type of file (video sources, posters, .vtt
+ * captions) from the media library, or for pasting an external URL.
+ *
+ * The stored value is a plain URL string, unchanged from the original
+ * implementation, so widgets saved by earlier versions keep working.
  *
  * @since 1.0.0
  */
-class SelectFile extends \Elementor\Base_Data_Control
+class H5VPSelectFile extends \Elementor\Base_Data_Control
 {
 
 	/**
 	 * Get control type.
-	 *
-	 * Retrieve the control type, in this case `FILESELECT`.
-	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
@@ -27,7 +38,7 @@ class SelectFile extends \Elementor\Base_Data_Control
 	 */
 	public function get_type()
 	{
-		return 'b-select-file';
+		return 'h5vp-select-file';
 	}
 
 	/**
@@ -45,9 +56,12 @@ class SelectFile extends \Elementor\Base_Data_Control
 		wp_enqueue_style('thickbox');
 		wp_enqueue_script('media-upload');
 		wp_enqueue_script('thickbox');
-		// Scripts
-		wp_register_script('bplugins-elementor-controls', plugins_url('/js/controls.js', __FILE__), ['jquery'], '1.0.0', true);
-		wp_enqueue_script('bplugins-elementor-controls');
+
+		wp_register_style('h5vp-elementor-controls', plugins_url('/css/controls.css', __FILE__), [], H5VP_VER);
+		wp_enqueue_style('h5vp-elementor-controls');
+
+		wp_register_script('h5vp-elementor-controls', plugins_url('/js/controls.js', __FILE__), ['jquery'], H5VP_VER, true);
+		wp_enqueue_script('h5vp-elementor-controls');
 	}
 
 	/**
@@ -68,6 +82,10 @@ class SelectFile extends \Elementor\Base_Data_Control
 	/**
 	 * Render control output in the editor.
 	 *
+	 * The markup is static: the preview, the button label and the clear button
+	 * are driven by controls.js from the current value. Re-rendering the whole
+	 * control on every keystroke would move focus out of the URL field.
+	 *
 	 * @since 1.0.0
 	 * @access public
 	 */
@@ -75,15 +93,37 @@ class SelectFile extends \Elementor\Base_Data_Control
 	{
 		$control_uid = $this->get_control_uid();
 		?>
-		<div class="elementor-control-field">
+		<div class="elementor-control-field h5vp-file-control">
 			<label for="<?php echo esc_attr($control_uid); ?>" class="elementor-control-title">{{{ data.label }}}</label>
 			<div class="elementor-control-input-wrapper">
-				<a href="#" class="tnc-b-select-file elementor-button elementor-button-default elementor-button-go-pro"
-					style="padding: 10px 15px; display: block;text-align: center;"
-					id="select-file-<?php echo esc_attr($control_uid); ?>"><?php echo esc_html('{{data.label}}'); ?></a> <br />
+				<div class="h5vp-file is-empty">
+					<div class="h5vp-file__preview">
+						<span class="h5vp-file__thumb" aria-hidden="true">
+							<i class="eicon-video-camera"></i>
+						</span>
+						<span class="h5vp-file__meta">
+							<span class="h5vp-file__name"></span>
+							<span class="h5vp-file__host"></span>
+						</span>
+						<span class="h5vp-file__empty"><?php esc_html_e('No file selected', 'html5-video-player'); ?></span>
+					</div>
 
-				<input type="text" class="tnc-b-selected-fle-url" id="<?php echo esc_attr($control_uid); ?>"
-					data-setting="{{ data.name }}" placeholder="{{ data.placeholder }}">
+					<div class="h5vp-file__actions">
+						<button type="button" class="h5vp-file__choose" id="select-file-<?php echo esc_attr($control_uid); ?>">
+							<i class="eicon-upload" aria-hidden="true"></i>
+							<span class="h5vp-file__choose-text"
+								data-choose="<?php esc_attr_e('Choose File', 'html5-video-player'); ?>"
+								data-replace="<?php esc_attr_e('Replace', 'html5-video-player'); ?>"><?php esc_html_e('Choose File', 'html5-video-player'); ?></span>
+						</button>
+						<button type="button" class="h5vp-file__clear"
+							title="<?php esc_attr_e('Remove', 'html5-video-player'); ?>"
+							aria-label="<?php esc_attr_e('Remove', 'html5-video-player'); ?>">&times;</button>
+					</div>
+
+					<?php // Kept as a text field so a CDN or external URL can still be pasted directly. ?>
+					<input type="text" class="h5vp-file__url" id="<?php echo esc_attr($control_uid); ?>"
+						data-setting="{{ data.name }}" placeholder="{{ data.placeholder }}">
+				</div>
 			</div>
 		</div>
 		<# if ( data.description ) { #>

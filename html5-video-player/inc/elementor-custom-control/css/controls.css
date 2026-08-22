@@ -1,0 +1,165 @@
+/**
+ * Styling for the `h5vp-select-file` Elementor control.
+ *
+ * Uses Elementor's own panel custom properties so the control follows the
+ * editor's light/dark theme instead of hardcoding colours. Every property has
+ * a fallback for older Elementor versions that do not define them.
+ */
+
+.h5vp-file-control .elementor-control-input-wrapper .h5vp-file {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---- preview ---------------------------------------------------------- */
+
+.h5vp-file__preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 8px;
+  border: 1px solid var(--e-a-border-color, #3f444b);
+  border-radius: 3px;
+  background: var(--e-a-bg-default, #26292c);
+  overflow: hidden;
+}
+
+.h5vp-file.is-empty .h5vp-file__preview {
+  border-style: dashed;
+  justify-content: center;
+}
+
+/* Empty state shows only the "No file selected" note. */
+.h5vp-file.is-empty .h5vp-file__thumb,
+.h5vp-file.is-empty .h5vp-file__meta,
+.h5vp-file:not(.is-empty) .h5vp-file__empty {
+  display: none;
+}
+
+.h5vp-file__thumb {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 38px;
+  border-radius: 2px;
+  background-color: var(--e-a-bg-hover, #1f2124);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: var(--e-a-color-txt, #b0b5bd);
+  font-size: 18px;
+}
+
+/* A real thumbnail replaces the placeholder glyph. */
+.h5vp-file__thumb.has-image i {
+  display: none;
+}
+
+/* Text can overflow its flex item unless min-width is cleared. */
+.h5vp-file__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.h5vp-file__name {
+  overflow: hidden;
+  color: var(--e-a-color-txt-accent, #fff);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.h5vp-file__host,
+.h5vp-file__empty {
+  overflow: hidden;
+  color: var(--e-a-color-txt-muted, #9a9ea3);
+  font-size: 11px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---- actions ---------------------------------------------------------- */
+
+.h5vp-file__actions {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.h5vp-file__choose {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--e-a-border-color-bold, #4e5561);
+  border-radius: 3px;
+  background: var(--e-a-bg-hover, #34383c);
+  color: var(--e-a-color-txt-accent, #fff);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.h5vp-file__choose:hover,
+.h5vp-file__choose:focus-visible {
+  border-color: var(--e-a-color-primary, #515962);
+  background: var(--e-a-bg-active, #3f444b);
+  outline: none;
+}
+
+.h5vp-file__clear {
+  flex: 0 0 auto;
+  width: 30px;
+  border: 1px solid var(--e-a-border-color-bold, #4e5561);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--e-a-color-txt-muted, #9a9ea3);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.h5vp-file.is-empty .h5vp-file__clear {
+  display: none;
+}
+
+.h5vp-file__clear:hover,
+.h5vp-file__clear:focus-visible {
+  border-color: #d63638;
+  color: #d63638;
+  outline: none;
+}
+
+/* ---- url field -------------------------------------------------------- */
+
+.h5vp-file-control .h5vp-file__url {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--e-a-border-color, #3f444b);
+  border-radius: 3px;
+  background: var(--e-a-bg-default, #26292c);
+  color: var(--e-a-color-txt, #b0b5bd);
+  font-size: 11px;
+}
+
+.h5vp-file-control .h5vp-file__url:focus {
+  border-color: var(--e-a-border-color-focus, #5d616a);
+  outline: none;
+}
+
+/* Repeater rows are narrow — drop the thumbnail so the name keeps its room. */
+.elementor-repeater-fields .h5vp-file__thumb {
+  display: none;
+}

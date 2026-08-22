@@ -33,9 +33,11 @@ function h5vp_uninstall_site()
         return;
     }
 
-    // Only remove data when the user opted in via the plugin settings.
+    // Only remove data when the user opted in via the plugin settings. This is
+    // the single key the settings screen writes, so what the checkbox shows is
+    // always what runs here.
     $settings = get_option('h5vp_option', []);
-    if (empty($settings['h5vp_delete_data_during_uninstall'])) {
+    if (empty($settings['h5vp_remove_data_on_uninstall'])) {
         return;
     }
 

@@ -94,8 +94,16 @@ class Shortcodes
       'width' => null,
       'preload' => null,
       'ios_native' => 'true',
+      'playsinline' => null,
       'controls' => null,
-      'hide_controls' => null
+      'hide_controls' => null,
+      'align' => null,
+      // Subtitle attributes. shortcode_atts() drops anything not declared here,
+      // so Block::video_player_to_gutenberg_block() never saw these without them.
+      'caption' => null,
+      'caption_label' => null,
+      'subtitle' => null,
+      'subtitle_label' => null
     );
   }
 

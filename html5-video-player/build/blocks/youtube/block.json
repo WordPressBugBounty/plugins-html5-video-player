@@ -45,6 +45,10 @@
     "poster": {
       "type": "string"
     },
+    "subtitle": {
+      "type": "array",
+      "default": []
+    },
     "options": {
       "type": "object",
       "default": {
@@ -191,7 +195,12 @@
   "supports": {
     "html": false,
     "lock": false,
-    "reusable": false
+    "reusable": false,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ]
   },
   "example": {
     "attributes": {

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "html5-player/playlist",
+  "title": "HTML5 Video Player Playlist",
+  "description": "Build a video playlist with multiple videos, layouts, search and autoplay.",
+  "category": "media",
+  "icon": "playlist-video",
+  "keywords": [
+    "HTML5 Video Player",
+    "Playlist",
+    "Video"
+  ],
+  "textdomain": "html5-video-player",
+  "supports": {
+    "html": false,
+    "lock": false,
+    "reusable": false
+  },
+  "attributes": {
+    "uniqueId": {
+      "type": "string"
+    },
+    "videos": {
+      "type": "array",
+      "default": []
+    },
+    "playlistType": {
+      "type": "string",
+      "default": "simplelist"
+    },
+    "autoplayNextVideo": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPrevNext": {
+      "type": "boolean",
+      "default": false
+    },
+    "showSearch": {
+      "type": "boolean",
+      "default": false
+    },
+    "controls": {
+      "type": "array",
+      "default": [
+        "play-large",
+        "play",
+        "progress",
+        "current-time",
+        "mute",
+        "volume",
+        "captions",
+        "settings",
+        "fullscreen"
+      ]
+    },
+    "playerWidth": {
+      "type": "string",
+      "default": "100%"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "viewScript": "file:./view.js",
+  "style": "file:./view.css",
+  "render": "file:./render.php"
+}

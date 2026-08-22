@@ -1,8 +1,8 @@
 === HTML5 Video Player – embed fast, responsive videos with ease ===
 Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: html5 video player, mp4 player, plyr, video, video player
-Tested up to: 7.0
-Stable tag: 2.12.0
+Tested up to: 7.1
+Stable tag: 2.13.0
 Requires PHP: 7.4
 Requires at least: 6.5
 Donate link: https://www.buymeacoffee.com/abuhayat
@@ -32,12 +32,19 @@ Add players to posts, pages, or widgets using shortcodes or the Gutenberg block 
 - **Cross-Browser Compatibility:** Works perfectly on Chrome, Firefox, Safari, and more.
 - **iOS & Mobile Friendly:** Plays video files on all major devices without extra plugins.
 - **Autoplay, Loop & Mute Options:** Customize how your videos behave.
+- **Preload Options:** Choose how much of the video loads up front (metadata, auto, none) to balance speed and bandwidth.
+- **Inline iOS Playback:** Play videos inline on iOS devices instead of forcing fullscreen.
 - **Skins & Color Customization:** Style the player to match your brand.
 - **Supports Multiple Formats:** Embed MP4, WebM, OGG, and MOV files.
 - **Preview for Paid Content:** Great for selling digital video files with previews.
 - **Lightweight & Compact:** Doesn't take up unnecessary space on your page.
 - **Custom CSS Support:** Fine-tune your player with custom styles.
 - **SEO Optimized:** Schema markup helps search engines understand and index your videos.
+- **Video Playlist Block:** Build a playlist of videos with a simple list layout, auto-play next with a 5-second "Up Next" countdown, custom thumbnails, and duration badges.
+- **HLS Streaming:** Play `.m3u8` adaptive streams, with automatic quality levels.
+- **Subtitles & Captions:** Add a `.vtt` caption track to any player, with your own language label.
+- **Player Alignment:** Align the player left, centre or right from the block editor, the classic metabox, the Quick Player settings, the shortcode or Elementor.
+- **Audio Player Block:** A skinnable audio player with four skins — Modern Bar, Waveform, Podcast Card and Compact Pill — plus speed, skip, volume and download controls.
 
 ### Pro Version
 
@@ -45,16 +52,18 @@ The [**Pro version**](https://bplugins.com/products/html5-video-player/pricing/)
 
 - **Color Picker:** Change player colors to match your site perfectly.
 - **External Hosting Support:** Embed videos from Amazon S3 and other sources.
-- **Multiple Subtitles Support:** Make your videos accessible and multilingual.
+- **Multiple Subtitles Support:** Add more than one caption track and let viewers choose the language.
+- **Advanced Playlists:** Three extra playlist layouts (List With Thumb, List on Right Side, Grid), a live search filter, prev/next arrows, plus a playlist post type and `[video_playlist]` shortcode.
+- **DASH Streaming:** Play `.mpd` adaptive streams alongside HLS.
 - **Quality Switcher:** Viewers can toggle video quality like on YouTube.
-- **Page Load Optimizer & Preload Options:** Control preload settings (metadata, auto, none) for better speed.
+- **Page Load Optimizer:** Defer player assets and video loading for better page speed scores.
 - **Restart, Rewind, Fast Forward:** Full playback control buttons.
 - **Download Button Toggle & Custom Download URL:** Enable, hide, or redirect video downloads.
 - **Customize Every Control:** Show/hide any button or control.
 - **Speed & Quality Control:** Let users adjust playback speed and resolution.
 - **Advanced Shortcode Generator:** Right inside your post/page text editor.
 - **Autoplay When Visible on Screen:** Smart autoplay triggers only when the video enters the viewport.
-- **Disable Pause & Inline iOS Playback:** Fine-tune playback behavior on every device.
+- **Disable Pause:** Prevent viewers from pausing the video.
 - **Show Thumbnail on Pause & Sticky on Scroll:** Keep viewers engaged as they browse.
 - **Seek Time & Start Time:** Customize jump distance and auto-start position.
 - **Google VAST Tag URL:** Integrate ad tags using Google VAST for monetization.
@@ -88,7 +97,11 @@ More attributes you can use:
 ***`autoplay="true/false"`***
 ***`muted="true/false"`***
 ***`preload="auto/metadata/none"`***
+***`playsinline="true/false"`***
 ***`width="500px"`***
+***`align="left/center/right"`***
+***`caption="https://example.com/subtitles.vtt"`***
+***`caption_label="English/en"`***
 ***`reset_on_end="true"`***
 
 [**Live Demo**](https://bplugins.com/products/html5-video-player) | [**Buy The Pro**](https://bplugins.com/products/html5-video-player/pricing/)
@@ -216,6 +229,22 @@ This plugin bundles the following third-party library:
 * External Services: The library may connect to bPlugins, WordPress.org, and Freemius services for product data and checkout functionality. See full details: https://github.com/bPlugins/bpl-tools#external-requests--why-they-are-made
 
 == Changelog ==
+
+= 2.13.0 - 22 August, 2026 =
+* Added: Video Playlist block — simple list layout, auto-play next with a 5-second "Up Next" countdown, duration badges, custom thumbnails, and Library/YouTube/Vimeo sources
+* Added: Audio Player block with four skins (Modern Bar, Waveform, Podcast Card, Compact Pill), plus playback speed, 10-second skip, volume, download, and title/artist/artwork fields
+* Added: HLS (`.m3u8`) streaming with automatic quality levels
+* Added: Subtitle/caption support — attach a `.vtt` track with your own language label from the block editor, the classic metabox, the `[video_player]` shortcode or Elementor
+* Added: Player alignment (left/center/right) in the block editor, the classic metabox, the Quick Player settings, the shortcode and Elementor
+* Added: Preload option (none/metadata/auto), moved down from the Pro version
+* Added: "Allow Inline Playback on iOS" option, moved down from the Pro version
+* Fixed: the Elementor widget never rendered a player inside the Elementor editor preview
+* Fixed: block-level classes and styles were dropped from the video block's front-end markup, because the wrapper emitted two `class` attributes and the browser kept only one
+* Fixed: a poster image passed to the player was ignored unless it was re-applied by hand after the player was created
+* Improved: the block's "Choose a Video Type" screen now uses icon cards for Video, YouTube, Vimeo and Audio instead of plain buttons
+* Improved: the video block's start screen now supports drag-and-drop uploads, the media library and pasting a URL, all in one place
+* Improved: player, poster, thumbnail and artwork URLs are now sanitized before rendering
+* Changed: the "Delete data during uninstall" option moved to a new storage key — if you had it switched on, switch it on again after updating
 
 = 2.12.0 - 3 August, 2026 =
 * Added: Extensions & Modules manager for managing plugin add-ons

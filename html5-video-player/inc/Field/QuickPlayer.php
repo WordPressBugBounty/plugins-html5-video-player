@@ -67,11 +67,45 @@ class QuickPlayer
                     'desc' => 'set the player width. Height will be calculate base on the value. Left blank for Responsive player',
                 ),
                 array(
+                    'id' => 'h5vp_align_quick',
+                    'title' => __('Alignment', 'html5-video-player'),
+                    'type' => 'button_set',
+                    'options' => array(
+                        '' => __('Default', 'html5-video-player'),
+                        'left' => __('Left', 'html5-video-player'),
+                        'center' => __('Center', 'html5-video-player'),
+                        'right' => __('Right', 'html5-video-player'),
+                    ),
+                    'desc' => __('Position the player inside its container. Only visible once the player width is narrower than the container. Override a single shortcode with align="center", or opt one out of this default with align="none".', 'html5-video-player'),
+                    // Empty by default so existing [video_player] shortcodes keep
+                    // rendering exactly as they do now.
+                    'default' => '',
+                ),
+                array(
                     'id' => 'h5vp_auto_hide_control_quick',
                     'title' => 'Auto Hide Control',
                     'type' => 'switcher',
                     'desc' => 'On if you want the controls (such as a play/pause button etc) hide automaticaly.',
                     'default' => true
+                ),
+                array(
+                    'id' => 'h5vp_playsinline_quick',
+                    'title' => 'Allow Inline Playback on iOS',
+                    'type' => 'switcher',
+                    'desc' => 'Allow inline playback on iOS. Note this has no effect on iPadOS.',
+                    'default' => '1',
+                ),
+                array(
+                    'id' => 'h5vp_preload_quick',
+                    'title' => 'Preload',
+                    'type' => 'radio',
+                    'options' => array(
+                        'auto' => 'Auto - Browser should load the entire file when the page loads.',
+                        'metadata' => 'Metadata - Browser should load only meatadata when the page loads.',
+                        'none' => 'None - Browser should NOT load the file when the page loads.',
+                    ),
+                    'desc' => 'Specify how the video file should be loaded when the page loads.',
+                    'default' => 'metadata',
                 ),
                 array(
                     'type' => 'content',
@@ -87,7 +121,6 @@ class QuickPlayer
                             <li><strong>Custom Download URL:</strong> Set a custom URL for the download button.</li>
                             <li><strong>Autoplay when visible on screen:</strong> Start playback when the player scrolls into view.</li>
                             <li><strong>Disable Pause:</strong> Prevent viewers from pausing the video.</li>
-                            <li><strong>Allow Inline Playback on iOS:</strong> Play videos inline on iOS devices.</li>
                             <li><strong>Show Thumbnail on Pause:</strong> Display a thumbnail when the video is paused.</li>
                             <li><strong>Sticky on Scroll:</strong> Keep the player visible while scrolling.</li>
                             <li><strong>Google VAST Tag URL:</strong> Show video ads via Google VAST tags.</li>

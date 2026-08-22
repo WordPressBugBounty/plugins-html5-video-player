@@ -1,0 +1,96 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "html5-player/audio",
+  "title": "HTML5 Audio Player",
+  "description": "A customizable, multi-skin audio player with waveform, compact, and classic controls.",
+  "category": "media",
+  "icon": "format-audio",
+  "keywords": [
+    "audio",
+    "mp3",
+    "sound",
+    "music",
+    "waveform"
+  ],
+  "textdomain": "html5-video-player",
+  "attributes": {
+    "source": {
+      "type": "string",
+      "default": ""
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "loop": {
+      "type": "boolean",
+      "default": false
+    },
+    "preload": {
+      "type": "string",
+      "default": "metadata"
+    },
+    "skin": {
+      "type": "string",
+      "default": "default"
+    },
+    "showDownload": {
+      "type": "boolean",
+      "default": false
+    },
+    "showSpeed": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSkip": {
+      "type": "boolean",
+      "default": true
+    },
+    "showVolume": {
+      "type": "boolean",
+      "default": true
+    },
+    "width": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#222222"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#FFFFFF"
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "artist": {
+      "type": "string",
+      "default": ""
+    },
+    "artwork": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "viewScript": "file:./view.js",
+  "style": "file:./view.css",
+  "render": "file:./render.php"
+}

@@ -211,17 +211,15 @@ class Video
             'src' => '',
             'type' => 'library',
             'post_id' => null,
-            'user_id' => get_current_user_id(),
-            'created_at' => wp_date("Y-m-d H:i:s", current_time("U")),
         ]);
 
         // Sanitize every field up front. Request data must never flow into the
-        // DB layer unfiltered, and array keys must never become column names.
         $type = sanitize_key($args['type']);
         $src = esc_url_raw($args['src']);
         $title = sanitize_text_field($args['title']);
         $post_id = $args['post_id'] !== null ? absint($args['post_id']) : null;
-        $user_id = absint($args['user_id']);
+        $user_id = get_current_user_id();
+        $created_at = wp_date("Y-m-d H:i:s", current_time("U"));
 
         // Per-resource authorization. A supplied post_id must reference a
         // videoplayer post the current user can edit. Without this an
@@ -290,7 +288,7 @@ class Video
             'src' => $src,
             'type' => $type,
             'user_id' => $user_id,
-            'created_at' => $args['created_at'],
+            'created_at' => $created_at,
         ];
         $formats = ['%s', '%s', '%s', '%d', '%s'];
 
