@@ -1,8 +1,8 @@
 === HTML5 Video Player – embed fast, responsive videos with ease ===
-Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
+Contributors: bplugins, shamim10, freemius, abuhayat, farazi1
 Tags: html5 video player, mp4 player, plyr, video, video player
 Tested up to: 7.1
-Stable tag: 2.13.0
+Stable tag: 2.13.1
 Requires PHP: 7.4
 Requires at least: 6.5
 Donate link: https://www.buymeacoffee.com/abuhayat
@@ -229,6 +229,9 @@ This plugin bundles the following third-party library:
 * External Services: The library may connect to bPlugins, WordPress.org, and Freemius services for product data and checkout functionality. See full details: https://github.com/bPlugins/bpl-tools#external-requests--why-they-are-made
 
 == Changelog ==
+
+= 2.13.1 - 16 September, 2026 =
+* Fixed: The Elementor widget did not appear in the Elementor editor
 
 = 2.13.0 - 22 August, 2026 =
 * Added: Video Playlist block — simple list layout, auto-play next with a 5-second "Up Next" countdown, duration badges, custom thumbnails, and Library/YouTube/Vimeo sources
