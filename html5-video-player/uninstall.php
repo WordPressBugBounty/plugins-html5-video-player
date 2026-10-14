@@ -23,13 +23,12 @@ function h5vp_uninstall_site()
 {
     global $wpdb;
 
-    // Keep everything when the Pro version is still active (per-site or
-    // network-wide): both versions share the same options, "videoplayer"
-    // posts and custom videos table.
+    // Keep everything when the Pro version is present (shared options, "videoplayer" posts and
     if (!function_exists('is_plugin_active')) {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
-    if (is_plugin_active('html5-video-player-pro/html5-video-player.php')) {
+    $pro_plugin = 'html5-video-player-pro/html5-video-player.php';
+    if (is_plugin_active($pro_plugin) || file_exists(WP_PLUGIN_DIR . '/' . $pro_plugin)) {
         return;
     }
 

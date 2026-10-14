@@ -32,9 +32,12 @@ class Table
     public function create($name, $columns, $version = 1, $opts = [])
     {
         $name            = $this->sanitize_identifier($name);
-        $current_version = get_option("{$name}_database_version", 0);
+        $current_version = (int) get_option("{$name}_database_version", 0);
 
-        if ($version == $current_version) {
+        // Never re-run for an equal-or-newer stored schema. Using >= (not ==) stops this build from
+        // downgrading a table that the Pro build already upgraded to a wider schema (e.g. src TEXT ->
+        // varchar(256)), which would truncate long video URLs and titles.
+        if ($version <= $current_version) {
             return;
         }
 

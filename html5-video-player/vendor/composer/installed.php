@@ -3,7 +3,7 @@
         'name' => 'bplugins/html5-video-player',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b1c713f1c2c0a78abd1640163fcc9b8779a180f7',
+        'reference' => 'f2a8b4729efeb4be9e7e3a179824213eb3a396a0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'bplugins/html5-video-player' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b1c713f1c2c0a78abd1640163fcc9b8779a180f7',
+            'reference' => 'f2a8b4729efeb4be9e7e3a179824213eb3a396a0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

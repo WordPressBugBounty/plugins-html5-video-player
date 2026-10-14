@@ -1,8 +1,8 @@
 === HTML5 Video Player – embed fast, responsive videos with ease ===
-Contributors: bplugins, shamim10, freemius, abuhayat, farazi1
+Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
 Tags: html5 video player, mp4 player, plyr, video, video player
 Tested up to: 7.1
-Stable tag: 2.13.1
+Stable tag: 2.14.0
 Requires PHP: 7.4
 Requires at least: 6.5
 Donate link: https://www.buymeacoffee.com/abuhayat
@@ -38,6 +38,7 @@ Add players to posts, pages, or widgets using shortcodes or the Gutenberg block 
 - **Supports Multiple Formats:** Embed MP4, WebM, OGG, and MOV files.
 - **Preview for Paid Content:** Great for selling digital video files with previews.
 - **Lightweight & Compact:** Doesn't take up unnecessary space on your page.
+- **Fast by Default:** YouTube and Vimeo load only when played, players below the fold load as they scroll into view, and the page never jumps while a player loads.
 - **Custom CSS Support:** Fine-tune your player with custom styles.
 - **SEO Optimized:** Schema markup helps search engines understand and index your videos.
 - **Video Playlist Block:** Build a playlist of videos with a simple list layout, auto-play next with a 5-second "Up Next" countdown, custom thumbnails, and duration badges.
@@ -201,7 +202,7 @@ Please report security bugs found in the source code of the HTML5 Video Player p
 == Source Code ==
 
 You can find the source code, report bugs, and contribute to the development of this plugin on our GitHub repository:
-[**HTML5 Video Player on GitHub**](https://github.com/bPlugins/html5-video-player-wp)
+[**HTML5 Video Player on GitHub**](https://github.com/bPlugins/html5-video-player-free)
 
 == Third-Party Libraries ==
 
@@ -222,16 +223,62 @@ This plugin bundles the following third-party library:
 - Source code: https://github.com/sampotts/plyr
 - Bundled file: public/js/plyr-v3.8.4.polyfilled.js
 
+**hls.js**
+- Version: 1.7.0
+- Purpose: Adds HLS (.m3u8) streaming playback with automatic quality levels; only loaded on pages that actually contain an HLS source.
+- License: Apache-2.0
+- Website: https://github.com/video-dev/hls.js
+- Bundled file: public/js/hls.min.js
+
 = bpl-tools =
 * Source / GitHub: https://github.com/bPlugins/bpl-tools
 * License: GPL-2.0-or-later – https://www.gnu.org/licenses/gpl-2.0.html
 * Purpose: Shared utility library providing admin dashboard components and common Gutenberg editor controls.
 * External Services: The library may connect to bPlugins, WordPress.org, and Freemius services for product data and checkout functionality. See full details: https://github.com/bPlugins/bpl-tools#external-requests--why-they-are-made
 
+= Freemius SDK =
+
+* **Source:** [https://freemius.com/](https://freemius.com/)
+* **GitHub:** [https://github.com/Freemius/wordpress-sdk](https://github.com/Freemius/wordpress-sdk)
+* **License:** GPLv3 – [https://github.com/Freemius/wordpress-sdk/blob/master/LICENSE.txt](https://github.com/Freemius/wordpress-sdk/blob/master/LICENSE.txt)
+* **Purpose:** Provides opt-in usage tracking and analytics to help improve the plugin.
+
+== External Services ==
+
+This plugin connects to the following third-party services:
+
+= YouTube oEmbed =
+When you save a video player whose source is a YouTube URL, the plugin sends the video ID to YouTube's public oEmbed endpoint (`https://www.youtube.com/oembed`) to fetch the video's title for display in the admin list and Video Manager. No personal data is sent — only the video ID. This request is cached for 24 hours and is not made on page views by site visitors. YouTube Terms of Service: https://www.youtube.com/t/terms
+
+= Vimeo API =
+When you save a video player whose source is a Vimeo URL, the plugin sends the video ID to Vimeo's public oEmbed-style endpoint (`https://vimeo.com/api/v2/video/{id}.json`) to fetch the video's title, the same way as above. Vimeo Terms of Service: https://vimeo.com/terms
+
 == Changelog ==
 
+
+= 2.14.0 - 14 October, 2026 =
+* **Improved:** Much faster pages. YouTube and Vimeo players now show a lightweight thumbnail and load the full player only when the visitor presses play (mobile PageSpeed score 71 → 99 on a YouTube page)
+* **Improved:** Players further down the page load only when they are scrolled into view — a page with five videos now downloads about 0.5 MB on load instead of 17.8 MB
+* **Improved:** No more layout shift while players load (CLS 0). Space is reserved for videos, playlists and audio players before they appear
+* **Improved:** Each video file is downloaded once instead of up to three times, and the player no longer fetches a blank video from cdn.plyr.io
+* **Improved:** Player scripts no longer block the page from rendering, jQuery and Underscore are no longer loaded on the front end, and the HLS library loads only when an HLS video plays
+* **Improved:** Playlists load YouTube/Vimeo items only on play, and read video durations after the page has finished loading
+* **Improved:** The audio player uses far less CPU while playing
+* **Improved:** Works smoothly with caching and optimization plugins such as WP Rocket ("Delay JavaScript execution"), Autoptimize and WP Super Cache
+* **Improved:** A "Copied!" confirmation when you copy a player's shortcode
+* **Improved:** A copy icon next to the Quick Player shortcode
+* **Improved:** The admin settings page remembers the tab you were on
+* **Fixed:** On iPhone and iPad, YouTube videos did not start when tapped; they now also play inline instead of forcing fullscreen
+* **Fixed:** Captions stayed on screen after being turned off with the CC button
+* **Fixed:** YouTube `live/` links were rejected as invalid
+* **Fixed:** Entering a Vimeo link or a video ID did not work in some cases
+* **Fixed:** A playback issue in the single video player
+* **Fixed:** A PHP warning, and the playlist scrollbar styling
+* **Fixed:** The download button color
+* **Fixed:** A narrower, centered player briefly showed at full width while loading (Elementor)
+
 = 2.13.1 - 16 September, 2026 =
-* Fixed: The Elementor widget did not appear in the Elementor editor
+* **Fix:** The Elementor widget did not appear in the Elementor editor.
 
 = 2.13.0 - 22 August, 2026 =
 * Added: Video Playlist block — simple list layout, auto-play next with a 5-second "Up Next" countdown, duration badges, custom thumbnails, and Library/YouTube/Vimeo sources
