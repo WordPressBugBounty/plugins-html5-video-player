@@ -1,5 +1,5 @@
 === HTML5 Video Player – embed fast, responsive videos with ease ===
-Contributors: bplugins, shehabulislam, freemius, abuhayat, farazi1
+Contributors: bplugins, abuhayat, freemius, shamim10, farazi1
 Tags: html5 video player, mp4 player, plyr, video, video player
 Tested up to: 7.1
 Stable tag: 2.14.0
