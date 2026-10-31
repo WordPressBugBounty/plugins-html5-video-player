@@ -2,7 +2,7 @@
 Contributors: bplugins, abuhayat, freemius, shamim10, farazi1
 Tags: html5 video player, mp4 player, plyr, video, video player
 Tested up to: 7.1
-Stable tag: 2.14.1
+Stable tag: 2.14.2
 Requires PHP: 7.4
 Requires at least: 6.5
 Donate link: https://www.buymeacoffee.com/abuhayat
@@ -255,6 +255,13 @@ When you save a video player whose source is a Vimeo URL, the plugin sends the v
 
 == Changelog ==
 
+
+= 2.14.2 - 31 October, 2026 =
+* **Security:** Player settings saved in a block are now also checked in the block editor and when a post is saved, not only on the published page. Reported through the Patchstack VDP
+* **Security:** Subtitle labels are now shown as plain text in the player's captions menu
+* **Security:** Hardened the bundled Plyr library's menu labels and the player's custom styles
+* **Update:** Freemius SDK updated to 2.13.5
+* **Fixed:** The player always loads its own Plyr library and styles, even when HTML5 Audio Player is active on the same site
 
 = 2.14.1 - 27 October, 2026 =
 * **Security:** Player settings saved in a block (download link, ad tag URL, controls, chapter labels) are now checked before they reach the page, so they can no longer load outside scripts or run code. Reported through the Patchstack VDP.
